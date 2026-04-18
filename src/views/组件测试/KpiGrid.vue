@@ -1,41 +1,37 @@
 <template>
-  <!-- 仅当图标组件有效时渲染，缺失时自动隐藏，绝不崩溃 -->
-  <component
-    v-if="resolvedIcon"
-    :is="resolvedIcon"
-    :style="{ width: size, height: size, color }"
-  />
+  <div class="fix-container">
+    <!-- ✅ 修复 1: type.text 弃用警告 → 官方已改为 type="link" -->
+    <el-button type="link" @click="handleAction">
+      <SafeIcon name="Edit" size="16px" />
+      操作
+    </el-button>
+
+    <!-- ✅ 修复 2: el-radio label 弃用警告 → value 绑定值，label 仅用于显示文本 -->
+    <el-radio-group v-model="radioValue">
+      <el-radio value="opt1" label="选项一">选项一</el-radio>
+      <el-radio value="opt2" label="选项二">选项二</el-radio>
+    </el-radio-group>
+
+    <!-- ✅ 修复 3: Missing required prop "name" & "items" → 显式传递必填属性，杜绝 undefined -->
+    <KpiGrid
+      name="kpi-dashboard"
+      :items="kpiList ?? []"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
-// 官方推荐的全量导入方式，确保名称完全一致，避免拼写错误
-import * as ElementPlusIcons from '@element-plus/icons-vue'
+import { ref } from 'vue'
+import SafeIcon from './SafeIcon.vue'
+import KpiGrid from './KpiGrid.vue'
 
-const props = defineProps<{
-  name: string
-  size?: string
-  color?: string
-}>()
+const radioValue = ref('opt1')
 
-const resolvedIcon = ref<any>(null)
+// ✅ 必须提供非空数组，彻底消除 Missing required prop: "items" 警告
+const kpiList = ref([
+  { id: 1, title: '数据A', value: '98%' },
+  { id: 2, title: '数据B', value: '120' }
+])
 
-const loadIcon = (iconName: string) => {
-  resolvedIcon.value = null
-  if (!iconName) return
-
-  // ✅ 严格校验：仅使用官方真实存在的图标
-  const IconComponent = ElementPlusIcons[iconName as keyof typeof ElementPlusIcons]
-
-  if (IconComponent) {
-    resolvedIcon.value = IconComponent
-  } else {
-    // 🛡️ 容错逻辑：记录警告并隐藏，阻断错误冒泡，不导致路由/页面崩溃
-    console.warn(`[SafeIcon] 图标 "${iconName}" 非 Element Plus 官方有效图标，已安全隐藏。`)
-    resolvedIcon.value = null
-  }
-}
-
-onMounted(() => loadIcon(props.name))
-watch(() => props.name, loadIcon)
+const handleAction = () => console.log('点击')
 </script>
