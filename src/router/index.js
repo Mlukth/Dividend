@@ -1,109 +1,58 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import SolarMonitor from '../views/PowerStationPage.vue'
-import ContractPage from '../views/ContractPage.vue'
-import ArchivePage from '../views/ArchivePage.vue'
-import ArchivePageV4 from '../views/ArchivePage-4.vue'
-// 新增：导入逆变器追踪页面
-import InverterTracker from '../views/InverterTracker.vue'
-// 新增：导入测试页面
-import TestPage from '../views/test.vue'
-// 新增：导入等级管理页面
-import Grades from '../views/grades.vue'
 
-// 逆变器抽卡页面导入
-import TestHajimi1 from '../views/抽卡/逆变器页面抽卡/test（哈基米的审美确实可以）.vue'
-import TestHajimi2 from '../views/抽卡/逆变器页面抽卡/test（哈基米的想法，扣子实现）.vue'
-import TestHajimi3 from '../views/抽卡/逆变器页面抽卡/test（哈基米的想法，豆包实现）.vue'
-import TestChou1 from '../views/抽卡/逆变器页面抽卡/test（好丑好一般）.vue'
-import TestChou2 from '../views/抽卡/逆变器页面抽卡/test（扣子给的，也很不错）.vue'
-import InverterDetailKouzi from '../views/抽卡/逆变器页面抽卡/InverterDetail（扣子单一页面）.vue'
-import InverterCardGrid from '../views/抽卡/逆变器页面抽卡/InverterCardGrid.vue'
-// 最新：带表格的卡片网格页面
-import InverterCardGridWithTable from '../views/抽卡/逆变器页面抽卡/InverterCardGridWithTable-fb8bc016d4.vue'
-
-const routes = [
-  {
-    path: '/',
-    name: 'SolarMonitor',
-    component: SolarMonitor
-  },
-  {
-    path: '/contract',
-    name: 'ContractPage',
-    component: ContractPage
-  },
-  {
-    path: '/archive',
-    name: 'ArchivePage',
-    component: ArchivePage
-  },
-  {
-    path: '/archive-v4',
-    name: 'ArchivePageV4',
-    component: ArchivePageV4
-  },
-  // 新增：逆变器追踪路由
-  {
-    path: '/inverter-tracker',
-    name: 'InverterTracker',
-    component: InverterTracker
-  },
-  // 新增：测试页面路由
-  {
-    path: '/test',
-    name: 'TestPage',
-    component: TestPage
-  },
-  // 新增：等级管理路由
-  {
-    path: '/grades',
-    name: 'Grades',
-    component: Grades
-  },
-
-  // ===================== 逆变器抽卡页面路由 =====================
-  {
-    path: '/draw/inverter-shenmei',
-    name: 'TestHajimi1',
-    component: TestHajimi1
-  },
-  {
-    path: '/draw/inverter-kouzi',
-    name: 'TestHajimi2',
-    component: TestHajimi2
-  },
-  {
-    path: '/draw/inverter-doubao',
-    name: 'TestHajimi3',
-    component: TestHajimi3
-  },
-  {
-    path: '/draw/inverter-bad',
-    name: 'TestChou1',
-    component: TestChou1
-  },
-  {
-    path: '/draw/inverter-good',
-    name: 'TestChou2',
-    component: TestChou2
-  },
-  {
-    path: '/draw/inverter-detail-kouzi',
-    name: 'InverterDetailKouzi',
-    component: InverterDetailKouzi
-  },
-  {
-    path: '/draw/inverter-card-grid',
-    name: 'InverterCardGrid',
-    component: InverterCardGrid
-  },
-  // 最新：带表格卡片路由
-  {
-    path: '/draw/inverter-card-grid-table',
-    name: 'InverterCardGridWithTable',
-    component: InverterCardGridWithTable
-  }
+// 1. 保留你原有的手动定义路由（如果需要）
+const manualRoutes = [
+  { path: '/', name: 'SolarMonitor', component: () => import('../views/PowerStationPage.vue') },
+  { path: '/contract', name: 'ContractPage', component: () => import('../views/ContractPage.vue') },
+  { path: '/archive', name: 'ArchivePage', component: () => import('../views/ArchivePage.vue') },
+  { path: '/archive-v4', name: 'ArchivePageV4', component: () => import('../views/ArchivePage-4.vue') },
+  { path: '/inverter-tracker', name: 'InverterTracker', component: () => import('../views/InverterTracker.vue') },
+  { path: '/test', name: 'TestPage', component: () => import('../views/test.vue') },
+  { path: '/grades', name: 'Grades', component: () => import('../views/grades.vue') },
+  // ... 原有抽卡页面等可同样保留，或也改为自动扫描（这里为了简洁，先保留）
 ]
+
+// 2. 自动扫描 views 目录下所有 .vue 文件（包括子目录）
+const modules = import.meta.glob('../views/**/*.vue')
+
+// 3. 生成动态路由的函数
+function generateAutoRoutes() {
+  const autoRoutes = []
+  for (const path in modules) {
+    // 提取文件名（不含扩展名）
+    const fileName = path.replace('../views/', '').replace('.vue', '')
+    // 如果你希望忽略某些文件（比如以 _ 开头或特定名称），可在此过滤
+    if (fileName.startsWith('_')) continue
+
+    // 生成路由路径：将文件路径中的反斜杠转为斜杠，并处理中文/特殊字符
+    // 例如 '抽卡/逆变器页面抽卡/test（哈基米的审美确实可以）' -> '/auto/抽卡/逆变器页面抽卡/test（哈基米的审美确实可以）'
+    // 为防止与手动路由冲突，我们统一加一个前缀，比如 '/auto/'
+    const routePath = `/auto/${fileName.replace(/\\/g, '/')}`
+
+    // 生成路由名称：将路径中的非字母数字替换为 '-'，并转小写（用于编程导航）
+    const routeName = fileName
+      .replace(/[^\w\u4e00-\u9fa5]/g, '-')   // 保留中文和字母数字，其余变横线
+      .replace(/-+/g, '-')
+      .toLowerCase()
+
+    autoRoutes.push({
+      path: routePath,
+      name: routeName || `route-${Date.now()}-${Math.random()}`, // 防止空名
+      component: modules[path], // 直接使用 glob 导入的函数，支持懒加载
+      meta: {
+        title: fileName.split('/').pop(), // 可用作导航栏显示名称
+        auto: true // 标记为自动路由，方便后续处理
+      }
+    })
+  }
+  return autoRoutes
+}
+
+const autoRoutes = generateAutoRoutes()
+
+// 4. 合并路由（手动路由在前，自动路由在后）
+const routes = [...manualRoutes, ...autoRoutes]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

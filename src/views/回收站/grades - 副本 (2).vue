@@ -1,4 +1,3 @@
-/*vue3 love you*/
 <template>
   <div class="container">
     <!-- Header -->
@@ -164,27 +163,7 @@
           </button>
         </div>
 
-        <!-- 数据导入导出（所有人可见）-->
-        <div class="card">
-          <div class="card-title">
-            <span class="icon">📁</span>
-            数据导入导出
-          </div>
-          <div class="btn-group">
-            <button class="btn btn-primary btn-sm" @click="showImportModal = true">
-              📥 导入JSON
-            </button>
-            <button class="btn btn-success btn-sm" @click="exportData">
-              📤 导出JSON
-            </button>
-          </div>
-          <div style="margin-top: 12px; font-size: 12px; color: #888;">
-            <div>💡 导入时可选择"合并"或"覆盖"数据</div>
-            <div>💡 数据保存在浏览器本地存储</div>
-          </div>
-        </div>
-
-        <!-- 数据管理（管理员）-->
+        <!-- 数据管理 -->
         <div class="card" v-if="isAdminMode">
           <div class="card-title">
             <span class="icon">💾</span>
@@ -192,6 +171,12 @@
           </div>
 
           <div class="btn-group">
+            <button class="btn btn-outline btn-sm" @click="importData">
+              📥 导入JSON
+            </button>
+            <button class="btn btn-outline btn-sm" @click="exportData">
+              📤 导出JSON
+            </button>
             <button class="btn btn-success btn-sm" @click="exportExcel">
               📊 导出Excel
             </button>
@@ -288,11 +273,6 @@
               </div>
             </div>
           </div>
-          
-          <!-- 清空公告栏按钮 -->
-          <button v-if="taskBoard.length > 0 && isAdminMode" class="btn btn-outline btn-sm" style="margin-top: 12px; width: 100%;" @click="clearTaskBoard">
-            🗑️ 清空公告栏
-          </button>
         </div>
 
         <!-- 待处理任务 -->
@@ -365,16 +345,10 @@
                   <span>{{ q.label }}（×{{ q.coefficient }}）</span>
                 </label>
               </div>
-              
-              <!-- 原因输入框（选择0.7或0.4时显示）-->
-              <div class="form-group" style="margin-top: 12px;" v-if="p.selectedQuality && p.selectedQuality !== 'ontime'">
-                <label style="font-size: 11px; color: #ef4444;">原因/备注（必填）</label>
-                <input type="text" class="form-control" v-model="p.qualityReason" placeholder="请填写原因" style="padding: 6px 10px;">
-              </div>
             </div>
 
             <div class="btn-group" v-if="isAdminMode">
-              <button class="btn btn-success btn-sm" @click="confirmPending(p)" :disabled="!p.selectedQuality || (p.selectedQuality !== 'ontime' && !p.qualityReason)">
+              <button class="btn btn-success btn-sm" @click="confirmPending(p)" :disabled="!p.selectedQuality">
                 ✓ 确认入账
               </button>
               <button class="btn btn-outline btn-sm" @click="editPending(p)">
@@ -748,51 +722,6 @@
       </div>
     </div>
 
-    <!-- 导入弹窗 -->
-    <div class="modal-overlay" v-if="showImportModal" @click.self="showImportModal = false">
-      <div class="modal">
-        <div class="modal-header">
-          <h3>📥 导入JSON数据</h3>
-          <button class="modal-close" @click="showImportModal = false">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>选择JSON文件</label>
-            <input type="file" class="form-control" accept=".json" @change="handleFileSelect">
-          </div>
-          
-          <div v-if="importPreview" style="background: #f8f9fa; border-radius: 8px; padding: 12px; margin-top: 12px;">
-            <div style="font-size: 12px; color: #666; margin-bottom: 8px;">文件预览：</div>
-            <div style="font-size: 13px;">
-              <div>📄 积分记录：{{ importPreview.records?.length || 0 }} 条</div>
-              <div>📝 待处理任务：{{ importPreview.pendingRecords?.length || 0 }} 条</div>
-              <div>📌 公告栏任务：{{ importPreview.taskBoard?.length || 0 }} 条</div>
-            </div>
-          </div>
-          
-          <div class="form-group" style="margin-top: 16px;">
-            <label>导入方式</label>
-            <div class="import-options" style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
-              <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
-                <input type="radio" value="merge" v-model="importMode">
-                <span><strong>合并数据</strong> - 保留现有数据，新增导入的数据</span>
-              </label>
-              <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
-                <input type="radio" value="replace" v-model="importMode">
-                <span><strong>覆盖数据</strong> - 清空现有数据，使用导入的数据</span>
-              </label>
-            </div>
-          </div>
-          
-          <div style="font-size: 12px; color: #f59e0b; margin-top: 8px;">⚠️ 覆盖模式会清空所有现有数据，请谨慎操作！</div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline" @click="showImportModal = false">取消</button>
-          <button class="btn btn-primary" @click="confirmImport" :disabled="!importPreview">确认导入</button>
-        </div>
-      </div>
-    </div>
-
     <!-- 隐藏的文件输入 -->
     <input type="file" ref="fileInputRef" accept=".json" style="display: none;" @change="handleFileImport">
   </div>
@@ -809,7 +738,8 @@ const members = ref([
   { id: 'member_02', name: '胡斌', totalPoints: 0 },
   { id: 'member_03', name: '温嘉凌', totalPoints: 0 },
   { id: 'member_04', name: '赵梓丞', totalPoints: 0 },
-  { id: 'member_05', name: '胡春红', totalPoints: 0 }
+  { id: 'member_05', name: '胡春红', totalPoints: 0 },
+  { id: 'member_06', name: '周志赋', totalPoints: 0 }
 ])
 
 // 难度等级
@@ -880,11 +810,6 @@ const showAuditLog = ref(false)
 const showMemberModal = ref(false)
 const showOverdueReminder = ref(false)
 const editTab = ref('current')
-
-// 导入相关
-const showImportModal = ref(false)
-const importPreview = ref(null)
-const importMode = ref('merge') // 'merge' 或 'replace'
 
 // 编辑相关
 const editingRecord = ref(null)
@@ -1069,12 +994,6 @@ const confirmPending = (p) => {
     alert('请选择完成质量')
     return
   }
-  
-  // 如果选择了0.7或0.4系数，检查原因是否填写
-  if (p.selectedQuality !== 'ontime' && !p.qualityReason) {
-    alert('请填写原因')
-    return
-  }
 
   const member = members.value.find(m => m.id === p.memberId)
   const qual = qualityOptions.value.find(q => q.value === p.selectedQuality)
@@ -1092,7 +1011,6 @@ const confirmPending = (p) => {
     estimatedHours: actualHours,
     qualityStatus: qual.label,
     qualityCoefficient: qual.coefficient,
-    qualityReason: p.qualityReason || '',
     points: actualPoints,
     timestamp: new Date().toISOString(),
     date: p.expectedDate,
@@ -1110,7 +1028,6 @@ const confirmPending = (p) => {
   p.processedAt = new Date().toISOString()
   p.qualityStatus = qual.label
   p.qualityCoefficient = qual.coefficient
-  p.qualityReason = p.qualityReason || ''
   p.actualHours = actualHours
   p.actualPoints = actualPoints
 
@@ -1378,12 +1295,6 @@ const clearAllRecords = () => {
   saveToStorage()
 }
 
-const clearTaskBoard = () => {
-  if (!confirm('确定要清空公告栏所有任务吗？此操作不可恢复！')) return
-  taskBoard.value = []
-  saveToStorage()
-}
-
 const saveToStorage = () => {
   const data = {
     storageVersion: '4.0',
@@ -1414,83 +1325,7 @@ const loadFromStorage = () => {
 }
 
 const importData = () => {
-  // 打开导入弹窗
-  showImportModal.value = true
-  importPreview.value = null
-  importMode.value = 'merge'
-}
-
-const handleFileSelect = (event) => {
-  const file = event.target.files[0]
-  if (!file) return
-  
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    try {
-      const data = JSON.parse(e.target.result)
-      importPreview.value = data
-    } catch (err) {
-      alert('JSON文件格式错误')
-      importPreview.value = null
-    }
-  }
-  reader.readAsText(file)
-}
-
-const confirmImport = () => {
-  if (!importPreview.value) return
-  
-  const confirmMsg = importMode.value === 'replace' 
-    ? '确定要覆盖所有现有数据吗？此操作不可恢复！' 
-    : '确定要导入数据吗？将合并现有数据。'
-  
-  if (!confirm(confirmMsg)) return
-  
-  // 如果是覆盖模式，先清空
-  if (importMode.value === 'replace') {
-    records.value = []
-    pendingRecords.value = []
-    taskBoard.value = []
-    members.value.forEach(m => m.totalPoints = 0)
-  }
-  
-  // 导入数据
-  if (importPreview.value.members) {
-    importPreview.value.members.forEach((m, i) => {
-      if (members.value[i]) {
-        members.value[i].name = m.name
-        if (importMode.value === 'replace') {
-          members.value[i].totalPoints = m.totalPoints || 0
-        } else {
-          members.value[i].totalPoints += m.totalPoints || 0
-        }
-      }
-    })
-  }
-  
-  if (importPreview.value.records) {
-    importPreview.value.records.forEach(r => {
-      const record = { ...r, recordId: r.recordId || generateId('rec'), qualityReason: r.qualityReason || '' }
-      records.value.push(record)
-      const member = members.value.find(m => m.id === r.memberId)
-      if (member && importMode.value === 'replace') {
-        member.totalPoints += r.points || 0
-      }
-    })
-  }
-  
-  if (importPreview.value.pendingRecords) {
-    pendingRecords.value.push(...importPreview.value.pendingRecords.map(p => ({ ...p, pendingId: p.pendingId || generateId('pending'), qualityReason: p.qualityReason || '' })))
-  }
-  
-  if (importPreview.value.taskBoard) {
-    taskBoard.value.push(...importPreview.value.taskBoard.map(t => ({ ...t, taskId: t.taskId || generateId('task') })))
-  }
-  
-  saveToStorage()
-  alert('导入成功！')
-  showImportModal.value = false
-  importPreview.value = null
+  fileInputRef.value.click()
 }
 
 const handleFileImport = (event) => {
@@ -1556,22 +1391,15 @@ const exportExcel = () => {
       if (dayRecords.length === 0) {
         row.push('')
       } else if (dayRecords.length === 1) {
-        // 单条记录：显示"任务名 | 难度级 | 工时h | ×系数=积分（原因）"
+        // 单条记录：显示"任务名 | 难度级 | 工时h | ×系数=积分"
         const r = dayRecords[0]
-        let formulaStr = `${r.taskName} | ${r.taskDifficulty}级 | ${r.estimatedHours}h | ×${r.qualityCoefficient}=${r.points.toFixed(1)}`
-        if (r.qualityReason && r.qualityCoefficient < 1) {
-          formulaStr += `（${r.qualityReason}）`
-        }
+        const formulaStr = `${r.taskName} | ${r.taskDifficulty}级 | ${r.estimatedHours}h | ×${r.qualityCoefficient}=${r.points.toFixed(1)}`
         row.push(formulaStr)
         dayTotal += r.points
       } else {
-        // 多条记录：显示"任务1 | x级 | xh | ×x=x.x（原因）; 任务2..."
+        // 多条记录：显示"任务1 | x级 | xh | ×x=x.x; 任务2 | x级 | xh | ×x=x.x"
         const formulaParts = dayRecords.map(r => {
-          let str = `${r.taskName} | ${r.taskDifficulty}级 | ${r.estimatedHours}h | ×${r.qualityCoefficient}=${r.points.toFixed(1)}`
-          if (r.qualityReason && r.qualityCoefficient < 1) {
-            str += `（${r.qualityReason}）`
-          }
-          return str
+          return `${r.taskName} | ${r.taskDifficulty}级 | ${r.estimatedHours}h | ×${r.qualityCoefficient}=${r.points.toFixed(1)}`
         })
         const totalPoints = dayRecords.reduce((sum, r) => sum + r.points, 0)
         row.push(formulaParts.join('\n') + `\n合计=${totalPoints.toFixed(1)}`)
@@ -1610,7 +1438,7 @@ const exportExcel = () => {
   XLSX.utils.book_append_sheet(wb, ws1, '按日积分统计')
 
   // Sheet 2: 原始操作日志
-  const sheet2Data = [['日期', '成员', '任务名称', '难度', '工时', '质量系数', '积分计算', '积分', '时间', '原因']]
+  const sheet2Data = [['日期', '成员', '任务名称', '难度', '工时', '质量系数', '积分计算', '积分', '时间']]
   records.value.forEach(r => {
     const formulaStr = `${r.estimatedHours}h × ${r.taskDifficulty}级(${r.pointsPerHour}分/h) × ${r.qualityCoefficient} = ${r.points.toFixed(1)}`
     sheet2Data.push([
@@ -1622,8 +1450,7 @@ const exportExcel = () => {
       `×${r.qualityCoefficient}`,
       formulaStr,
       r.points.toFixed(1),
-      formatTime(r.timestamp),
-      r.qualityReason || ''
+      formatTime(r.timestamp)
     ])
   })
 
