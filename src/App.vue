@@ -1,46 +1,112 @@
-<!-- src/App.vue -->
 <template>
-  <div>
-    <div style="padding: 20px; background: #f5f5f5;">
-      <!-- 手动定义的基础导航（如果你愿意也可以完全动态，但这里保留原有结构作为示例） -->
-      <router-link v-for="route in mainNavRoutes" :key="route.path" :to="route.path" style="margin-right: 20px; text-decoration: none;">
-        {{ route.meta?.title || route.name || route.path }}
-      </router-link>
-
-      <!-- 抽卡页面分组（可选） -->
-      <br />
-      <div style="margin-top:10px;">
-        <span style="margin-right:10px; color:#666">抽卡页面：</span>
-        <router-link v-for="route in drawRoutes" :key="route.path" :to="route.path" style="margin-right: 12px; text-decoration: none;">
-          {{ route.meta?.title || route.name || route.path }}
-        </router-link>
-      </div>
-    </div>
-
-    <router-view />
+  <div class="app-layout">
+    <TopNav ref="topNavRef" :style="{ height: navHeight + 'px' }" />
+    <!-- 可拖拽分隔条 -->
+    <div 
+      class="resize-handle"
+      @mousedown="startResize"
+    ></div>
+    <main class="main-content">
+      <router-view />
+    </main>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import TopNav from '@/components/TopNav.vue'
 
-const router = useRouter()
+const topNavRef = ref(null)
+const navHeight = ref(280) // 默认高度
+const MIN_HEIGHT = 120
+const MAX_HEIGHT = 500
+const STORAGE_KEY = 'top-nav-height'
 
-// 获取所有路由
-const allRoutes = router.options.routes
+// 读取保存的高度
+const savedHeight = localStorage.getItem(STORAGE_KEY)
+if (savedHeight) {
+  const h = parseInt(savedHeight, 10)
+  if (!isNaN(h) && h >= MIN_HEIGHT && h <= MAX_HEIGHT) {
+    navHeight.value = h
+  }
+}
 
-// 定义你想要在主导航显示的路由（根据 path 或 meta 筛选）
-const mainNavRoutes = computed(() => {
-  return allRoutes.filter(r => {
-    // 例如：只显示路径不以 /auto/draw 开头的自动路由 + 手动路由中你想显示的
-    // 这里简单演示：排除抽卡分组的路由（/auto/抽卡 开头），其余都显示在主导航
-    return !r.path.startsWith('/auto/抽卡') && r.path !== '/'
-  })
-})
+// 拖拽相关状态
+let isResizing = false
+let startY = 0
+let startHeight = 0
 
-// 抽卡分组路由
-const drawRoutes = computed(() => {
-  return allRoutes.filter(r => r.path.startsWith('/auto/抽卡'))
+const startResize = (e) => {
+  isResizing = true
+  startY = e.clientY
+  startHeight = navHeight.value
+  
+  document.addEventListener('mousemove', handleResize)
+  document.addEventListener('mouseup', stopResize)
+  document.body.style.cursor = 'row-resize'
+  document.body.style.userSelect = 'none'
+}
+
+const handleResize = (e) => {
+  if (!isResizing) return
+  const deltaY = e.clientY - startY
+  const newHeight = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, startHeight + deltaY))
+  navHeight.value = newHeight
+}
+
+const stopResize = () => {
+  if (isResizing) {
+    localStorage.setItem(STORAGE_KEY, navHeight.value)
+  }
+  isResizing = false
+  document.removeEventListener('mousemove', handleResize)
+  document.removeEventListener('mouseup', stopResize)
+  document.body.style.cursor = ''
+  document.body.style.userSelect = ''
+}
+
+onBeforeUnmount(() => {
+  // 清理全局事件
+  document.removeEventListener('mousemove', handleResize)
+  document.removeEventListener('mouseup', stopResize)
 })
 </script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body, #app {
+  height: 100%;
+  width: 100%;
+}
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+.resize-handle {
+  height: 6px;
+  background: transparent;
+  cursor: row-resize;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  position: relative;
+}
+.resize-handle:hover {
+  background: #409eff;
+}
+.resize-handle:active {
+  background: #66b1ff;
+}
+.main-content {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  background: #fff;
+}
+</style>

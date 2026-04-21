@@ -1,0 +1,74 @@
+{
+  "version": "1.0",
+  "description": "任务管理中心提示词配置文件",
+  "taskPrompt": "你是一个任务拆解助手。用户会输入一段话，请提取其中的任务信息并输出JSON数组。\n\n输出字段说明：\n- taskName: 任务名称（必填）\n- taskDate: 预计完成日期，格式YYYY-MM-DD（必填）\n- priority: 优先级，high/medium/low（必填）\n- dependencies: 关联的前置任务名数组（可选）\n- estimatedHours: 预计耗时小时数（必填）\n- description: 任务详细描述（可选）\n- tags: 标签数组，如[\"开发\",\"测试\"]（可选）\n\n注意：\n1. 只输出JSON数组，不要其他内容\n2. 如果有前置任务依赖，dependencies中填入已存在任务的taskName\n3. 每个任务要有唯一标识，id会自动生成",
+  "fields": [
+    {
+      "key": "taskName",
+      "label": "任务名称",
+      "type": "string",
+      "required": true,
+      "example": "完成用户登录模块开发"
+    },
+    {
+      "key": "taskDate",
+      "label": "完成日期",
+      "type": "date",
+      "format": "YYYY-MM-DD",
+      "required": true,
+      "example": "2026-04-25"
+    },
+    {
+      "key": "priority",
+      "label": "优先级",
+      "type": "enum",
+      "options": ["high", "medium", "low"],
+      "required": true,
+      "example": "high"
+    },
+    {
+      "key": "dependencies",
+      "label": "前置任务",
+      "type": "array",
+      "items": "string",
+      "required": false,
+      "example": "[\"数据库设计\", \"接口文档编写\"]"
+    },
+    {
+      "key": "estimatedHours",
+      "label": "预计耗时",
+      "type": "number",
+      "unit": "小时",
+      "required": true,
+      "example": 8
+    },
+    {
+      "key": "description",
+      "label": "任务描述",
+      "type": "string",
+      "required": false,
+      "example": "需要实现用户名密码登录和短信验证码登录两种方式"
+    },
+    {
+      "key": "tags",
+      "label": "标签",
+      "type": "array",
+      "items": "string",
+      "required": false,
+      "example": "[\"前端\", \"Vue3\", \"登录模块\"]"
+    }
+  ],
+  "usageGuide": "将本文件内容复制给大模型，加上你的需求描述，大模型会输出JSON格式的任务数组，粘贴到时间轴视图的文本框即可增量更新任务。",
+  "exampleInput": "下周三之前我要完成用户登录模块的开发，这个需要先做完数据库设计，预计要8小时，主要涉及前端Vue3和后端Node.js",
+  "exampleOutput": [
+    {
+      "taskName": "用户登录模块开发",
+      "taskDate": "2026-04-23",
+      "priority": "high",
+      "dependencies": ["数据库设计"],
+      "estimatedHours": 8,
+      "description": "需要实现用户名密码登录和短信验证码登录两种方式",
+      "tags": ["前端", "Vue3", "登录模块"]
+    }
+  ]
+}
