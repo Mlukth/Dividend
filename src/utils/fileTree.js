@@ -38,7 +38,9 @@ export function buildFileTree(modules) {
         routePath: encodedRoutePath,
         routeName,
         component: modules[path],
-        meta: { title: fileName, auto: true }
+        meta: { title: fileName, auto: true },
+        mtime: null,      // 预留，后续从 API 获取
+        size: null
       })
       continue
     }
@@ -65,7 +67,9 @@ export function buildFileTree(modules) {
           routePath: encodedRoutePath,
           routeName,
           component: modules[path],
-          meta: { title: fileName, auto: true }
+          meta: { title: fileName, auto: true },
+          mtime: null,
+          size: null
         })
       } else {
         let folder = currentLevel.find(item => item.type === 'folder' && item.name === part)
