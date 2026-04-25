@@ -20,6 +20,8 @@
     <main class="main-content">
       <router-view />
     </main>
+    <!-- 全局悬浮文档按钮（仅对「小工具研发部」目录生效） -->
+    <FloatingDocButton />
   </div>
 </template>
 
@@ -27,6 +29,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import TopNav from '@/components/TopNav.vue'
+import FloatingDocButton from '@/components/FloatingDocButton.vue'
 
 const DEFAULT_HEIGHT = 280   // 默认展开高度
 const MIN_HEIGHT = 40        // 折叠时的最小高度
