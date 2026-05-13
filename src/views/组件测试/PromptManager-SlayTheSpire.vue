@@ -91,7 +91,7 @@
     </div>
 
     <!-- 详情弹窗 -->
-    <el-dialog v-model="showDetail" :title="null" width="720px" top="12vh" :show-close="false" :close-on-click-modal="true" class="spire-dialog spire-detail-dialog" destroy-on-close>
+    <el-dialog v-model="showDetail" :title="null" width="720px" top="24vh" :show-close="false" :close-on-click-modal="true" class="spire-dialog spire-detail-dialog" destroy-on-close>
       <template v-if="selectedCard">
         <div class="detail-layout">
           <!-- 大卡 -->
@@ -542,6 +542,9 @@ async function reloadCards() {
   cursor: pointer; transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
   overflow: hidden; display: flex; flex-direction: column;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden;
 }
 .spire-card::before {
   content: ''; position: absolute; inset: 3px;
