@@ -1,0 +1,37 @@
+{
+  "url": "https://yourbana.com/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 76, "cssFiles": 5, "inlineStyleBlocks": 0 },
+  "designTokens": {
+    "colors": {
+      "designApproach": "意大利城市摄影项目。暗色/中性背景，让用户上传的照片成为主角。配色让位给内容",
+      "primaryBackground": "深灰/黑",
+      "primaryText": "#ffffff 或浅灰",
+      "accent": "极克制，可能用品牌色点缀"
+    },
+    "typography": {
+      "approach": "意大利语网站，字体有欧洲人文风格。正文清晰，标题有性格",
+      "notable": "lang='it-IT' — 多语言字体考量"
+    },
+    "spacing": {
+      "approach": "照片为主，间距服务于图片展示。可能是 masonry 或网格布局"
+    },
+    "borders": {
+      "approach": "极简 chrome，让照片内容主导"
+    },
+    "animation": {
+      "approach": "照片加载动画 + 滚动揭示。移动端优化（摄影项目意味着大量图片）",
+      "notable": "partecipativo — 参与式项目，用户生成内容为核心"
+    },
+    "layout": {
+      "approach": "摄影作品展示 — 大图 + 最小文字。移动优先（用户用手机拍照上传）"
+    }
+  },
+  "mood": ["photography", "editorial", "european", "community"],
+  "notablePatterns": [
+    "设计退后，让用户内容（照片）成为主角",
+    "参与式项目 — UGC 为核心的内容策略",
+    "多语言 + 本地化（意大利语）",
+    "摄影网站的克制美学"
+  ]
+}

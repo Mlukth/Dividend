@@ -1,0 +1,64 @@
+{
+  "url": "https://animejs.com/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 25, "cssFiles": 1, "inlineStyleBlocks": 0 },
+  "designTokens": {
+    "colors": {
+      "palette": {
+        "black": { "1": "#f6f4f2", "2": "#cccac9", "3": "#85837e", "4": "#706e69", "5": "#5b5855", "6": "#4a4745", "7": "#3b3937", "8": "#2c2a28" },
+        "red": { "1": "#ff4b4b", "2": "#d34343", "3": "#883534", "4": "#723130", "5": "#5d2d2c", "6": "#4b2a29", "7": "#3c2726", "8": "#2d2423" },
+        "coral": { "1": "#ff7d36", "2": "#d36b32", "3": "#884c2b", "4": "#724329" },
+        "orange": { "1": "#ffa828", "2": "#d38e27", "3": "#885f24" },
+        "yellow": { "1": "#ffcc2a", "2": "#d3aa29", "3": "#887025" },
+        "citrus": { "1": "#f9f640", "2": "#cfcc3a", "3": "#85842f" },
+        "lime": { "1": "#b7ff54", "2": "#9ad34a", "3": "#678838" },
+        "green": { "1": "#8dff55", "2": "#78d34b", "3": "#548839" },
+        "turquoise": { "1": "#00ffaa", "2": "#07d38f", "3": "#148760" },
+        "cyan": { "1": "#26f2d5", "2": "#26c9b1", "3": "#248273" }
+      },
+      "primaryBackground": "#252423",
+      "secondaryBackground": "#2c2a28",
+      "primaryText": "#f6f4f2",
+      "secondaryText": "#85837e",
+      "accent": "#ff4b4b",
+      "designApproach": "暖黑底 + 8级色阶体系，每个色相从亮到暗有完整梯度，强调色用小面积高饱和点缀"
+    },
+    "typography": {
+      "primaryFont": "系统字体栈 (system-ui, -apple-system)",
+      "scale": ["text-xxs", "text-xs", "text-sm", "text-base", "text-lg", "text-xl", "text-xxl"],
+      "weights": [400, 500, 600, 700],
+      "approach": "不依赖 Web 字体，靠字号对比建立层次。text-xxl 用大号标题制造冲击力"
+    },
+    "spacing": {
+      "unit": "未知（rem 体系）",
+      "approach": "用 <div class='section-spacer'> 创建呼吸感，而非统一 padding。section 间留白充裕",
+      "notable": "layout-container + text-layout 双层容器控制内容宽度和文字排版宽度"
+    },
+    "borders": {
+      "radius": "极小或没有",
+      "style": "几乎无边框，用颜色对比区分区域",
+      "approach": "极简 chrome，减少视觉噪音"
+    },
+    "shadows": {
+      "approach": "无明显阴影使用，依靠颜色层次建立深度"
+    },
+    "animation": {
+      "approach": "Scroll-driven sections，每个 section 独立进场动画。使用 JS 动画引擎（anime.js v4）",
+      "style": "章节式滚动叙事，动画精确控制（per-property parameters, keyframes, built-in easings）",
+      "easing": "内置 easing 库：linear, easeInQuad, easeOutQuad, easeInOutQuad 等完整系列"
+    },
+    "layout": {
+      "maxWidth": "受限内容宽度",
+      "approach": "单列纵向滚动，section 堆叠，每 section 全屏高度。导航固定顶部"
+    }
+  },
+  "mood": ["dark", "minimalist", "animation-polished", "developer-tool"],
+  "notablePatterns": [
+    "CSS 自定义属性设计 token 体系（8级色阶）",
+    "section-spacer 占位元素控制节奏",
+    "全屏 section 滚动 + 固定导航",
+    "npm install 命令直接展示在 hero 区域",
+    "文档类网站用 60fps 动画引擎做交互",
+    "每个 feature section 配独立 demo 动画"
+  ]
+}

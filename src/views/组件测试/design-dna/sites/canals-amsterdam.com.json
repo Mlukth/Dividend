@@ -1,0 +1,53 @@
+{
+  "url": "https://canals-amsterdam.com/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 6, "cssFiles": 2, "inlineStyleBlocks": 1 },
+  "designTokens": {
+    "colors": {
+      "primaryBackground": "#000000",
+      "secondaryBackground": "#ffffff",
+      "primaryText": "#000000",
+      "accent": "#f00000",
+      "designApproach": "极简双色：黑色背景 + 白色/红色文字。用最少的颜色制造最大冲击力。theme-color meta 设为 #fff"
+    },
+    "typography": {
+      "customFonts": ["Caslon Graphique", "Graphik", "Graphik Italic", "Grifinito", "Maelstrom Sans", "Coign"],
+      "primaryFont": "Graphik (正文)",
+      "headingFont": "Maelstrom Sans (标题)，letter-spacing: 0.04em",
+      "detailFont": "Grifinito (细节文本)",
+      "approach": "5套定制字体混排，每套字体有明确职责。标题用力量感字体，正文用中性无衬线。letter-spacing 精确到 0.04em/-0.03em"
+    },
+    "spacing": {
+      "approach": "fixed 布局，所有元素用 transform translate3d 精确控制位置。无传统盒模型间距",
+      "notable": "102% translate 用于隐藏/揭示动画的初始状态"
+    },
+    "borders": {
+      "radius": "无",
+      "style": "无边框、无圆角、无阴影 — 纯排版驱动",
+      "approach": "完全依赖字体和颜色建立视觉层次"
+    },
+    "shadows": {
+      "approach": "text-shadow: none（显式设置 ::selection 无阴影）"
+    },
+    "animation": {
+      "customEasing": "cubic-bezier(.23, 1, .32, 1)",
+      "duration": "1000ms (1秒过渡)",
+      "style": "文字从下方滑入揭示（translate3d(0, 102%, 0) → 0）。hover 时下划线从左侧滑入。所有动画用 JS 控制",
+      "approach": "每一个动画参数都是精确的设计决策，不是默认值。transform + will-change + RAF 性能优先"
+    },
+    "layout": {
+      "approach": "#app fixed 全屏，overflow: hidden。Canvas 式布局，所有元素绝对定位。移动端有横屏提示",
+      "notable": "pointer-events: none 用于装饰层，user-select: none 防误选"
+    }
+  },
+  "mood": ["editorial", "dark", "minimalist", "typography-first", "art-direction"],
+  "notablePatterns": [
+    "5套定制字体混排 — 字体即设计",
+    "102% translate 隐藏 → 0 揭示的动画范式",
+    "cubic-bezier(.23, 1, .32, 1) — 非标准缓动曲线",
+    "::selection 样式都精心设计（黑底黑字 → 选择不可见）",
+    "零圆角、零阴影、零边框 — 极致的排版驱动设计",
+    "Canvas 思维做 DOM — fixed + transform + will-change",
+    "横屏检测 + 提示（非响应式，而是艺术方向选择）"
+  ]
+}

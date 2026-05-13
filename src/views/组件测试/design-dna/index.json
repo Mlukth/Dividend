@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-05-07T00:00:00.000Z",
+  "description": "Design DNA 提取库 — 从欣赏的网站提取设计 token，用于光伏监控系统 UI 重设计参考",
+  "sites": [
+    { "id": "animejs.com", "file": "animejs.com.json", "mood": ["dark", "minimalist", "animation-polished"], "tags": ["documentation", "dark-theme", "design-tokens", "scroll-animation"] },
+    { "id": "canals-amsterdam.com", "file": "canals-amsterdam.com.json", "mood": ["editorial", "typography-first", "art-direction"], "tags": ["editorial", "custom-fonts", "zero-chrome", "canvas-layout"] },
+    { "id": "niccolomiranda.com", "file": "niccolomiranda.com.json", "mood": ["editorial", "print-inspired", "portfolio"], "tags": ["portfolio", "print-aesthetic", "scroll-reveal", "webflow"] },
+    { "id": "fountainofyouth.gold", "file": "fountainofyouth.gold.json", "mood": ["immersive", "storytelling", "golden-aesthetic"], "tags": ["brand", "cursor-interaction", "immersive", "webflow"] },
+    { "id": "2019.makemepulse.com", "file": "2019.makemepulse.com.json", "mood": ["webgl", "interactive-experience", "experimental"], "tags": ["webgl", "3d", "canvas", "interactive-story"] },
+    { "id": "site.weblab.is", "file": "site.weblab.is.json", "mood": ["academic", "clean", "functional"], "tags": ["education", "nextjs", "modern", "responsive"] },
+    { "id": "dixonandmoe.com", "file": "dixonandmoe.com.json", "mood": ["documentation", "bold-typography"], "tags": ["documentation", "parallax", "bold-fonts", "bootstrap"] },
+    { "id": "yourbana.com", "file": "yourbana.com.json", "mood": ["photography", "european", "community"], "tags": ["photography", "ugc", "italian", "mobile-first"] },
+    { "id": "ignoredone.space", "file": "ignoredone.space.json", "mood": ["light-mode", "blog", "chinese-typography"], "tags": ["blog", "chinese", "light-mode", "wordpress"] },
+    { "id": "nanfu.global", "file": "nanfu.global.json", "mood": ["corporate", "brand", "enterprise"], "tags": ["corporate", "brand", "chinese", "global"] },
+    { "id": "lensark.com", "file": "lensark.com.json", "mood": ["photography", "portfolio", "serif-elegance"], "tags": ["portfolio", "photography", "chinese", "serif"] }
+  ]
+}

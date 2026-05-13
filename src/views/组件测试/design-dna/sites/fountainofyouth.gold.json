@@ -1,0 +1,38 @@
+{
+  "url": "https://www.fountainofyouth.gold/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 219, "cssFiles": 1, "inlineStyleBlocks": 1 },
+  "designTokens": {
+    "colors": {
+      "primaryBackground": "金色/暖色调渐变",
+      "accent": "金色 (#d4a843 或类似)",
+      "designApproach": "金色神庙美学 — 温暖、奢华、叙事感。深棕/暗金渐变底，亮金强调。Webflow 构建",
+      "mood": "immersive storytelling"
+    },
+    "typography": {
+      "approach": "定制衬体标题 + 无衬线正文。标题字体有宗教/神庙感。字号对比大，标题占主导",
+      "notable": "Webflow 定制字体，可能包含 display font"
+    },
+    "spacing": {
+      "approach": "全屏 section，大量留白用于营造沉浸感"
+    },
+    "borders": {
+      "approach": "柔和圆角，可能用于按钮和容器。比极简风多一些装饰元素"
+    },
+    "animation": {
+      "style": "cursor-follow 交互 — 光标移动引导视觉焦点。'the cursor will guide you on your journey' — 光标是叙事的引导者",
+      "approach": "Webflow IX + 自定义 JS。滚动 + 光标双重驱动的沉浸式体验。可能有三.js 或 canvas 元素"
+    },
+    "layout": {
+      "approach": "全屏 section 滚动，每个 section 是一个叙事场景。固定元素 + 滚动内容的混合布局"
+    }
+  },
+  "mood": ["immersive", "storytelling", "golden-aesthetic", "interactive"],
+  "notablePatterns": [
+    "光标驱动叙事 — 'cursor will guide you'",
+    "金色神庙品牌美学的一致性",
+    "全屏沉浸式 section 场景切换",
+    "商业品牌网站用艺术化手法呈现",
+    "跟随猴子的引导 → 游戏化导航"
+  ]
+}

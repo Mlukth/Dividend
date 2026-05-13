@@ -1,0 +1,41 @@
+{
+  "url": "https://www.niccolomiranda.com/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 66, "cssFiles": 1, "inlineStyleBlocks": 1 },
+  "designTokens": {
+    "colors": {
+      "designApproach": "纸质感 — 米白/浅灰底，黑色文字，模仿印刷品美学。Webflow 构建，色彩极度克制",
+      "primaryBackground": "#f5f5f0 (推测纸质米白)",
+      "primaryText": "#111111",
+      "accent": "极少量使用，可能仅用于链接 hover"
+    },
+    "typography": {
+      "approach": "Miranda Paper Portfolio — 纸媒排版美学移植到网页。字间距、段间距、对齐方式都模仿印刷品",
+      "notable": "标题极大，正文极小，对比强烈。可能使用 Canela 或类似衬线体"
+    },
+    "spacing": {
+      "approach": "印刷品式留白 — 段落间距大，页边距宽，模仿杂志排版。Webflow 的 w-container 控制内容宽度"
+    },
+    "borders": {
+      "approach": "无边框，纸媒风格，用留白而非线条分割内容"
+    },
+    "shadows": {
+      "approach": "无阴影 — 平面印刷美学"
+    },
+    "animation": {
+      "approach": "滚动驱动的元素揭示。Webflow IX (interactions) — 元素从下方淡入，translate3d 滑入。可能使用 Lenis 平滑滚动",
+      "style": "淡入 + 轻微上移（translate3d(0, 30px, 0) → 0, opacity 0 → 1）"
+    },
+    "layout": {
+      "approach": "单列滚动，大标题横跨全宽，正文窄栏。Webflow 网格系统。多为单页式设计"
+    }
+  },
+  "mood": ["editorial", "print-inspired", "minimalist", "portfolio"],
+  "notablePatterns": [
+    "印刷品排版美学 → 网页",
+    "滚动驱动淡入揭示（不是花哨动画）",
+    "大标题 + 窄正文栏的经典杂志布局",
+    "Webflow 构建，但打破 Webflow 模板感",
+    "设计+开发双重身份的 portfolio"
+  ]
+}

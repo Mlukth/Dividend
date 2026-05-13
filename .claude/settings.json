@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Read(D:/**)",
+      "Write(D:/**)",
+      "Edit(D:/**)"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(git reset --hard*)",
+      "Bash(rm -rf*)",
+      "Bash(npm install -g*)",
+      "Write(C:/**)",
+      "Edit(C:/**)"
+    ]
+  }
+}

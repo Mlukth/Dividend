@@ -1,0 +1,41 @@
+{
+  "url": "https://dixonandmoe.com/rellax/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 35, "cssFiles": 2, "inlineStyleBlocks": 0 },
+  "designTokens": {
+    "colors": {
+      "designApproach": "浅色文档站 + 橙色强调。Bootstrap 定制皮肤",
+      "primaryBackground": "#ffffff",
+      "primaryText": "#333333",
+      "accent": "orange (#ff8c00 或 #f0ad4e)",
+      "codeBackground": "#f5f5f5 (代码块)"
+    },
+    "typography": {
+      "primaryFont": "Source Sans Pro",
+      "weights": [600, 700, 900],
+      "approach": "只用粗体变体！600/700/900 三个粗体权重，不用常规 400。这让文字有力量感和现代感",
+      "notable": "只用粗体字重的设计决策非常罕见且大胆"
+    },
+    "spacing": {
+      "approach": "Bootstrap 间距体系，文档站风格。代码示例有独立背景块"
+    },
+    "borders": {
+      "approach": "Bootstrap 默认 — 小圆角（4-6px），浅灰边框"
+    },
+    "animation": {
+      "style": "Parallax 视差滚动库的演示页本身就有大量视差 demo",
+      "approach": "rellax.js — 轻量纯 JS parallax 库。滚动驱动的 translate 变换。subtle animations for websites"
+    },
+    "layout": {
+      "approach": "Bootstrap 容器 + 文档站双栏布局。network-card 展示关联项目"
+    }
+  },
+  "mood": ["documentation", "bold-typography", "modern-web"],
+  "notablePatterns": [
+    "只用 Source Sans Pro 的粗体变体（600/700/900）",
+    "橙色强调色在浅色背景上非常醒目",
+    "轻量 parallax — 'subtle animations'",
+    "开源库文档也可以设计得很好",
+    "network-card 组件展示关联项目（交叉推广）"
+  ]
+}

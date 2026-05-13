@@ -1,0 +1,36 @@
+{
+  "url": "https://site.weblab.is/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 50, "cssFiles": 5, "inlineStyleBlocks": 0 },
+  "designTokens": {
+    "colors": {
+      "designApproach": "MIT 课程网站，Next.js 构建。明亮、现代、学术感但不枯燥。蓝白配色 + FontAwesome 图标",
+      "primaryBackground": "#ffffff (推测)",
+      "accent": "蓝色系 (MIT 风格)",
+      "mood": "clean academic modern"
+    },
+    "typography": {
+      "approach": "Next.js 默认字体栈 + FontAwesome 图标字体。字号层次清晰（标题→正文→小字）",
+      "notable": "用 FontAwesome 图标增强视觉层次，减少纯文字密度"
+    },
+    "spacing": {
+      "approach": "Tailwind/Next.js 响应式间距体系。section 间留白充裕"
+    },
+    "borders": {
+      "approach": "现代圆角卡片（8-12px），柔和阴影，Element/Next.js 风格"
+    },
+    "animation": {
+      "approach": "Next.js 页面过渡 + 滚动淡入。功能性动画，不花哨"
+    },
+    "layout": {
+      "approach": "响应式栅格，内容优先。学生竞赛网站，信息架构清晰"
+    }
+  },
+  "mood": ["academic", "clean", "modern-web", "functional"],
+  "notablePatterns": [
+    "学术网站也可以很现代",
+    "FontAwesome 图标作为视觉元素",
+    "Next.js App Router + 静态生成",
+    "学生竞赛 = 需要清晰的信息架构"
+  ]
+}

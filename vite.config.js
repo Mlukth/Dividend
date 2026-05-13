@@ -148,6 +148,35 @@ function fileMovePlugin() {
         res.statusCode = 400
         res.end('unknown action')
       })
+
+      // 任务卡片双向同步
+      const TASK_SYNC_FILE = path.resolve(__dirname, 'public', 'task-sync.json')
+      server.middlewares.use('/api/task-sync', async (req, res) => {
+        res.setHeader('Content-Type', 'application/json')
+        if (req.method === 'GET') {
+          try {
+            const data = fs.existsSync(TASK_SYNC_FILE) ? fs.readFileSync(TASK_SYNC_FILE, 'utf-8') : '[]'
+            res.end(data)
+          } catch (e) { res.statusCode = 500; res.end(JSON.stringify({ error: e.message })) }
+        } else if (req.method === 'POST') {
+          const body = await parseBody(req)
+          try {
+            const existing = fs.existsSync(TASK_SYNC_FILE) ? JSON.parse(fs.readFileSync(TASK_SYNC_FILE, 'utf-8')) : []
+            const incoming = body.tasks || body
+            if (!Array.isArray(incoming)) {
+              res.end(JSON.stringify({ success: true, count: existing.length }))
+              return
+            }
+            // 按id真合并：同id覆盖更新，新id追加，文件独有不丢失
+            const byId = new Map()
+            for (const t of existing) byId.set(t.id, t)
+            for (const t of incoming) byId.set(t.id, t)
+            const merged = Array.from(byId.values())
+            fs.writeFileSync(TASK_SYNC_FILE, JSON.stringify(merged, null, 2), 'utf-8')
+            res.end(JSON.stringify({ success: true, count: merged.length }))
+          } catch (e) { res.statusCode = 500; res.end(JSON.stringify({ error: e.message })) }
+        } else { res.statusCode = 405; res.end() }
+      })
     }
   }
 }

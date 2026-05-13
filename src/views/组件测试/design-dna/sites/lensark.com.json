@@ -1,0 +1,37 @@
+{
+  "url": "https://lensark.com/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 337, "cssFiles": 3, "inlineStyleBlocks": 1 },
+  "designTokens": {
+    "colors": {
+      "primaryBackground": "#ffffff",
+      "primaryText": "#333333",
+      "designApproach": "个人摄影/设计作品站。亮色模式，LightGallery 灯箱。大量图片内容，设计服务于展示",
+      "notable": "color-scheme: light 声明"
+    },
+    "typography": {
+      "primaryFont": "Noto Serif SC (思源宋体)",
+      "approach": "宋体为中文摄影站增添文艺感和质感。宋体的优雅衬线提升作品集调性",
+      "notable": "Noto Serif SC 按 unicode-range 分段加载，性能优化"
+    },
+    "spacing": {
+      "approach": "摄影作品集 — 图片网格为主，间距服务于视觉节奏"
+    },
+    "borders": {
+      "approach": "最小化 — 让照片内容主导。可能图片有细微边框"
+    },
+    "animation": {
+      "approach": "LightGallery 灯箱过渡动画。hover 效果。不抢照片风头"
+    },
+    "layout": {
+      "approach": "摄影作品集 — masonry 或网格布局，lightgallery.js 灯箱查看大图"
+    }
+  },
+  "mood": ["photography", "portfolio", "chinese-typography", "serif-elegance"],
+  "notablePatterns": [
+    "思源宋体提升中文作品集质感",
+    "unicode-range 分段加载优化中文字体性能",
+    "LightGallery — 经典灯箱在 2024 年仍然好用",
+    "摄影作品集的设计哲学：设计做减法，让作品说话"
+  ]
+}

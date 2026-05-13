@@ -1,0 +1,36 @@
+{
+  "url": "https://2019.makemepulse.com/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 2, "cssFiles": 1, "inlineStyleBlocks": 0 },
+  "designTokens": {
+    "colors": {
+      "designApproach": "WebGL Canvas 渲染，颜色由 JS 动态控制。HTML 层极简（仅容器元素）。深色 WebGL 场景为主",
+      "primaryBackground": "#000000 (canvas 背景)"
+    },
+    "typography": {
+      "approach": "HTML 层面几乎无文字 — 所有视觉内容在 Canvas 中渲染。标题 'Nomadic Tribe' 是 3D WebGL 场景的一部分"
+    },
+    "spacing": {
+      "approach": "全屏 Canvas，无传统 DOM 布局。viewport-fit: cover, user-scalable=no"
+    },
+    "borders": {
+      "approach": "N/A — 无 DOM UI 元素"
+    },
+    "animation": {
+      "style": "WebGL 3D 交互动画 — 'Nomadic Tribe' 是一个交互式新年故事。用户可以在 3D 场景中探索",
+      "approach": "Canvas + WebGL + JS。非传统网页动画 — 这是一个交互式 3D 体验，不是'网站'",
+      "tech": "可能使用 Three.js 或自定义 WebGL 引擎"
+    },
+    "layout": {
+      "approach": "全屏 Canvas，viewport-fit: cover, minimal-ui。移动端的极致适配"
+    }
+  },
+  "mood": ["webgl", "interactive-experience", "3d", "experimental"],
+  "notablePatterns": [
+    "网页即 3D 体验 — 不区分'内容'和'动画'",
+    "HTML 只有 2KB，所有内容在 Canvas",
+    "viewport-fit: cover + minimal-ui — 移动端沉浸",
+    "新年互动故事 — 网页可以是非线性叙事",
+    "2019 年的作品至今仍是行业基准"
+  ]
+}

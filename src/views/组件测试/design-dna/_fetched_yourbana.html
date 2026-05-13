@@ -1,0 +1,1300 @@
+ <!DOCTYPE html>
+<html lang="it-IT">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="content-language" content="lang="it-IT"">
+	<link rel="canonical" href="https://yourbana.com">
+	<!-- Info-->
+	<title>Yourbana — Una fotografia in movimento della città</title>
+	<meta name="description" content="Yourbana è un progetto partecipativo che racconta il movimento della città attraverso le immagini che i suoi protagonisti producono ogni giorno con gli smartphone.">
+	<meta property="og:image" content="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/social/og-1200x630.jpg">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:locale" content="it_IT">
+	<meta property="og:title" content="Yourbana">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://yourbana.com">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:description" content="Una fotografia in movimento della città">
+	<meta name="twitter:image" content="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/social/og-600x330.jpg">
+	<meta name="twitter:site" content="@">
+	<meta name="twitter:title" content="Yourbana">
+	<meta name="twitter:url" content="https://yourbana.com>">
+	<!-- Icons -->
+	<link rel="icon" type="image/png" sizes="96x96" href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/icons/favicon-96x96.png" />
+	<link rel="icon" type="image/svg+xml"href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/icons/favicon.svg" />
+	<link rel="shortcut icon" href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/icons/favicon.ico">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/icons/apple-touch-icon.png" />
+	<link rel="manifest" href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/icons/site.webmanifest">
+	<meta name="apple-mobile-web-app-title" content="Yourbana">
+	<meta name="application-name" content="Yourbana">
+	<meta name="theme-color" content="#000000">
+	<!-- Mobile -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<!-- Preload -->
+	<link rel="preload" href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/flak-regular.woff2" as="font" type="font/woff2" crossorigin="true">
+	
+	<style>
+		:where(:not(html,iframe,canvas,img,svg,video):not(svg *,symbol *)) {
+			all: unset;
+			display: revert;
+		}
+		
+		html {
+			-webkit-tap-highlight-color: transparent;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none
+		}
+		
+		body,html {
+			overscroll-behavior: none
+		}
+		
+		body::-webkit-scrollbar,
+		html::-webkit-scrollbar {
+			display: none;
+		}
+		
+		@font-face {
+			font-family: 'Flak';
+			font-style: normal;
+			font-weight: 400;
+			font-display: swap;
+			src: url(https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/flak-regular.woff) format('woff'),
+				 url(https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/flak-regular.woff2) format('woff2');
+		}
+		
+		@font-face {
+			font-family: 'Mark Pro';
+			font-style: normal;
+			font-weight: 400;
+			font-display: swap;
+			src: url(https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/markoffcformc.woff) format('woff'),
+				 url(https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/markoffcformc.woff2) format('woff2');
+		}
+		
+		@font-face {
+			font-family: 'Mark Pro';
+			font-style: normal;
+			font-weight: 500;
+			font-display: swap;
+			src: url(https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/markoffcformc-medium.woff) format('woff'),
+				 url(https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/markoffcformc-medium.woff2) format('woff2');
+		}
+		
+		@font-face {
+			font-family: 'Mark Pro';
+			font-style: normal;
+			font-weight: 700;
+			font-display: swap;
+			src: url(https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/markoffcformc-bold.woff) format('woff'),
+				 url(https://yourbana.com/wp-content/themes/wp-blank-special/assets/fonts/markoffcformc-bold.woff2) format('woff2');
+		}
+		
+	</style>
+			<script type="text/javascript" src="https://yourbana.com/wp-content/themes/wp-blank-special/js/bundle.js"></script>
+    <script>
+    document.addEventListener( 'DOMContentLoaded', function () {
+	//preload remove width css class frst
+		var preLoadWeb=document.createElement('div');preLoadWeb.setAttribute('id','page__preload');document.body.appendChild(preLoadWeb);
+		var imagenLoad=document.createElement('div');imagenLoad.setAttribute('class','preload__wrp');preLoadWeb.appendChild(imagenLoad);
+		var preload=document.getElementById('page__preload');
+		var imagen=document.querySelector('.preload__wrp');
+		imagen.innerHTML = '<div class="loader"><div class="prcnt-loader"></div></div>';
+        		loader();
+		}, false );
+
+		function loader() {
+			var nums=[0];
+		  number = Math.floor((Math.random() * 100) + 1);
+			var n=(number%2)?5:4;
+
+				for(i=1;i<=n;i++){
+					let pos=nums.length-1;
+					let min=(nums[pos]<(100/n)*(i-1))?(100/n)*(i-1):nums[pos];
+					let max= (100/n)*i;
+						var nm=Math.floor(Math.random() * (max - min) + min);
+					nums.push(nm);
+				}
+				var counter=0;
+				setTimeout(function(){ setNum(); console.log(nums)},50);
+				function setNum() {
+
+					document.querySelector('.prcnt-loader').innerHTML=nums[counter];
+						counter++;
+					if (counter<nums.length && !document.body.classList.contains('ImagesLoaded') && !document.body.classList.contains('cloned_ready')) {
+						setTimeout(function(){ setNum(); },250);
+					}else{
+						if(counter<nums.length){
+							setTimeout(function(){ setNum(); },25);
+						}else{
+						document.body.classList.add('endload');
+					}
+					}
+
+				}
+
+
+		}
+    </script>
+    <style>
+		
+    	#page__preload {
+        	height: 100vh;
+        	position: fixed;
+        	width: 100%;
+        	z-index: 1000;
+			clip-path: inset(0 0 0 0);
+        	top: 0;
+        	left: 0;
+		}
+	
+		.preload__wrp {
+			height: 100%;
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+		}
+	
+		.loader {
+			color: var(--color-white);
+			overflow: hidden;
+			position: absolute;
+			font-family: 'Flak';
+			font-weight: 400;
+			line-height: 1;
+		}
+	
+		.preload--out .prcnt-loader {
+			transition: transform 1.2s var(--mask-handle);
+		}
+	
+		.preload--out #page__preload {
+			pointer-events: none;
+		}
+		
+	</style>
+		<style>
+	
+		.loader {
+			left: 4.762vh;
+			bottom: 4.762vh;
+			font-size: 16.2vh;
+			height: calc(16.2vh * 0.64);
+		}
+		
+		.prcnt-loader {
+			margin-top: -1.7vh;
+		}
+		
+		.preload--out .prcnt-loader {
+			transform: translate3d(0, calc(-16.2vh * 0.64 - 2px), 0);
+		}
+		
+		.windows .prcnt-loader {
+			margin-top: -3.45vh;
+		}
+		
+	</style>
+	    	<script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+
+			<link rel="stylesheet" href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/css/variables.css">
+	<link rel="stylesheet" href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/css/base.css">
+	<link rel="stylesheet" href="https://yourbana.com/wp-content/themes/wp-blank-special/assets/css/main.css">
+	    <meta name='robots' content='max-image-preview:large' />
+<link rel="alternate" href="https://yourbana.com/" hreflang="it" />
+<link rel="alternate" href="https://yourbana.com/en/" hreflang="en" />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://yourbana.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fyourbana.com%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://yourbana.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fyourbana.com%2F&#038;format=xml" />
+<style id='wp-img-auto-sizes-contain-inline-css' type='text/css'>
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<link rel='stylesheet' id='my-css-style-css' href='https://yourbana.com/wp-content/themes/wp-blank-special/style.css?ver=6.9.4' type='text/css' media='all' />
+<link rel="https://api.w.org/" href="https://yourbana.com/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://yourbana.com/wp-json/wp/v2/pages/5" /><link rel="canonical" href="https://yourbana.com/" />
+<link rel='shortlink' href='https://yourbana.com/' />
+<style id='global-styles-inline-css' type='text/css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+</head><body class="home  ">
+	<header class="page__header">
+		<div class="header__menu">
+					<div class="grid__trigger">
+				<div class="grid__trigger__inner"></div>
+			</div>
+							<div class="header__btn header__menu__item flak">
+				<span class="header__btn__inner">
+					Partecipa				</span>
+			</div>
+				<div class="header__navtrigger">
+			<div class="nav__line"></div>
+			<div class="nav__line"></div>
+			<div class="nav__line"></div>
+		</div>
+	</div>
+</header>
+<div class="percent__scrolled header__menu__item flak">
+	<span class="percent">00%</span>
+</div>
+<div class="page__menu">
+	<div class="menu__inner">
+		<div class="menu__header">
+			<div class="menu__header__inner">
+				<svg class="yourbana__iso" viewBox="0 0 409 760">
+					<polygon id="pol--1" points="0,760 0,559.3 0,0 166.5,0 409,0 409,760"/>
+					<polygon id="pol--2" points="409,0 409,0 242.5,0 242.5,0 409,0"/>
+				</svg>
+			</div>
+		</div>
+		<div class="menu__content">
+			<div class="menu__nav subgrid">
+				<ul class="main__menu subgrid">
+					<li class="main__menu__item flak" data-step="1">
+						<span class="menu__item__group">
+							<span class="mask">
+								<span class="menu__item__index">1</span>
+							</span>
+							<span class="mask">
+								<span class="menu__item__title"> Cos’è Yourbana</span>
+							</span>
+						</span>
+					</li>
+					<li class="main__menu__item flak" data-step="2">
+						<span class="menu__item__group">
+							<span class="mask">
+								<span class="menu__item__index">2</span>
+							</span>
+							<span class="mask">
+								<span class="menu__item__title">Come&nbsp;funziona</span>
+							</span>
+						</span>
+					</li>
+					<li class="main__menu__item flak" data-step="3">
+						<span class="menu__item__group">
+							<span class="mask">
+								<span class="menu__item__index">3</span>
+							</span>
+							<span class="mask">
+								<span class="menu__item__title">Cosa&nbsp;filmare</span>
+							</span>
+						</span>
+					</li>
+					<li class="main__menu__item flak" data-step="4">
+						<span class="menu__item__group">
+							<span class="mask">
+								<span class="menu__item__index">4</span>
+							</span>
+							<span class="mask">
+								<span class="menu__item__title"> Partecipa</span>
+							</span>
+						</span>
+					</li>
+					<li class="main__menu__item flak" data-step="5">
+						<span class="menu__item__group">
+							<span class="mask">
+								<span class="menu__item__index">5</span>
+							</span>
+							<span class="mask">
+								<span class="menu__item__title"> Crediti</span>
+							</span>
+						</span>
+					</li>
+				</ul>
+			</div>
+			<div class="menu__bottom text--s">
+				<div class="menu__langs">
+					<a href="/" class="current__lang lang__item link--underline">IT</a>
+					<div class="lang__divider">/</div>
+					<a href="/en" class=" lang__item link--underline">EN</a>
+				</div>
+				<div class="menu__footer">
+					<div class="menu__social">
+													<a href="https://www.instagram.com/yourbana_roma25/" target="_blank" class="social__link link--underline">Instagram</a>
+																			<a href="https://www.tiktok.com/@yourbana.roma.25" target="_blank" class="social__link link--underline">TikTok</a>
+																							</div>
+					<div class="menu__time">
+						<div class="time__icon">
+							<svg class="global" viewBox="0 0 20 20">
+								<path d="M10,20C4.5,20,0,15.5,0,10C0,4.5,4.5,0,10,0c5.5,0,10,4.5,10,10C20,15.5,15.5,20,10,20z M10,1c-5,0-9,4-9,9c0,5,4,9,9,9
+									c5,0,9-4,9-9C19,5,15,1,10,1z"/>
+								<rect x="1" y="6.3" width="17.9" height="1"/>
+								<rect x="1" y="12.7" width="17.9" height="1"/>
+							</svg>
+							<div class="g-spinner"></div>
+						</div>
+						<div class="current__time">
+							<span>Roma</span>
+							<span class="time"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menu__close">
+		<div class="close__line"></div>
+		<div class="close__line"></div>
+	</div>
+</div>
+	<div class="scroll__container" data-scroll-container>
+		<section id="section__hero" class="h__section section--black">
+	<div class="section__inner">
+		<div class="hero__main">	
+			<div class="layout__grid">
+				<div class="hero__top subgrid">
+					<h1 class="hero__title subgrid">
+						<span class="visually--hidden">Yourbana Roma 25</span>
+						<span class="title__line title__line--1 mask">
+							<span class="title__inner">
+								<span class="hero__letter hero__letter--y">
+									<svg class="hero__yourbana--y" viewBox="0 0 224.3 400.5">
+										<polygon id="yourbana--y-1" points="0,399.2 0,293.9 0,0.5 114,0.5 214.3,293.9 214.3,399.2"/>
+										<polygon id="yourbana--y-2" points="214.3,293.9 114,0.5 127.1,0.5 214.3,0.5"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--o">
+									<svg class="hero__yourbana--o" viewBox="0 0 196.2 400.5">
+										<polygon id="yourbana--o-1" points="0,399.8 0,358.7 0,0.5 39.3,0.5 78.5,0.5 78.5,399.8"/>
+										<polygon id="yourbana--o-2" points="171.3,399.8 77.5,399.8 77.5,0.5 132.1,0.5 171.3,0.5 171.3,358.7"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--u">
+									<svg class="hero__yourbana--u" viewBox="0 0 196.2 400.5">
+										<polygon id="yourbana--u-1" points="0,399.8 0,358.7 0,0.5 78.5,0.5 78.5,399.8"/>
+										<polygon id="yourbana--u-2" points="171.3,399.8 77.5,399.8 77.5,0.5 171.3,0.5 171.3,358.7"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--r">
+									<svg class="hero__yourbana--r" viewBox="0 0 193.8 400.5">
+										<polygon id="yourbana--r-1" points="0,0.5 78.5,0.5 78.5,399.9 0,399.9 0,399.9"/>
+										<polygon id="yourbana--r-2" points="171.3,200.5 171.3,231.6 171.3,400.5 132.1,400.5 77.5,399.9 77.5,0.5 132.1,0.5 171.3,0.5 171.3,169.9"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--b">
+									<svg class="hero__yourbana--b" viewBox="0 0 175.4 400.5">
+										<polygon id="yourbana--b-1" points="0,0.5 78.5,0.5 78.5,399.3 0,399.3 0,399.3"/>
+										<polygon id="yourbana--b-2" points="170.1,399.2 77.5,399.2 77.5,0.5 170.1,0.5 170.1,41 170.1,169.3 170.1,199.2 170.1,230.4 170.1,358.1"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--a1">
+									<svg class="hero__yourbana--a1" viewBox="0 0 200.6 400.5">
+										<polygon id="yourbana--a1-1" points="78.5,399.2 0,399.2 0,0.5 78.5,399.2"/>
+										<polygon id="yourbana--a1-2" points="77.5,399.2 0,0.5 193.1,0.5 193.1,399.2"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--n">
+									<svg class="hero__yourbana--n" viewBox="0 0 192.5 400.5">
+										<polygon id="yourbana--n-1" points="78.5,399.8 0,399.8 0.6,0.5 79.1,399.8"/>
+										<polygon id="yourbana--n-2" points="79.1,399.8 0.6,0.5 79.8,0.5 183.8,399.8"/>
+										<polygon id="yourbana--n-3" points="183.8,399.8 79.8,0.5 79.8,0.5 185,0.5"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--a2">
+									<svg class="hero__yourbana--a2" viewBox="0 0 193.1 400.5">
+										<polygon id="yourbana--a2-1" points="78.5,399.2 0,399.2 0,0.5 78.5,399.2"/>
+										<polygon id="yourbana--a2-2" points="77.5,399.2 0,0.5 193.1,0.5 193.1,399.2"/>
+									</svg>
+								</span>
+							</span>
+						</span>
+						<span class="title__line title__line--2 mask">
+							<span class="title__inner">
+								<span class="hero__letter hero__letter--r">
+									<svg class="hero__roma--r" viewBox="0 0 193.8 400.5">
+										<polygon id="roma--r-1" points="0,0.5 78.5,0.5 78.5,399.9 0,399.9 0,399.9"/>
+										<polygon id="roma--r-2" points="171.3,200.5 171.3,231.6 171.3,400.5 132.1,400.5 77.5,399.9 77.5,0.5 132.1,0.5 171.3,0.5 171.3,169.9"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--o">
+									<svg class="hero__roma--o" viewBox="0 0 196.5 400.5">
+										<polygon id="roma--o-1" points="39.3,399.9 0,399.9 0,0 39.3,0 78.6,0 78.6,399.9"/>
+										<polygon id="roma--o-2" points="132.3,399.9 77.6,399.9 77.6,0 132.3,0 171.6,0 171.6,399.9"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--m">
+									<svg class="hero__roma--m" viewBox="0 0 260.8 400.5">
+										<polygon id="roma--m-1" points="177.5,336.2 177.5,399.9 79.9,399.9 0,0 78.6,0 126,0 177.5,0 "/>
+										<polygon id="roma--m-2" points="1.3,399.9 0.6,0 79.9,399.9 79.9,399.9 "/>
+										<polygon id="roma--m-3" points="176.5,399.9 176.5,0 255.8,0 255.8,0 255.8,399.9 "/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--a">
+									<svg class="hero__roma--a" viewBox="0 0 193.1 400.5">
+										<polygon id="roma--a-1" points="78.5,399.2 0,399.2 0,0.5 78.5,399.2"/>
+										<polygon id="roma--a-2" points="77.5,399.2 0,0.5 193.1,0.5 193.1,399.2"/>
+									</svg>
+								</span>
+							</span>
+						</span>
+						<span class="title__line title__line--3 mask">
+							<span class="title__inner">
+								<span class="hero__letter hero__letter--2">
+									<svg class="hero__number--2" viewBox="0 0 186.3 400.5">
+										<polygon id="number--2-1" points="79.3,263.4 79.3,399.9 40,399.9 0.1,399.9 0.7,232.9 92.9,136.9 92.9,0.5 132.2,0.5 171.5,0.5 171.5,166.9"/>
+										<polygon id="number--2-2" points="0.7,233.9 0.7,233.9 0.8,0.5 0.8,0.5 93.9,0.5 93.9,137.9"/>
+										<polygon id="number--2-3" points="171.5,399.9 78.3,399.9 78.3,263.4 171.5,165.9 171.5,399.9"/>
+									</svg>
+								</span>
+								<span class="hero__letter hero__letter--5">
+									<svg class="hero__number--5" viewBox="0 0 170.7 400.5">
+										<polygon id="number--5-1" points="170.7,399.4 92.2,399.4 92.2,239.3 0,239.3 0,198.1 0,0 78.5,0 78.5,160.8 170.7,160.8 170.7,201.9 170.7,281 170.7,358.9"/>
+										<polygon id="number--5-2" points="0,399.4 0,358.9 0,238.3 93.2,238.3 93.2,319.6 93.2,399.4"/>
+										<polygon id="number--5-3" points="77.5,161.8 77.5,0 170.7,0 170.7,0 170.7,161.8"/>
+									</svg>
+								</span>
+							</span>
+						</span>
+					</h1>
+				</div>
+				<div class="hero__footer">
+					<div class="intro__text text--l">
+					<span class="mask"><span>Una fotografia</span></span><span class="mask"><span>in movimento</span></span><span class="mask"><span>della città</span></span>					</div>
+					<div class="hero__sponsors">
+						<div class="sponsors__text text--xs mask">
+							<span>In collaborazione con</span>
+						</div>
+						<div class="sponsors__container">
+															<a class="atac__logo logo--link" href="https://www.atac.roma.it/" target="_blank" aria-label="ATAC Roma"><img class="fit--height" alt="Atac logo" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/atac-logo-white.svg" /></a>
+								<div class="sponsors__divider"></div>
+								<a class="mastercard__logo logo--link" href="https://www.mastercard.it/it-it.html" target="_blank" aria-label="Mastercard"><img  alt="Mastercard logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/mastercard-logo.svg" /></a>
+													</div>
+					</div>
+				</div>
+			</div>
+		</div>
+				<div class="hero__media">
+			<div class="hero__claim">
+				<div class="claim__inner header__menu__item flak">
+					<div class="claim">
+						<div class="claim__text">Scroll / Drag</div>
+					</div>
+					<div class="claim__forward">
+						<div class="mask">
+							<div class="arrow__container">
+								<svg class="arrow-icon" viewBox="0 0 80 80">
+									<polygon points="39.3,12 31.8,19.5 46.9,34.6 46.9,34.6 48.5,36.2 52.3,40 52.2,40 52.3,40 48.5,43.8 46.9,45.4 46.9,45.4 31.8,60.5 39.3,68 67.3,40 "/>
+									<polygon points="44.7,40 44.6,40 44.7,40 39.3,34.6 12.7,34.6 12.7,40 12.7,45.4 39.3,45.4 	"/>
+								</svg>
+								<svg class="arrow-icon" viewBox="0 0 80 80">
+									<polygon points="39.3,12 31.8,19.5 46.9,34.6 46.9,34.6 48.5,36.2 52.3,40 52.2,40 52.3,40 48.5,43.8 46.9,45.4 46.9,45.4 31.8,60.5 39.3,68 67.3,40 "/>
+									<polygon points="44.7,40 44.6,40 44.7,40 39.3,34.6 12.7,34.6 12.7,40 12.7,45.4 39.3,45.4 	"/>
+								</svg>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="flowmap">
+				<div class="flowmap--inner tt--ab ">
+                    				</div>
+			</div>
+		</div>
+			</div>
+</section>
+<script type="module">
+    const imgSize = [2160, 1440];
+
+    const vertex = `
+					attribute vec2 uv;
+					attribute vec2 position;
+					varying vec2 vUv;
+					void main() {
+							vUv = uv;
+							gl_Position = vec4(position, 0, 1);
+					}
+			`;
+    const fragment = `
+					precision highp float;
+					precision highp int;
+					uniform sampler2D tWater;
+					uniform sampler2D tFlow;
+					uniform float uTime;
+					varying vec2 vUv;
+					uniform vec4 res;
+
+					void main() {
+
+							// R and G values are velocity in the x and y direction
+							// B value is the velocity length
+							vec3 flow = texture2D(tFlow, vUv).rgb;
+
+							vec2 uv = .5 * gl_FragCoord.xy / res.xy ;
+							vec2 myUV = (uv - vec2(0.5))*res.zw + vec2(0.5);
+							myUV -= flow.xy * (0.15 * 0.7);
+
+							vec2 myUV2 = (uv - vec2(0.5))*res.zw + vec2(0.5);
+							myUV2 -= flow.xy * (0.125 * 0.7);
+
+							vec2 myUV3 = (uv - vec2(0.5))*res.zw + vec2(0.5);
+							myUV3 -= flow.xy * (0.10 * 0.7);
+
+							vec3 tex = texture2D(tWater, myUV).rgb;
+							vec3 tex2 = texture2D(tWater, myUV2).rgb;
+							vec3 tex3 = texture2D(tWater, myUV3).rgb;
+
+              gl_FragColor = vec4(tex.r, tex2.g, tex3.b, 1.0);
+					}
+			`;
+    {
+
+    const check = function (){
+        if(document.querySelector('body').classList.contains('cloned_ready')){
+            makecanvas();
+        }else{
+            setTimeout(function(){check()}, 20);
+        }
+    }
+    check();
+function makecanvas(){
+   
+      const containers = document.querySelectorAll('.flowmap--inner');
+      containers.forEach(function(container){ 
+        const renderer = new ogl.Renderer({ dpr: 2 });
+        const gl = renderer.gl;
+        container.appendChild(gl.canvas);
+
+        // Variable inputs to control flowmap
+        let aspect = 1;
+        const mouse = new ogl.Vec2(-1);
+        const velocity = new ogl.Vec2();
+        function resize() {
+            let a1, a2;
+            var imageAspect = imgSize[1] / imgSize[0];
+            if (container.offsetHeight / container.offsetWidth < imageAspect) {
+            a1 = 1;
+            a2 = container.offsetHeight / container.offsetWidth / imageAspect;
+            } else {
+            a1 = (container.offsetWidth / container.offsetHeight) * imageAspect;
+            a2 = 1;
+            }
+            mesh.program.uniforms.res.value = new ogl.Vec4(
+            container.offsetWidth,
+            container.offsetHeight,
+            a1,
+            a2
+            );
+
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            aspect = container.offsetWidth / container.offsetHeight;
+        }
+        const flowmap = new ogl.Flowmap(gl, {
+            falloff: 1.0, // size of the stamp, percentage of the size
+            alpha: 0.3, // opacity of the stamp
+            dissipation: 0.94 // affects the speed that the stamp fades. Closer to 1 is slower
+        });
+        // Triangle that includes -1 to 1 range for 'position', and 0 to 1 range for 'uv'.
+        const geometry = new ogl.Geometry(gl, {
+            position: {
+            size: 2,
+            data: new Float32Array([-1, -1, 3, -1, -1, 3])
+            },
+            uv: { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) }
+        });
+        const texture = new ogl.Texture(gl, {
+            minFilter: gl.LINEAR,
+            magFilter: gl.LINEAR
+        });
+        const img = new Image();
+        img.onload = () => (texture.image = img);
+        img.crossOrigin = "Anonymous";
+                img.src = "https://yourbana.com/wp-content/uploads/2024/12/hero-r.jpg";
+
+        let a1, a2;
+        var imageAspect = imgSize[1] / imgSize[0];
+        if (container.offsetHeight / container.offsetWidth < imageAspect) {
+            a1 = 1;
+            a2 = container.offsetHeight / container.offsetWidth/ imageAspect;
+        } else {
+            a1 = (container.offsetWidth / container.offsetHeight) * imageAspect;
+            a2 = 1;
+        }
+
+        const program = new ogl.Program(gl, {
+            vertex,
+            fragment,
+            uniforms: {
+            uTime: { value: 0 },
+            tWater: { value: texture },
+            res: {
+                value: new ogl.Vec4(container.offsetWidth, container.offsetHeight, a1, a2)
+            },
+            img: { value: new ogl.Vec2(imgSize[0], imgSize[1]) },
+            // Note that the uniform is applied without using an object and value property
+            // This is because the class alternates this texture between two render targets
+            // and updates the value property after each render.
+            tFlow: flowmap.uniform
+            }
+        });
+        const mesh = new ogl.Mesh(gl, { geometry, program });
+
+        window.addEventListener("resize", resize, false);
+        resize();
+        
+        // Create handlers to get mouse position and velocity
+        const isTouchCapable = "ontouchstart" in window;
+        if (isTouchCapable) {
+            window.addEventListener("touchstart", updateMouse, false);
+            window.addEventListener("touchmove", updateMouse, { passive: false });
+        } else {
+            window.addEventListener("mousemove", updateMouse, false);
+        }
+        let lastTime;
+        const lastMouse = new ogl.Vec2();
+        function updateMouse(e) {
+            //var element = document.querySelector('.flowmap--inner')
+            var canvas = container.querySelector('canvas');
+            
+            e.preventDefault();
+            if (e.changedTouches && e.changedTouches.length) {
+            e.x = e.changedTouches[0].pageX;
+            e.y = e.changedTouches[0].pageY;
+            }
+            if (e.x === undefined) {
+            e.x = e.pageX;
+            e.y = e.pageY;
+            }
+        
+            if(!isMouseOverElement(container, e))return;
+            let correctX = e.x - container.getBoundingClientRect().left;
+            
+            // Get mouse value in 0 to 1 range, with y flipped
+            mouse.set(correctX/ gl.renderer.width, 1.0 - e.y / gl.renderer.height);
+            // Calculate velocity
+            if (!lastTime) {
+            // First frame
+            lastTime = performance.now();
+            lastMouse.set(e.x, e.y);
+            }
+        
+            const deltaX = e.x - lastMouse.x;
+            const deltaY = e.y - lastMouse.y;
+
+            lastMouse.set(e.x, e.y);
+
+            let time = performance.now();
+
+            // Avoid dividing by 0
+            let delta = Math.max(10.4, time - lastTime);
+            lastTime = time;
+            velocity.x = deltaX / delta;
+            velocity.y = deltaY / delta;
+            // Flag update to prevent hanging velocity values when not moving
+            velocity.needsUpdate = true;
+        }
+      requestAnimationFrame(update);
+      function update(t) {
+        requestAnimationFrame(update);
+        // Reset velocity when mouse not moving
+        if (!velocity.needsUpdate) {
+          mouse.set(-1);
+          velocity.set(0);
+        }
+        velocity.needsUpdate = false;
+        // Update flowmap inputs
+        flowmap.aspect = aspect;
+        flowmap.mouse.copy(mouse);
+        // Ease velocity input, slower when fading out
+        flowmap.velocity.lerp(velocity, velocity.len ? 0.15 : 0.1);
+        flowmap.update();
+        program.uniforms.uTime.value = t * 0.01;
+        renderer.render({ scene: mesh });
+      }
+      })//fin foreach
+      function isMouseOverElement(element, mouse) {
+        
+            if (!element || !(element instanceof HTMLElement)) {
+                return;
+            }
+           var rect     = element.getBoundingClientRect();
+            if (rect.left < mouse.x && rect.right > mouse.x) {
+                return true;
+            }
+            // Return true if any of its four corners are visible
+            return false;
+                }
+}
+    
+    }
+    
+  </script>
+  		<section id="section__intro" class="h__section section--black">
+	<div class="section__inner">
+		<div class="section__main intro__main">
+			<div class="layout__grid">
+				<div class="intro__layout__title subgrid hide">
+					<div class="main__title subgrid row__title flak">
+						<span class="title__line title__line--1 mask">
+							<span class="title__inner">
+																	<span class="title__word"><span  class="title__letter" style="transition-delay:0s">U</span><span  class="title__letter" style="transition-delay:0.05s">n</span><span  class="title__letter" style="transition-delay:0.1s">&#039;</span><span  class="title__letter" style="transition-delay:0.15s">e</span><span  class="title__letter" style="transition-delay:0.2s">s</span><span  class="title__letter" style="transition-delay:0.25s">p</span><span  class="title__letter" style="transition-delay:0.3s">e</span><span  class="title__letter" style="transition-delay:0.35s">r</span><span  class="title__letter" style="transition-delay:0.4s">i</span><span  class="title__letter" style="transition-delay:0.45s">e</span><span  class="title__letter" style="transition-delay:0.5s">n</span><span  class="title__letter" style="transition-delay:0.55s">z</span><span  class="title__letter" style="transition-delay:0.6s">a</span></span>	
+							</span>
+						</span>
+						<span class="title__line title__line--2 mask">
+							<span class="title__inner">
+								
+																		<span class="title__word"></span><div class="masonry__media masonry__media_1"><video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+														<source src="https://yourbana.com/wp-content/uploads/2025/01/intro-media-1.mp4" type="video/mp4">
+													</video></div><span class="title__word"><span  class="title__letter" style="transition-delay:0.15s">c</span><span  class="title__letter" style="transition-delay:0.2s">u</span><span  class="title__letter" style="transition-delay:0.25s">l</span><span  class="title__letter" style="transition-delay:0.3s">t</span><span  class="title__letter" style="transition-delay:0.35s">u</span><span  class="title__letter" style="transition-delay:0.4s">r</span><span  class="title__letter" style="transition-delay:0.45s">a</span><span  class="title__letter" style="transition-delay:0.5s">l</span><span  class="title__letter" style="transition-delay:0.55s">e</span></span>							
+							</span>
+						</span>
+						<span class="title__line title__line--3 mask">
+							<span class="title__inner">
+								
+																		<span class="title__word"><span  class="title__letter" style="transition-delay:0s">c</span><span  class="title__letter" style="transition-delay:0.05s">o</span><span  class="title__letter" style="transition-delay:0.1s">l</span><span  class="title__letter" style="transition-delay:0.15s">l</span><span  class="title__letter" style="transition-delay:0.2s">e</span><span  class="title__letter" style="transition-delay:0.25s">t</span><span  class="title__letter" style="transition-delay:0.3s">t</span><span  class="title__letter" style="transition-delay:0.35s">i</span><span  class="title__letter" style="transition-delay:0.4s">v</span><span  class="title__letter" style="transition-delay:0.45s">a</span></span><div class="masonry__media masonry__media_2"><img class="fit--cover" src="https://yourbana.com/wp-content/uploads/2024/12/ybn-img-8.jpg" alt="" /></div><span class="title__word"><span  class="title__letter" style="transition-delay:0.5s">i</span><span  class="title__letter" style="transition-delay:0.55s">n</span></span>							</span>
+						</span>
+						<span class="title__line title__line--4 mask">
+							<span class="title__inner">
+								
+																		<span class="title__word"><span  class="title__letter" style="transition-delay:0s">c</span><span  class="title__letter" style="transition-delay:0.05s">o</span><span  class="title__letter" style="transition-delay:0.1s">n</span><span  class="title__letter" style="transition-delay:0.15s">t</span><span  class="title__letter" style="transition-delay:0.2s">i</span><span  class="title__letter" style="transition-delay:0.25s">n</span><span  class="title__letter" style="transition-delay:0.3s">u</span><span  class="title__letter" style="transition-delay:0.35s">a</span><span  class="title__letter" style="transition-delay:0.4s">&nbsp;</span><span  class="title__letter" style="transition-delay:0.45s">e</span><span  class="title__letter" style="transition-delay:0.5s">v</span><span  class="title__letter" style="transition-delay:0.55s">o</span><span  class="title__letter" style="transition-delay:0.6s">l</span><span  class="title__letter" style="transition-delay:0.65s">u</span><span  class="title__letter" style="transition-delay:0.7s">z</span><span  class="title__letter" style="transition-delay:0.75s">i</span><span  class="title__letter" style="transition-delay:0.8s">o</span><span  class="title__letter" style="transition-delay:0.85s">n</span><span  class="title__letter" style="transition-delay:0.9s">e</span></span>							</span>
+						</span>
+                        					</div>
+											<div class="masonry__media masonry__media_3">
+														<video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+									<source src="https://yourbana.com/wp-content/uploads/2025/01/intro-media-3-2.mp4" type="video/mp4">
+								</video>
+												</div>
+									</div>
+			</div>
+		</div>
+	</div>
+</section>		<section id="section__step-1" class="h__section section--red" data-step="1">
+	<div class="section__inner">
+		<div class="step__number">
+			<svg id="step-1" viewBox="0 0 560 1080">
+				<polygon id="step--1-1" points="250.7,1080 98,1080 98,1080 98,0 250.7,0 "/>
+				<polygon id="step--1-2" points="462,1080 249.7,1080 249.7,0 462,0 462,1080 "/>
+			</svg>
+		</div>
+		<div class="section__main step-1__main">
+			<div class="layout__grid">
+				<div class="step-1__layout__main subgrid">
+					<div class="section__text">
+						<div class="text__title title--s">E’ un contenitore d’immagini</div>
+						<div class="text__description text--s">
+                            <p>E&#8217; un progetto video partecipativo che racconta il movimento della città attraverso le immagini che i suoi protagonisti producono ogni giorno con gli smartphone.</p>
+<p>I video ricevuti saranno il punto di partenza per la produzione di immagini originali sulla città che verranno mostrate sugli schermi del trasporto pubblico, gestiti da Atac, della città.</p>
+						</div>
+					</div>
+					<div class="badge">
+						<div class="badge__logo tt--ab">
+							<div class="badge__icon">
+								<svg class="badge-y" viewBox="0 0 96 96"">
+								 	<path d="M38.2,96V70.7L22.2,0h21l13.9,70.7V96H38.2z M59.2,64.2l-9.6-48.4L52.8,0h21L59.2,64.2z"/>
+								</svg>
+							</div>
+						</div>
+						<div class="badge__text tt--ab">
+															<img alt="Un racconto creativo e sostenibile del transporto pubblico" class="fit--cover" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/badge-text-it.svg" />
+													</div>
+					</div>
+				</div>
+				<div class="step-1__layout__title subgrid hide">
+					<h2 class="main__title subgrid row__title flak">
+						<span class="title__line title__line--1 mask">
+							<span class="title__inner">
+								<span class="title__word">
+								<span  class="title__letter" style="transition-delay:0s">C</span><span  class="title__letter" style="transition-delay:0.05s">o</span><span  class="title__letter" style="transition-delay:0.1s">s</span><span  class="title__letter" style="transition-delay:0.15s">’</span><span  class="title__letter" style="transition-delay:0.2s">è</span><span  class="title__letter" style="transition-delay:0.25s"></span><span  class="title__letter" style="transition-delay:0.3s"></span><span  class="title__letter" style="transition-delay:0.35s"></span>								</span>
+							</span>
+						</span>
+						<span class="title__line title__line--2 mask">
+							<span class="title__inner">
+								<span class="title__word">
+								<span  class="title__letter" style="transition-delay:0s">Y</span><span  class="title__letter" style="transition-delay:0.05s">o</span><span  class="title__letter" style="transition-delay:0.1s">u</span><span  class="title__letter" style="transition-delay:0.15s">r</span><span  class="title__letter" style="transition-delay:0.2s">b</span><span  class="title__letter" style="transition-delay:0.25s">a</span><span  class="title__letter" style="transition-delay:0.3s">n</span><span  class="title__letter" style="transition-delay:0.35s">a</span>								</span>
+							</span>
+						</span>
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="rome__map">
+			<img class="fit--cover" alt="Mappa di roma" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/map.jpg" />
+		</div>
+		<div class="step-1__media">
+			<div class="parallax--wrp">
+				<div class="parallax--img">
+										        <img class="fit--cover" src="https://yourbana.com/wp-content/uploads/2024/12/YBN-img-1B.jpg" alt="Viaggio in autobus" />
+                        				</div>
+			</div>
+		</div>
+	</div>
+</section>		<section id="section__step-2" class="h__section section--beige" data-step="2">
+	<div class="section__inner">
+		<div class="step__number">
+			<svg id="step-2" viewBox="0 0 560 1080">
+				<polygon id="step--2-1" points="300.4,370.1 50,629.6 50,629.6 50,0 156.2,0 300.4,0 "/>
+				<polygon id="step--2-2" points="511.7,449.9 262.3,711.1 262.3,1080.1 48.3,1080.1 50,628.6 299.4,369.1 299.4,0 405.5,0 511.6,0 
+					511.6,449.8 "/>
+				<polygon id="step--2-3" points="511.7,1080 261.3,1080 261.3,710.1 511.7,448.9 "/>
+			</svg>
+		</div>
+		<div class="section__main step-2__main">
+			<div class="layout__grid">
+				<div class="step-2__layout__title subgrid hide">
+					<h2 class="main__title subgrid row__title flak">
+						<span class="title__line title__line--1 mask">
+							<span class="title__inner">
+								<span class="title__word">
+                                <span  class="title__letter" style="transition-delay:0s">C</span><span  class="title__letter" style="transition-delay:0.05s">o</span><span  class="title__letter" style="transition-delay:0.1s">m</span><span  class="title__letter" style="transition-delay:0.15s">e</span>								</span>
+							</span>
+						</span>
+						<span class="title__line title__line--2 mask">
+							<span class="title__inner">
+								<span class="title__word">
+                                <span  class="title__letter" style="transition-delay:0s">f</span><span  class="title__letter" style="transition-delay:0.05s">u</span><span  class="title__letter" style="transition-delay:0.1s">n</span><span  class="title__letter" style="transition-delay:0.15s">z</span><span  class="title__letter" style="transition-delay:0.2s">i</span><span  class="title__letter" style="transition-delay:0.25s">o</span><span  class="title__letter" style="transition-delay:0.3s">n</span><span  class="title__letter" style="transition-delay:0.35s">a</span>								</span>
+							</span>
+						</span>
+					</h2>
+				</div>
+				<div class="step-2__layout__main">
+					<div class="section__text">
+						<div class="text__title title--s">Filma il tuo percorso e condividi <br />la tua storia</div>
+						<div class="text__description text__columns text--s">
+							<ul>
+<li>Filma Roma in movimento dal trasporto pubblico nel rispetto della privacy dei luoghi e delle persone.</li>
+<li>Carica i video, montati o no, sul portale  dedicato.</li>
+<li>La durata massima di ogni video non deve superare i 90 secondi.</li>
+</ul>
+<ul>
+<li>Si possono caricare più video.</li>
+<li>Qualunque formato va bene.</li>
+<li>Si possono aggiungere effetti o emoticon.</li>
+<li>Il team creativo seleziona i video ricevuti e crea il racconto.</li>
+<li>Il risultato sarà mostrato su più di 2000 schermi del trasporto pubblico e delle stazioni di Roma.</li>
+</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="step-2__marquee">
+				<div class="image__marquee">
+					<div class="image__track">
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-1.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/intro-media-7.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-4.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-2-2.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-7-2.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-3.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        					</div>
+					<div class="image__track">
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab"  autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-1.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab"  autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/intro-media-7.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab"  autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-4.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab"  autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-2-2.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab"  autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-7-2.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        						<div class="image__marquee__item">
+							<div class="image__marquee__img">
+                                                                 <video class="fit--cover tt--ab"  autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/carousel-3.mp4" type="video/mp4">
+                                    </video>
+                            							</div>
+						</div>
+                        			
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+		<section id="section__step-3" class="h__section section--black" data-step="3">
+	<div class="section__inner">
+		<div class="step__number">
+			<svg id="step-3" viewBox="0 0 560 1080">
+				<polygon id="step--3-1" points="299.7,326.8 155.4,326.8 49.2,326.8 49.2,0 155.3,0 299.6,0 299.6,217.3 "/>
+				<polygon id="step--3-2" points="510.8,1080 404.7,1080 298.6,1080 298.6,754.2 49.3,754.2 49.2,325.8 298.6,325.8 298.6,0 404.7,0 510.8,0 
+					510.8,456.6 510.8,539.2 510.8,621.8 510.8,968.9 "/>
+				<polygon id="step--3-3" points="299.6,1080 155.4,1080 49.3,1080.1 49.3,753.2 299.6,753.2 299.6,864.4 299.6,1080.1 "/>	
+			</svg>
+		</div>
+		<div class="section__main step-3__main">
+			<div class="layout__grid">
+				<div class="step-3__layout__main">
+					<div class="section__text">
+						<div class="text__title title--s">Il tuo sguardo su Roma</div>
+						<div class="text__description text--s">
+                            <p>Filma i tuoi spostamenti nella città quando usi il trasporto pubblico, il tuo sguardo sulla città mentre l’attraversi. I tuoi video se verranno selezionati, faranno parte di un nuovo racconto della città creato da chi la vive e l&#8217;attraversa.</p>
+<p>Ti suggeriamo due temi.</p>
+                        </div>
+					</div>
+				</div>
+				<div class="step-3__layout__title subgrid hide">
+					<h2 class="main__title subgrid row__title flak">
+						<span class="title__line title__line--1 mask">
+							<span class="title__inner">
+								<span class="title__word">
+                                <span  class="title__letter" style="transition-delay:0s">C</span><span  class="title__letter" style="transition-delay:0.05s">o</span><span  class="title__letter" style="transition-delay:0.1s">s</span><span  class="title__letter" style="transition-delay:0.15s">a</span>								</span>
+							</span>
+						</span>
+						<span class="title__line title__line--2 mask">
+							<span class="title__inner">
+								<span class="title__word">
+                                <span  class="title__letter" style="transition-delay:0s">f</span><span  class="title__letter" style="transition-delay:0.05s">i</span><span  class="title__letter" style="transition-delay:0.1s">l</span><span  class="title__letter" style="transition-delay:0.15s">m</span><span  class="title__letter" style="transition-delay:0.2s">a</span><span  class="title__letter" style="transition-delay:0.25s">r</span><span  class="title__letter" style="transition-delay:0.3s">e</span>								</span>
+							</span>
+						</span>
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="matters__container">
+
+        			<div class="matter matter__1">
+				<div class="matter__text">
+					<h3 class="text__title title--m">
+  					<span class="mask"><span>Luci e</span></span><span class="mask"><span>Riflessi</span></span>					</h3>
+					<div class="matter__cta text--s">
+						<div class="matter__cta--line"></div>
+						<div class="matter__cta--line"></div>
+					</div>
+					<div class="hidden__text text--m">
+						<p>Le luci della città si riflettono sui vetri dell'autobus e creano fotografie che durano un istante. Cattura il tramonto, l'alba, le luci artificiali che ti accompagnano negli spostamenti.</p>
+					</div>
+					<div class="hidden__title title--s">
+						<span class="mask">
+							<span>Luci eRiflessi </span>
+						</span>
+					</div>
+				</div>
+				<div class="matter__video">
+                                                <video class="fit--cover tt--ab" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                <source src="https://yourbana.com/wp-content/uploads/2025/01/luci-et-reflesi.mp4" type="video/mp4">
+                            </video>
+                    				</div>
+			</div>
+						<div class="matter matter__2">
+				<div class="matter__text">
+					<h3 class="text__title title--m">
+  					<span class="mask"><span>Diario di</span></span><span class="mask"><span>transito</span></span>					</h3>
+					<div class="matter__cta text--s">
+						<div class="matter__cta--line"></div>
+						<div class="matter__cta--line"></div>
+					</div>
+					<div class="hidden__text text--m">
+						<p>Racconta la città che vedi dal finestrino di un autobus o di una metropolitana; i trend, gli stili e le emozioni che incontri quando ti muovi nel trasporto pubblico.</p>
+					</div>
+					<div class="hidden__title title--s">
+						<span class="mask">
+							<span>Diario ditransito </span>
+						</span>
+					</div>
+				</div>
+				<div class="matter__video">
+                                                <video class="fit--cover tt--ab" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                <source src="https://yourbana.com/wp-content/uploads/2025/01/diario-di-transito-2.mp4" type="video/mp4">
+                            </video>
+                    				</div>
+			</div>
+					</div>
+	</div>
+</section>		<section id="section__step-4" class="h__section section--yellow" data-step="4">
+	<div class="section__inner">
+		<div class="step__number">
+			<svg id="step-4" viewBox="0 0 560 1080">
+				<polygon id="step--4-1" points="538.6,872.8 538.6,872.8 538.7,1080 260.6,1080 260.6,0 538.7,0 538.7,660.5 538.7,660.5 538.7,872.8 "/>
+				<polygon id="step--4-2" points="261.6,1080 21.4,1080 21.4,0 21.4,0 261.6,0 261.6,1080 "/>	
+			</svg>
+		</div>
+		<div class="section__main step-4__main">
+			<div class="layout__grid">
+				<div class="step-4__layout__title subgrid hide">
+					<h2 class="main__title subgrid row__title flak">
+						<span class="title__line title__line--1 mask">
+							<span class="title__inner">
+								<span class="title__word">
+								<span  class="title__letter" style="transition-delay:0s">P</span><span  class="title__letter" style="transition-delay:0.05s">a</span><span  class="title__letter" style="transition-delay:0.1s">r</span><span  class="title__letter" style="transition-delay:0.15s">t</span><span  class="title__letter" style="transition-delay:0.2s">e</span><span  class="title__letter" style="transition-delay:0.25s">c</span><span  class="title__letter" style="transition-delay:0.3s">i</span><span  class="title__letter" style="transition-delay:0.35s">p</span><span  class="title__letter" style="transition-delay:0.4s">a</span>								</span>
+							</span>
+						</span>
+					</h2>
+				</div>
+				<div class="step-4__layout__middle subgrid hide">
+					<div class="step-4__middle--0 subgrid">
+						<div class="step-4__video">
+                                                            <video class="fit--cover tt--ab" autoplay="autoplay" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" loop="loop" muted="muted" poster="">
+                                        <source src="https://yourbana.com/wp-content/uploads/2025/01/train.mp4" type="video/mp4">
+                                    </video>
+                            						</div>
+												<div class="quote__line quote__line--1 flak">
+							<span class="mask">
+								<span class="quote__word">Cattura il</span>
+							</span>
+						</div>
+											</div>
+					<div class="step-4__middle--1">
+						<div class="instructions__container instructions--1">
+							<div class="instructions__title flak">Step 1</div>
+							<div class="instructions__main">
+								<div class="text__description text--m">
+									<p>Con il tuo smartphone, tablet o videocamera, filma Roma seguendo le tematiche suggerite.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="step-4__middle--2">
+						<div class="instructions__container instructions--2">
+							<div class="instructions__title flak">Step 2</div>
+							<div class="instructions__main">
+								<div class="text__description text--m">
+									<p>Registrati per partecipare in meno di un minuto.</p>
+								</div>
+																	<a class="btn mask text--s" href="/accesso" target="_blank">
+										<span class="btn__inner">Accesso</span>
+										<span class="btn__inner">Accesso</span>
+									</a>
+															</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="step-4__layout__bottom subgrid hide">
+										<div class="quote__line quote__line--2 flak">
+						<span class="mask">
+							<span class="quote__word">movimento della città!</span>
+						</span>
+					</div>
+					<div class="quote__line quote__line--3 flak">
+						<span class="mask">
+							<span class="quote__word">Crea il tuo racconto!</span>
+						</span>
+					</div>
+														</div>
+			</div>
+			<div class="step-4__image">
+				<div class="parallax--wrp">
+					<div class="parallax--img">
+														<img class="fit--cover" src="https://yourbana.com/wp-content/uploads/2025/01/ybn-img-9B.jpg" alt="Persone sull'autobus" />
+												</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>		<section id="section__outro" class="h__section section--black">
+	<div class="section__inner">
+		<div class="section__main outro__main">
+			<div class="layout__grid">
+				<div class="outro__layout subgrid">
+										<div class="video__mask video__mask--y">
+														<video class="fit--cover tt--ab lazy" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto"  muted="muted" poster="">
+									<source data-src="https://yourbana.com/wp-content/uploads/2025/01/video-outro.mp4" type="video/mp4">
+								</video>
+											</div>
+					<div class="video__mask video__mask--o">
+														<video class="fit--cover tt--ab lazy" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto"  muted="muted" poster="">
+									<source data-src="https://yourbana.com/wp-content/uploads/2025/01/video-outro.mp4" type="video/mp4">
+								</video>
+											</div>
+					<div class="video__mask video__mask--u">
+														<video class="fit--cover tt--ab lazy" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto"  muted="muted" poster="">
+									<source data-src="https://yourbana.com/wp-content/uploads/2025/01/video-outro.mp4" type="video/mp4">
+								</video>
+											</div>
+					<div class="video__mask video__mask--r">
+														<video class="fit--cover tt--ab lazy" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto"  muted="muted" poster="">
+									<source data-src="https://yourbana.com/wp-content/uploads/2025/01/video-outro.mp4" type="video/mp4">
+								</video>
+											</div>
+					<div class="video__mask video__mask--b">
+														<video class="fit--cover tt--ab lazy" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto"  muted="muted" poster="">
+									<source data-src="https://yourbana.com/wp-content/uploads/2025/01/video-outro.mp4" type="video/mp4">
+								</video>
+											</div>
+					<div class="video__mask video__mask--a1">
+														<video class="fit--cover tt--ab lazy" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto"  muted="muted" poster="">
+									<source data-src="https://yourbana.com/wp-content/uploads/2025/01/video-outro.mp4" type="video/mp4">
+								</video>
+											</div>
+					<div class="video__mask video__mask--n">
+														<video class="fit--cover tt--ab lazy" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto"  muted="muted" poster="">
+									<source data-src="https://yourbana.com/wp-content/uploads/2025/01/video-outro.mp4" type="video/mp4">
+								</video>
+											</div>
+					<div class="video__mask video__mask--a2">
+														<video class="fit--cover tt--ab lazy" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto"  muted="muted" poster="">
+									<source data-src="https://yourbana.com/wp-content/uploads/2025/01/video-outro.mp4" type="video/mp4">
+								</video>
+											</div>
+									</div>
+			</div>
+		</div>
+	</div>
+</section>		<section id="section__step-5" class="page__footer h__section section--orange" data-step="5">
+	<div class="section__inner">
+		<div class="footer__inner">
+			<div class="layout__grid">
+				<div class="footer__layout__main subgrid">
+					<div class="footer__logos__container subgrid">
+						<div class="footer__logos__text flak">
+							<span class="row__half__line"><span class="mask"><span class="row__half__word">Yourbana è</span></span></span><span class="row__half__line"><span class="mask"><span class="row__half__word">un progetto di</span></span></span>						</div>
+						<div class="footer__logos">
+							<div class="footer__humans">
+								<div class="sponsors__text text--xs">Humans Artis</div>
+								<a href="https://www.humansartis.com/" target="_blank" class="humans__logo logo--link" aria-label="Humans Artis">
+									<img alt="Humans Artis logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/humansartist-logo.svg" />
+								</a>
+							</div>
+							<div class="footer__sponsors">
+								<div class="sponsors__text text--xs">
+									In collaborazione con								</div>
+								<div class="sponsors__container">
+																			<a class="atac__logo logo--link" href="https://www.atac.roma.it/" target="_blank" aria-label="ATAC Roma"><img alt="ATAC logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/atac-logo-white.svg" /></a>
+										<div class="sponsors__divider"></div>
+										<a class="mastercard__logo logo--link" href="https://www.mastercard.it/it-it.html" target="_blank" aria-label="Mastercard"><img alt="Mastercard logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/mastercard-logo.svg" /></a>
+																	</div>
+							</div>
+						</div>
+					</div>
+					<div class="footer__layout__title subgrid hide">
+						<div class="main__title subgrid row__title flak">
+							<span class="title__line title__line--1 mask">
+								<span class="title__inner">
+									<span class="title__word">
+										<span  class="title__letter">Y</span>
+										<span  class="title__letter" style="transition-delay: 0.075s">B</span>
+										<span  class="title__letter" style="transition-delay: 0.15s">N</span>
+										<span  class="title__letter" style="transition-delay: 0.225s">.</span>
+									</span>
+								</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layout__grid">
+				<div class="footer__layout__main subgrid">			
+					<div class="section__partners subgrid">
+						<div class="partners__top">
+							<div class="text__title text--l">Con il patrocinio di</div>
+							<div class="footer__patronage">
+								<a class="roma__logo logo--link" href="https://www.comune.roma.it/" target="_blank" aria-label="Roma"><img alt="Roma logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-roma.svg" /></a>
+							</div>
+						</div>
+						<div class="partners__bottom">
+							<div class="text__title text--l">Con la collaborazione di</div>
+							<div class="footer__collaborazione">
+								<a class="collab__logo logo--link" href="https://www.fondazionecsc.it/scuola-nazionale-di-cinema/" target="_blank" aria-label="Scuola Nazionale di Cinema"><img alt="Scuola Nazionale di Cinema logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-scuola-nazionale.svg" /></a>
+								<a class="collab__logo logo--link" href="https://www.ied.it/" target="_blank" aria-label="IED Scuola di Design"><img alt="IED Scuola di Design logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-ied.svg" /></a>
+								<a class="collab__logo logo--link" href="https://www.scuolasentieriselvaggi.it/" target="_blank" aria-label="Sentieri Selvaggi"><img alt="Sentieri Selvaggi logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-sentieri-selvaggi.svg" /></a>
+								<a class="collab__logo logo--link" href="https://www.zipzone.it/" target="_blank" aria-label="Zip Zone"><img alt="Zip Zone logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-zip-zone.svg" /></a>
+								
+								<a class="collab__logo collab__logo--double logo--link" href="https://www.uniroma1.it/" target="_blank" aria-label="Sapienza Università di Roma"><img alt="Sapienza Università di Roma logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-sapienza.svg" /></a>
+								
+								<a class="collab__logo logo--link" href="https://www.museodelleperiferie.it/" target="_blank" aria-label="Museo delle periferie"><img alt="Museo delle periferie logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-museo-delle-periferie.svg" /></a>
+								
+								<a class="collab__logo logo--link" href="https://aurorart.org/" target="_blank" aria-label="Aurorart"><img alt="Aurorart logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-aurorart.svg" /></a>
+								<a class="collab__logo logo--link" href="https://www.ecomuseocasilino.it/" target="_blank" aria-label="Ecomuseo Casilino ad Duas Lauros"><img alt="Ecomuseo Casilino ad Duas Lauros logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-ecomuseo-casilino.svg" /></a>
+								<a class="collab__logo logo--link" href="https://www.griffithduemila.com/" target="_blank" aria-label="Accademia di Cinema e Televisione Griffith"><img alt="Accademia di Cinema e Televisione Griffith logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-accademia-cinema-televisione.svg" /></a>
+																	<a class="collab__logo collab__logo--teatro logo--link" href="https://www.teatriincomune.roma.it/teatro-del-lido-di-ostia/" target="_blank" aria-label="Teatro del Lido di Ostia"><img alt="Teatro del Lido di Ostia logo" class="fit--height" src="https://yourbana.com/wp-content/themes/wp-blank-special/assets/img/logo/footer/footer-teatro-del-lido.svg" /></a>
+															</div>
+						</div>
+					</div>
+					<div class="footer__nav text--s">
+						<div class="copyright">&copy;&nbsp;2026</div>
+						<div class="legal__nav">
+															<a href="/termini" target="_blank" class="legal__link link--underline">Termini e condizione</a>
+								<a href="/privacy" target="_blank" class="legal__link link--underline">Politica sulla privacy</a>
+													</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer__media">
+			<div class="parallax--wrp">
+				<div class="parallax--img">
+												<img class="fit--cover" src="https://yourbana.com/wp-content/uploads/2025/01/footer-3B.jpg" alt="Ragazzo che guarda fuori dal finestrino dell'autobus" />
+										</div>
+			</div>
+		</div>
+	</div>
+</section>	</div> 
+	<div class="drag-proxy"></div>
+	<div class="false--scroll"></div>
+	<div class="the__grid">
+	<div class="the__grid__row"></div>
+	<div class="the__grid__row"></div>
+	<div class="the__grid__row"></div>
+	<div class="the__grid__row"></div>
+	<div class="the__grid__row"></div>
+	<div class="the__grid__row"></div>
+	<div class="the__grid__row"></div>
+	<div class="the__grid__row"></div>
+</div>
+    <script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/wp-blank-special/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script type="text/javascript" src="https://yourbana.com/wp-content/themes/wp-blank-special/js/effects.js?ver=6.9.4" id="effects-js"></script>
+    <script src="https://yourbana.com/wp-content/themes/wp-blank-special/js/moment.js"></script>
+	<script src="https://yourbana.com/wp-content/themes/wp-blank-special/js/moment-timezone.js"></script>
+  </body>
+</html>

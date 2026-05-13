@@ -1,0 +1,37 @@
+{
+  "url": "https://www.ignoredone.space/",
+  "extractedAt": "2026-05-07T00:00:00.000Z",
+  "sourceInfo": { "htmlSizeKB": 107, "cssFiles": 10, "inlineStyleBlocks": 2 },
+  "designTokens": {
+    "colors": {
+      "primaryBackground": "#ffffff",
+      "primaryText": "#111111",
+      "secondaryText": "#444444",
+      "designApproach": "强制亮色模式 — 用 JS+CSS 双重拦截深色模式。中文个人博客，白底黑字经典可读性优先",
+      "notable": "force-light-mode 脚本 + style 标签双重保险，甚至覆盖 prefers-color-scheme: dark"
+    },
+    "typography": {
+      "approach": "中文排版优先 — 行距、字距为中文阅读优化。可能使用 Noto Sans SC 或系统中文黑体",
+      "notable": "中文网站，lang='zh-Hans'"
+    },
+    "spacing": {
+      "approach": "博客风格 — 文章列表 + 侧栏。传统博客布局的间距节奏"
+    },
+    "borders": {
+      "approach": "WordPress 主题风格 — 可能有分割线、小圆角"
+    },
+    "animation": {
+      "approach": "尽量少 — 博客站不需要花哨动画。可能只有 hover 效果"
+    },
+    "layout": {
+      "approach": "WordPress 经典博客布局。内容优先，无复杂交互"
+    }
+  },
+  "mood": ["light-mode", "blog", "chinese-typography", "readability-first"],
+  "notablePatterns": [
+    "罕见的'强制亮色模式' — 对暗色模式的主动拒绝",
+    "双重 CSS+JS 拦截深色模式的技术方案",
+    "中文个人博客的极简可读性导向",
+    "color-scheme: light !important"
+  ]
+}

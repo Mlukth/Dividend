@@ -14,11 +14,11 @@
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item command="import">
-                  <el-icon><Upload /></el-icon> 导入 JSON
+                <el-dropdown-item command="import-project">
+                  <el-icon><Upload /></el-icon> 导入项目
                 </el-dropdown-item>
-                <el-dropdown-item command="export">
-                  <el-icon><Download /></el-icon> 导出 JSON
+                <el-dropdown-item command="export-project">
+                  <el-icon><Download /></el-icon> 导出项目
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -71,6 +71,9 @@
           <el-button class="clear-btn" @click="taskImportJson = ''">
             <el-icon><Delete /></el-icon> 清空
           </el-button>
+          <el-button v-if="lastImportBackup" type="warning" @click="undoImport">
+            <el-icon><RefreshLeft /></el-icon> 撤回导入
+          </el-button>
         </div>
         <div class="task-stats">
           <span>当前任务总数：{{ tasks.length }} 个</span>
@@ -87,8 +90,37 @@
       </div>
     </div>
 
-    <!-- ==================== 右侧视图区（自适应剩余宽度） ==================== -->
+    <!-- ==================== 右侧视图区 ==================== -->
     <div class="right-panel">
+      <!-- 担忧折叠面板 -->
+      <el-collapse v-model="worryCollapseActive" class="worry-collapse">
+        <el-collapse-item title="担忧事项" name="worry">
+          <template #title>
+            <div class="worry-collapse-title">
+              <el-icon><WarningFilled /></el-icon>
+              <span>担忧事项（{{ worries.length }}）</span>
+            </div>
+          </template>
+          <div class="worry-panel">
+            <div class="worry-input-row">
+              <el-input v-model="newWorry.title" placeholder="担忧标题" size="small" class="worry-title-input" />
+              <el-input v-model="newWorry.desc" placeholder="描述（可选）" size="small" class="worry-desc-input" />
+              <el-button type="primary" size="small" @click="addWorry">添加</el-button>
+            </div>
+            <div v-if="worries.length === 0" class="empty-worry">
+              <span>暂无担忧记录</span>
+            </div>
+            <div v-for="(item, index) in worries" :key="index" class="worry-card">
+              <div class="worry-card-header">
+                <h4>{{ item.title }}</h4>
+                <el-button link type="danger" @click="removeWorry(index)">删除</el-button>
+              </div>
+              <p v-if="item.desc" class="worry-desc">{{ item.desc }}</p>
+            </div>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+
       <!-- 视图切换 -->
       <div class="view-tabs">
         <el-radio-group v-model="currentView" size="large">
@@ -99,7 +131,6 @@
             <el-icon><Connection /></el-icon> 流程图
           </el-radio-button>
         </el-radio-group>
-        <!-- 时间轴视图下显示分组切换 -->
         <el-radio-group
           v-if="currentView === 'timeline'"
           v-model="groupMode"
@@ -168,7 +199,7 @@
         </div>
       </div>
 
-      <!-- 流程图视图（主任务流程图，独立实例） -->
+      <!-- 流程图视图 -->
       <div v-show="currentView === 'flowchart'" class="flowchart-view">
         <div class="flow-toolbar">
           <el-button-group>
@@ -276,7 +307,7 @@
       </template>
     </el-dialog>
 
-    <!-- ==================== 决策树编辑弹窗（独立流程图实例） ==================== -->
+    <!-- ==================== 决策树弹窗 ==================== -->
     <el-dialog
       v-model="decisionTreeDialogVisible"
       :title="`${currentDecisionTask?.taskName} - 决策树`"
@@ -302,7 +333,6 @@
         </div>
       </div>
 
-      <!-- AI 导入面板 -->
       <div v-if="showAiImportPanel" class="ai-import-panel">
         <el-alert type="info" :closable="false" show-icon>
           <template #title>
@@ -330,7 +360,6 @@
         />
       </div>
 
-      <!-- 决策树流程图主体（独立实例，灰色背景） -->
       <div class="decision-tree-container" v-if="currentDecisionTask">
         <div v-if="!currentDecisionTask.decisionTree || currentDecisionTask.decisionTree.length === 0" class="tree-empty">
           <el-empty description="尚无决策节点，请添加根节点或使用 AI 生成" />
@@ -390,14 +419,15 @@
           <el-input
             v-model="promptConfig.taskPrompt"
             type="textarea"
-            :rows="10"
-            placeholder="输入提示词，用于解析自然语言生成任务JSON..."
+            :rows="12"
           />
         </el-form-item>
-        <el-form-item label="JSON字段说明">
-          <div class="prompt-hint">
-            <code>{{ JSON.stringify(promptConfig.fieldsDesc, null, 2) }}</code>
-          </div>
+        <el-form-item label="决策树生成提示词">
+          <el-input
+            v-model="promptConfig.treePromptTemplate"
+            type="textarea"
+            :rows="8"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -426,70 +456,57 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Clock, Connection, Edit, Download, Upload, Link,
   FullScreen, ZoomIn, ZoomOut, Microphone, CopyDocument,
-  FolderOpened, DocumentAdd, UploadFilled, Delete
+  FolderOpened, DocumentAdd, UploadFilled, Delete, RefreshLeft, WarningFilled
 } from '@element-plus/icons-vue'
 
-// --- 主流程 Vue Flow 实例（独立 ID）---
-const {
-  fitView: mainFitView,
-  zoomIn: mainZoomIn,
-  zoomOut: mainZoomOut,
-  onConnect,
-  onNodesChange,
-  onEdgesChange,
-  project
-} = useVueFlow('main-flow')
+// ============== 内置提示词常量 ==============
+const DEFAULT_TASK_PROMPT = `你是一个任务拆解与决策树生成助手。用户会输入一段需求描述，请提取任务信息并输出JSON数组。
 
-// --- 响应式状态 ---
-const currentView = ref('timeline')
-const groupMode = ref('date')   // 分组模式：'date' 或 'similarity'
-const tasks = ref([])
-const editDialogVisible = ref(false)
-const showPromptDialog = ref(false)
-const editingTask = ref({})
-const flowContainer = ref(null)
-const fileInput = ref(null)
-
-const userRequirement = ref('')
-const taskImportJson = ref('')
-
-// 决策树弹窗相关
-const decisionTreeDialogVisible = ref(false)
-const currentDecisionTask = ref(null)
-const showAiImportPanel = ref(false)
-const treeDescription = ref('')
-const treeImportJson = ref('')
-
-// --- 提示词配置 ---
-const promptConfig = ref({
-  taskPrompt: `你是一个任务拆解助手。用户会输入一段话，请提取其中的任务信息并输出JSON数组。
-
-输出字段说明：
+每个任务对象包含：
 - taskName: 任务名称（必填）
-- taskDate: 预计完成日期，格式YYYY-MM-DD（必填）
-- priority: 优先级，high/medium/low（必填）
-- dependencies: 关联的前置任务名数组（可选）
+- taskDate: 预计完成日期，格式YYYY-MM-DD（必填，若未给出则默认为调用当天）
+- priority: 优先级 high/medium/low（必填）
+- dependencies: 前置任务名数组（可选，只能引用已存在的任务名）
 - estimatedHours: 预计耗时小时数（必填）
-- description: 任务详细描述（可选）
-- tags: 标签数组，如["开发","测试"]（可选）
+- description: 任务详细描述（可选，保留用户原意）
+- tags: 标签数组（可选）
+- decisionTree: 该任务的决策树数组（必填，无决策分支时为空数组 []）
 
-注意：
-1. 只输出JSON数组，不要其他内容
-2. 如果有前置任务依赖，dependencies中填入已存在任务的taskName
-3. 每个任务要有唯一标识，id会自动生成`,
-  fields: ['taskName', 'taskDate', 'priority', 'dependencies', 'estimatedHours', 'description', 'tags'],
-  fieldsDesc: {
-    taskName: '任务名称（必填）',
-    taskDate: '预计完成日期 YYYY-MM-DD（必填）',
-    priority: '优先级 high/medium/low（必填）',
-    dependencies: '前置任务名数组（可选）',
-    estimatedHours: '预计耗时小时数（必填）',
-    description: '任务详细描述（可选）',
-    tags: '标签数组（可选）'
-  }
-})
+decisionTree 节点结构：
+{
+  "id": "自动生成的唯一字符串",
+  "parentId": "父节点id，根节点为null",
+  "text": "节点描述",
+  "completed": false,
+  "branchCondition": "若为分支子节点，填写该分支的条件文本；否则可为空字符串"
+}
 
-const treePromptTemplate = ref(`你是一个决策树生成助手。用户会描述一个任务的执行过程，请分析其中的步骤、分支、回退等，生成一个决策树JSON数组。
+【任务拆解规则】
+1. 若用户已明确声明分块（如“已经区分好任务卡片，别给我乱拆”或使用编号列表分块），则严格按照用户的分块生成任务，一块只对应一个任务，不得拆分或合并。
+2. 若无明确分块，则自行提炼合理粒度的任务，注意保持依赖关系正确。
+
+【决策树生成规则（核心）】
+对于每个任务，请分析其描述（以及用户在输入中与该任务相关的上下文）：
+- 如果描述中包含明显的决策流程特征，例如：
+    * 条件判断（如果…则…、是否、判断、检查…后决定）
+    * 步骤序列中含有分支点（先做A，然后根据结果选择B或C）
+    * 多条并行路径最终汇合（同时进行…，都完成后进入下一步）
+    * 带有回退/重试的描述（失败则回到某步）
+  则必须生成对应的决策树，放在该任务的 decisionTree 字段中。
+- 如果描述仅包含线性操作、开发清单、配置说明等，无明显决策分支，则 decisionTree 置为空数组 []。
+
+生成决策树时：
+- 根节点表示任务起点或总览，parentId 为 null。
+- 分支条件写在子节点的 branchCondition 中，清晰简洁。
+- 若存在回退，在相应节点 text 中写明“失败则回退至XX”。
+- 节点总数不超过20个，层次清晰。
+
+【输出要求】
+- 只输出 JSON 数组，不要任何解释、注释或代码块。
+- 确保 tree 中无循环依赖。
+- 多个任务之间 decisionTree 独立生成，互不影响。`;
+
+const DEFAULT_TREE_PROMPT = `你是一个决策树生成助手。用户会描述一个任务的执行过程，请分析其中的步骤、分支、回退等，生成一个决策树JSON数组。
 每个节点包含字段：
 - id: 唯一字符串（自动生成）
 - parentId: 父节点id，根节点为null
@@ -502,80 +519,116 @@ const treePromptTemplate = ref(`你是一个决策树生成助手。用户会描
 2. 确保树结构完整，根节点 parentId 必须为 null。
 3. 分支条件写在子节点的 branchCondition 中，例如：父节点“检查条件”，子节点分别为{ text: "执行A", branchCondition: "条件满足" }和{ text: "执行B", branchCondition: "条件不满足" }。
 4. 对于失败回退，可以创建指向先序节点的引用？但为了简单，我们只生成树状分支，不包含回退边。请在节点描述中写明“如果失败则回退至XX”作为文本。
-5. 尽量保持简洁，节点数不超过20个。`)
+5. 尽量保持简洁，节点数不超过20个。`;
 
-// --- 初始化加载 localStorage ---
+// ============== 主流程 Vue Flow 实例 ==============
+const {
+  fitView: mainFitView,
+  zoomIn: mainZoomIn,
+  zoomOut: mainZoomOut,
+  onConnect,
+  onNodesChange,
+  onEdgesChange,
+  project
+} = useVueFlow('main-flow')
+
+// ============== 响应式状态 ==============
+const currentView = ref('timeline')
+const groupMode = ref('date')
+const tasks = ref([])
+const editDialogVisible = ref(false)
+const showPromptDialog = ref(false)
+const editingTask = ref({})
+const flowContainer = ref(null)
+const fileInput = ref(null)
+
+const userRequirement = ref('')
+const taskImportJson = ref('')
+const lastImportBackup = ref(null)   // 导入前备份
+
+// 担忧相关
+const worryCollapseActive = ref([])
+const worries = ref([])
+const newWorry = ref({ title: '', desc: '' })
+
+// 决策树弹窗相关
+const decisionTreeDialogVisible = ref(false)
+const currentDecisionTask = ref(null)
+const showAiImportPanel = ref(false)
+const treeDescription = ref('')
+const treeImportJson = ref('')
+
+// 提示词配置（初始为内置常量）
+const promptConfig = ref({
+  taskPrompt: DEFAULT_TASK_PROMPT,
+  treePromptTemplate: DEFAULT_TREE_PROMPT
+})
+
+// ============== 持久化与恢复 ==============
 onMounted(() => {
   const savedTasks = localStorage.getItem('taskManager_tasks')
   const savedPrompt = localStorage.getItem('taskManager_prompt')
+  const savedWorries = localStorage.getItem('taskManager_worries')
+
   if (savedTasks) {
-    try {
-      tasks.value = JSON.parse(savedTasks)
-    } catch (e) {
-      console.error('解析任务数据失败', e)
-    }
+    try { tasks.value = JSON.parse(savedTasks) } catch (e) {}
   }
   if (savedPrompt) {
     try {
-      promptConfig.value = JSON.parse(savedPrompt)
-    } catch (e) {
-      console.error('解析提示词配置失败', e)
-    }
+      const parsed = JSON.parse(savedPrompt)
+      if (parsed.taskPrompt) promptConfig.value.taskPrompt = parsed.taskPrompt
+      if (parsed.treePromptTemplate) promptConfig.value.treePromptTemplate = parsed.treePromptTemplate
+    } catch (e) {}
+  }
+  if (savedWorries) {
+    try { worries.value = JSON.parse(savedWorries) } catch (e) {}
   }
   syncFlowData()
 })
 
-// --- 保存任务到 localStorage 并同步流程图 ---
 const saveTasks = () => {
   localStorage.setItem('taskManager_tasks', JSON.stringify(tasks.value))
   syncFlowData()
 }
-
-// --- 辅助：是否有已完成任务 ---
-const hasCompletedTasks = computed(() => tasks.value.some(t => t.completed))
-
-// --- 一键删除已完成任务 ---
-const deleteAllCompletedTasks = async () => {
-  try {
-    await ElMessageBox.confirm('确定要删除所有已完成的任务吗？此操作不可恢复。', '警告', {
-      confirmButtonText: '确认删除',
-      cancelButtonText: '取消',
-      type: 'warning',
-      confirmButtonClass: 'el-button--danger'
-    })
-    tasks.value = tasks.value.filter(t => !t.completed)
-    saveTasks()
-    ElMessage.success('已删除所有已完成任务')
-  } catch {
-    // 取消
-  }
+const saveWorries = () => {
+  localStorage.setItem('taskManager_worries', JSON.stringify(worries.value))
 }
-
-// --- 保存提示词配置 ---
-const savePromptConfig = () => {
+const savePromptToLocal = () => {
   localStorage.setItem('taskManager_prompt', JSON.stringify(promptConfig.value))
-  showPromptDialog.value = false
-  ElMessage.success('提示词配置已保存')
 }
 
-// --- 组合并复制完整提示词 ---
-const combineAndCopyPrompt = async () => {
-  const base = promptConfig.value.taskPrompt
-  const input = userRequirement.value.trim()
-  if (!input) {
-    ElMessage.warning('请先输入需求描述')
+// ============== 担忧操作 ==============
+const addWorry = () => {
+  const title = newWorry.value.title.trim()
+  if (!title) {
+    ElMessage.warning('请输入担忧标题')
     return
   }
-  const full = `${base}\n\n用户需求：\n${input}\n\n请根据以上需求生成符合格式的 JSON 数组。`
-  try {
-    await navigator.clipboard.writeText(full)
-    ElMessage.success('✅ 完整提示词已复制到剪贴板！现在可以粘贴到 AI 对话窗口。')
-  } catch {
-    ElMessage.error('复制失败，请手动复制')
+  worries.value.push({ title, desc: newWorry.value.desc.trim() })
+  newWorry.value = { title: '', desc: '' }
+  saveWorries()
+  if (!worryCollapseActive.value.includes('worry')) {
+    worryCollapseActive.value.push('worry')
   }
 }
+const removeWorry = (index) => {
+  worries.value.splice(index, 1)
+  saveWorries()
+}
 
-// --- 智能导入任务（解析 JSON 并追加）---
+// ============== 撤回导入 ==============
+const backupCurrentTasks = () => {
+  lastImportBackup.value = JSON.parse(JSON.stringify(tasks.value))
+}
+const undoImport = () => {
+  if (!lastImportBackup.value) return
+  tasks.value = lastImportBackup.value
+  lastImportBackup.value = null
+  saveTasks()
+  ElMessage.success('已撤回到导入前状态')
+}
+
+// ============== 智能导入任务 ==============
 const handleSmartImport = () => {
   const raw = taskImportJson.value.trim()
   if (!raw) {
@@ -586,8 +639,10 @@ const handleSmartImport = () => {
     let parsed = JSON.parse(raw)
     if (!Array.isArray(parsed)) parsed = [parsed]
 
+    backupCurrentTasks()
+
     const newTasks = parsed.map(t => ({
-      id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: generateId(),
       taskName: t.taskName || '未命名任务',
       taskDate: t.taskDate || '',
       priority: t.priority || 'medium',
@@ -607,26 +662,36 @@ const handleSmartImport = () => {
   }
 }
 
-// --- 文件操作（导入/导出）---
+// ============== 文件操作（导入/导出项目） ==============
 const handleFileCommand = (command) => {
-  if (command === 'import') {
+  if (command === 'import-project') {
     fileInput.value.click()
-  } else if (command === 'export') {
-    exportTasks()
+    fileInput.value.dataset.importType = 'project'
+  } else if (command === 'export-project') {
+    exportProject()
   }
 }
 
 const handleFileImport = (event) => {
   const file = event.target.files[0]
   if (!file) return
+  const importType = event.target.dataset.importType || 'tasks'
 
   const reader = new FileReader()
   reader.onload = (e) => {
     try {
-      const imported = JSON.parse(e.target.result)
-      if (Array.isArray(imported)) {
-        const newTasks = imported.map(t => ({
-          id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      const data = JSON.parse(e.target.result)
+      if (importType === 'project' && data.tasks && data.promptConfig) {
+        backupCurrentTasks()
+        tasks.value = data.tasks.map(t => ({ ...t, id: t.id || generateId() }))
+        promptConfig.value = data.promptConfig
+        saveTasks()
+        savePromptToLocal()
+        ElMessage.success('项目已导入，包含任务和提示词')
+      } else {
+        backupCurrentTasks()
+        const newTasks = (Array.isArray(data) ? data : [data]).map(t => ({
+          id: generateId(),
           taskName: t.taskName || '未命名任务',
           taskDate: t.taskDate || '',
           priority: t.priority || 'medium',
@@ -647,21 +712,102 @@ const handleFileImport = (event) => {
   }
   reader.readAsText(file)
   event.target.value = ''
+  delete event.target.dataset.importType
 }
 
-const exportTasks = () => {
-  const dataStr = JSON.stringify(tasks.value, null, 2)
-  const blob = new Blob([dataStr], { type: 'application/json' })
+const generateId = () => `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
+const exportProject = () => {
+  const projectData = {
+    version: '1.0',
+    exportedAt: new Date().toISOString(),
+    tasks: tasks.value,
+    promptConfig: promptConfig.value,
+    worries: worries.value
+  }
+  const now = new Date()
+  const pad = (n) => String(n).padStart(2, '0')
+  const timestamp = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`
+  const filename = `任务时间轴与流程图_${timestamp}.json`
+
+  const blob = new Blob([JSON.stringify(projectData, null, 2)], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = `tasks_${new Date().toISOString().slice(0, 10)}.json`
+  link.download = filename
   link.click()
   URL.revokeObjectURL(url)
-  ElMessage.success('任务已导出')
+  ElMessage.success(`项目已导出：${filename}`)
 }
 
-// --- 相似度计算与分组 ---
+// ============== 提示词操作 ==============
+const combineAndCopyPrompt = async () => {
+  const base = promptConfig.value.taskPrompt
+  const input = userRequirement.value.trim()
+  if (!input) {
+    ElMessage.warning('请先输入需求描述')
+    return
+  }
+  const full = `${base}\n\n用户需求：\n${input}\n\n请根据以上需求生成符合格式的 JSON 数组。`
+  try {
+    await navigator.clipboard.writeText(full)
+    ElMessage.success('✅ 完整提示词已复制到剪贴板！')
+  } catch {
+    ElMessage.error('复制失败，请手动复制')
+  }
+}
+
+const savePromptConfig = () => {
+  savePromptToLocal()
+  showPromptDialog.value = false
+  ElMessage.success('提示词配置已保存')
+}
+
+// ============== 任务增删改 ==============
+const hasCompletedTasks = computed(() => tasks.value.some(t => t.completed))
+
+const deleteAllCompletedTasks = async () => {
+  try {
+    await ElMessageBox.confirm('确定要删除所有已完成的任务吗？此操作不可恢复。', '警告', {
+      confirmButtonText: '确认删除',
+      cancelButtonText: '取消',
+      type: 'warning',
+      confirmButtonClass: 'el-button--danger'
+    })
+    tasks.value = tasks.value.filter(t => !t.completed)
+    saveTasks()
+    ElMessage.success('已删除所有已完成任务')
+  } catch {}
+}
+
+const editTask = (task) => {
+  editingTask.value = { ...task }
+  editDialogVisible.value = true
+}
+
+const saveTask = () => {
+  const index = tasks.value.findIndex(t => t.id === editingTask.value.id)
+  if (index !== -1) {
+    tasks.value[index] = { ...editingTask.value }
+    saveTasks()
+  }
+  editDialogVisible.value = false
+  ElMessage.success('任务已保存')
+}
+
+const deleteTask = (taskId) => {
+  ElMessageBox.confirm('确定要删除这个任务吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    tasks.value = tasks.value.filter(t => t.id !== taskId)
+    saveTasks()
+    ElMessage.success('任务已删除')
+  }).catch(() => {})
+}
+
+// ============== 时间轴 / 流程图数据 ==============
 function textSimilarity(a, b) {
   const bigrams = (str) => {
     const chars = str.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').split('')
@@ -718,7 +864,6 @@ function groupBySimilarity(tasks, threshold = 0.4) {
   return groups
 }
 
-// --- 时间轴数据（支持按日期/相似度）---
 const timelineData = computed(() => {
   if (groupMode.value === 'similarity') {
     const groups = groupBySimilarity(tasks.value)
@@ -730,7 +875,6 @@ const timelineData = computed(() => {
       return { date: groupName, tasks: group }
     })
   }
-  // 默认按日期
   const grouped = {}
   tasks.value.forEach(task => {
     const date = task.taskDate || '未设置'
@@ -744,19 +888,17 @@ const timelineData = computed(() => {
   })
 })
 
-// --- 流程图数据（任务间依赖）---
 const flowNodes = ref([])
 const flowEdges = ref([])
 
 const syncFlowData = () => {
   const existingNodeIds = new Set(flowNodes.value.map(n => n.id))
-
   tasks.value.forEach((task, index) => {
     if (!existingNodeIds.has(task.id)) {
       const node = {
         id: task.id,
         type: 'custom',
-        position: project({ x: (index % 4) * 250, y: Math.floor(index / 4) * 120 }),
+        position: { x: (index % 4) * 250, y: Math.floor(index / 4) * 120 },
         data: {
           label: task.taskName,
           priority: task.priority,
@@ -776,7 +918,6 @@ const syncFlowData = () => {
       }
     }
   })
-
   const currentTaskIds = new Set(tasks.value.map(t => t.id))
   flowNodes.value = flowNodes.value.filter(n => currentTaskIds.has(n.id))
 
@@ -800,44 +941,45 @@ const syncFlowData = () => {
   })
 }
 
-watch(tasks, syncFlowData, { deep: true })
+watch(tasks, saveTasks, { deep: true })
 
-// --- 任务编辑相关 ---
-const editTask = (task) => {
-  editingTask.value = { ...task }
-  editDialogVisible.value = true
-}
-
-const saveTask = () => {
-  const index = tasks.value.findIndex(t => t.id === editingTask.value.id)
-  if (index !== -1) {
-    tasks.value[index] = { ...editingTask.value }
+const updateTaskComplete = (taskId, completed) => {
+  const task = tasks.value.find(t => t.id === taskId)
+  if (task) {
+    task.completed = completed
     saveTasks()
   }
-  editDialogVisible.value = false
-  ElMessage.success('任务已保存')
 }
 
-const deleteTask = (taskId) => {
-  ElMessageBox.confirm('确定要删除这个任务吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    tasks.value = tasks.value.filter(t => t.id !== taskId)
-    saveTasks()
-    ElMessage.success('任务已删除')
-  }).catch(() => {})
+const handleNodeClick = (event) => {
+  console.log('Node clicked:', event.node.data)
+}
+const handleEdgeClick = (event) => {
+  console.log('Edge clicked:', event.edge)
 }
 
-// ======================= 决策树流程图逻辑 =======================
+// ============== 决策树逻辑（独立流程图） ==============
 const treeFlowNodes = ref([])
 const treeFlowEdges = ref([])
 
-// 分层布局算法
+const calcTreeProgress = (nodes) => {
+  if (!nodes || nodes.length === 0) return 0
+  const completed = nodes.filter(n => n.completed).length
+  return Math.round((completed / nodes.length) * 100)
+}
+const progressColor = (nodes) => {
+  const pct = calcTreeProgress(nodes)
+  return pct === 100 ? '#67C23A' : '#409EFF'
+}
+
+const currentTreeProgress = computed(() => {
+  const tree = currentDecisionTask.value?.decisionTree
+  if (!tree || tree.length === 0) return 0
+  return calcTreeProgress(tree)
+})
+
 const calculateTreeLayout = (nodes) => {
   if (!nodes || nodes.length === 0) return {}
-
   const childrenMap = {}
   const nodeMap = {}
   nodes.forEach(n => {
@@ -845,9 +987,7 @@ const calculateTreeLayout = (nodes) => {
     if (!childrenMap[n.parentId]) childrenMap[n.parentId] = []
     childrenMap[n.parentId].push(n)
   })
-
   const rootNodes = nodes.filter(n => n.parentId === null || !nodeMap[n.parentId])
-
   const levels = {}
   const queue = rootNodes.map(n => ({ id: n.id, depth: 0 }))
   while (queue.length) {
@@ -856,17 +996,14 @@ const calculateTreeLayout = (nodes) => {
     const children = childrenMap[id] || []
     children.forEach(child => queue.push({ id: child.id, depth: depth + 1 }))
   }
-
   const levelGroups = {}
   for (const [id, depth] of Object.entries(levels)) {
     if (!levelGroups[depth]) levelGroups[depth] = []
     levelGroups[depth].push(id)
   }
-
   const positions = {}
   const verticalSpacing = 150
   const horizontalSpacing = 220
-
   for (const depth of Object.keys(levelGroups).sort((a, b) => a - b)) {
     const ids = levelGroups[depth]
     ids.sort((a, b) => {
@@ -878,10 +1015,8 @@ const calculateTreeLayout = (nodes) => {
       }
       return 0
     })
-
     const totalWidth = ids.length * horizontalSpacing
     const startX = -totalWidth / 2 + horizontalSpacing / 2
-
     ids.forEach((id, index) => {
       positions[id] = {
         x: startX + index * horizontalSpacing,
@@ -889,7 +1024,6 @@ const calculateTreeLayout = (nodes) => {
       }
     })
   }
-
   return positions
 }
 
@@ -900,9 +1034,7 @@ const rebuildTreeFlow = () => {
     treeFlowEdges.value = []
     return
   }
-
   const positions = calculateTreeLayout(tree)
-
   treeFlowNodes.value = tree.map(node => ({
     id: node.id,
     type: 'tree-node',
@@ -913,7 +1045,6 @@ const rebuildTreeFlow = () => {
       completed: node.completed || false
     }
   }))
-
   treeFlowEdges.value = tree
     .filter(node => node.parentId)
     .map(node => ({
@@ -953,23 +1084,6 @@ const openDecisionTree = (task) => {
 
 const fitTreeView = () => {
   rebuildTreeFlow()
-}
-
-const currentTreeProgress = computed(() => {
-  const tree = currentDecisionTask.value?.decisionTree
-  if (!tree || tree.length === 0) return 0
-  return calcTreeProgress(tree)
-})
-
-const calcTreeProgress = (nodes) => {
-  if (!nodes || nodes.length === 0) return 0
-  const completed = nodes.filter(n => n.completed).length
-  return Math.round((completed / nodes.length) * 100)
-}
-
-const progressColor = (nodes) => {
-  const pct = calcTreeProgress(nodes)
-  return pct === 100 ? '#67C23A' : '#409EFF'
 }
 
 const addRootNodeIfEmpty = () => {
@@ -1068,7 +1182,7 @@ const copyTreePrompt = async () => {
     ElMessage.warning('请输入流程描述')
     return
   }
-  const full = `${treePromptTemplate.value}\n\n用户描述：\n${desc}\n\n请生成决策树 JSON。`
+  const full = `${promptConfig.value.treePromptTemplate}\n\n用户描述：\n${desc}\n\n请生成决策树 JSON。`
   try {
     await navigator.clipboard.writeText(full)
     ElMessage.success('✅ 决策树提示词已复制，请粘贴到 AI 对话窗口')
@@ -1099,25 +1213,8 @@ const importTreeFromJson = () => {
   }
 }
 
-// --- 流程图交互（原有）---
-const updateTaskComplete = (taskId, completed) => {
-  const task = tasks.value.find(t => t.id === taskId)
-  if (task) {
-    task.completed = completed
-    saveTasks()
-  }
-}
-
-const handleNodeClick = (event) => {
-  console.log('Node clicked:', event.node.data)
-}
-const handleEdgeClick = (event) => {
-  console.log('Edge clicked:', event.edge)
-}
-
-// --- 辅助方法 ---
+// ============== 辅助方法 ==============
 const formatDate = (dateStr) => {
-  // 如果是相似度组名，直接返回
   if (dateStr === '未设置' || dateStr.startsWith('相似任务组')) return dateStr
   const date = new Date(dateStr)
   if (isNaN(date.getTime())) return dateStr
@@ -1141,7 +1238,7 @@ const allTags = computed(() => {
 </script>
 
 <style scoped>
-/* 全局布局 */
+/* ========== 全局布局 ========== */
 * { box-sizing: border-box; }
 .app-layout { display: flex; flex-direction: row; height: 100vh; width: 100%; margin: 0; padding: 0; overflow: hidden; background: #f0f4f8; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 .left-panel { width: 420px; flex-shrink: 0; height: 100vh; overflow-y: auto; background: #ffffff; border-right: 1px solid #e9eef4; padding: 24px 20px; box-shadow: 2px 0 12px rgba(0,0,0,0.02); }
@@ -1155,16 +1252,30 @@ const allTags = computed(() => {
 .hint-text { font-size: 13px; color: #64748b; margin-top: 10px; text-align: center; }
 .import-section { background: #f0fdf4; border-color: #bbf7d0; }
 .json-textarea :deep(.el-textarea__inner) { font-family: 'Monaco', 'Menlo', monospace; font-size: 13px; }
-.import-actions { display: flex; gap: 12px; margin-top: 16px; }
+.import-actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
 .import-btn { flex: 1; border-radius: 40px; background: #10b981; border: none; font-weight: 600; }
 .clear-btn { border-radius: 40px; border: 1px solid #d1d5db; }
 .task-stats { margin-top: 16px; font-size: 13px; color: #475569; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 .delete-completed-btn { font-size: 12px; }
 
+/* ========== 右侧面板 ========== */
 .right-panel { flex: 1; height: 100vh; display: flex; flex-direction: column; padding: 20px 28px; overflow: hidden; }
 .view-tabs { flex-shrink: 0; margin-bottom: 20px; display: flex; align-items: center; }
 
-/* 时间轴视图 */
+/* ========== 担忧折叠面板 ========== */
+.worry-collapse { margin-bottom: 16px; border-radius: 12px; overflow: hidden; }
+.worry-collapse-title { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.worry-panel { padding: 8px 0; }
+.worry-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.worry-title-input { flex: 1.5; }
+.worry-desc-input { flex: 2; }
+.worry-card { background: #fff3e0; border-left: 4px solid #ff9800; border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; }
+.worry-card-header { display: flex; justify-content: space-between; align-items: center; }
+.worry-card-header h4 { margin: 0; font-size: 14px; font-weight: 600; color: #1e293b; }
+.worry-desc { font-size: 13px; color: #475569; margin: 6px 0 0; }
+.empty-worry { text-align: center; color: #94a3b8; padding: 16px; font-size: 13px; }
+
+/* ========== 时间轴视图 ========== */
 .timeline-view { flex: 1; overflow-y: auto; padding-right: 4px; }
 .timeline-scroll { width: 100%; }
 .timeline-block { margin-bottom: 36px; }
@@ -1189,7 +1300,7 @@ const allTags = computed(() => {
 .card-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid #edf2f7; }
 .empty-full { height: 100%; display: flex; align-items: center; justify-content: center; }
 
-/* 流程图视图 */
+/* ========== 流程图视图 ========== */
 .flowchart-view { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .flow-toolbar { flex-shrink: 0; margin-bottom: 12px; }
 .flow-canvas { flex: 1; width: 100%; background: #fafcfd; border-radius: 18px; border: 1px solid #e2e8f0; overflow: hidden; }
@@ -1204,7 +1315,7 @@ const allTags = computed(() => {
 .node-title { font-size: 15px; font-weight: 700; color: #1D2129; margin-bottom: 10px; }
 .node-meta { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #64748b; }
 
-/* 决策树弹窗 */
+/* ========== 决策树弹窗 ========== */
 .tree-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #ebeef5; }
 .tree-toolbar-left { display: flex; gap: 12px; }
 .ai-import-panel { background: #f0f9ff; border: 1px solid #b3d8ff; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
@@ -1261,6 +1372,7 @@ const allTags = computed(() => {
 :deep(.vue-flow__edge-path) { stroke-width: 2.5; }
 :deep(.vue-flow__handle) { width: 10px; height: 10px; background: #165DFF; }
 
+/* ========== 提示词弹窗 ========== */
 .prompt-hint { background: #f5f9ff; padding: 18px; border-radius: 14px; border: 1px solid #e2edfb; }
 .prompt-hint code { font-size: 13px; color: #1e293b; white-space: pre-wrap; }
 

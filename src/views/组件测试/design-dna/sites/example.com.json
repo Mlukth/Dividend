@@ -1,0 +1,67 @@
+{
+  "url": "https://example.com/",
+  "extractedAt": "2026-05-07T01:32:05.937Z",
+  "sourceInfo": {
+    "htmlSizeKB": 0.5,
+    "cssFiles": 0,
+    "inlineStyleBlocks": 1
+  },
+  "designTokens": {
+    "colors": {
+      "uniqueCount": 2,
+      "topColors": [
+        "#eee",
+        "#348"
+      ],
+      "likelyBg": [],
+      "likelyText": [],
+      "accentCandidates": []
+    },
+    "typography": {
+      "declaredFonts": [
+        "system-ui,sans-serif"
+      ],
+      "googleFonts": [],
+      "customFonts": [],
+      "sizeRange": {
+        "min": 1.5,
+        "max": 1.5,
+        "unit": "em"
+      },
+      "weightRange": null,
+      "lineHeightRange": null,
+      "letterSpacingSamples": []
+    },
+    "spacing": {
+      "paddingSamples": [],
+      "marginSamples": [],
+      "commonGaps": [],
+      "spacingScale": []
+    },
+    "borders": {
+      "radiusCommon": [],
+      "borderWidths": [],
+      "borderStyle": []
+    },
+    "shadows": {
+      "boxShadowSamples": [],
+      "textShadowSamples": []
+    },
+    "animation": {
+      "transitionDurations": [],
+      "customEasings": [],
+      "animationNames": [],
+      "transformSamples": []
+    },
+    "layout": {
+      "maxWidths": [],
+      "flexUsage": 0,
+      "gridUsage": 0,
+      "gridColumns": []
+    }
+  },
+  "mood": [
+    "dark",
+    "minimalist"
+  ]
+}

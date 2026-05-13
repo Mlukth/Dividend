@@ -1,0 +1,573 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-04-30T05:16:12.503Z",
+  "tasks": [
+    {
+      "id": "task_1776765917944_43yn118rq",
+      "taskName": "左侧栏提示词按钮化快捷拼接功能开发",
+      "taskDate": "2026-04-22",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 3,
+      "description": "替代原有手动手打、复制粘贴左侧提示词的方式，在左侧栏新增按钮方案，将部分常用情绪词提示词制作成对应功能按钮；支持依次点击按钮自动拼接多层提示词，拼接完成后可再追加用户自定义需求，提升提示词使用灵活性",
+      "tags": [
+        "前端开发",
+        "交互优化",
+        "提示词优化"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1776783682248_jnsgtuumb",
+      "taskName": "名人名言提示词撰写及名言验真、出处考究",
+      "taskDate": "2026-04-21",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "撰写名人名言搜集专用提示词；对用户提供的名人名言进行真伪验证，查找名言准确出处（经典演讲、访谈、杂志、书籍），整理可直接访问的出处链接；搜集豆瓣、贴吧、知乎等平台高分讨论帖子及对应链接，无法验真、搜索不到的内容不提供",
+      "tags": [
+        "资料搜集",
+        "文案撰写",
+        "信息核验"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1776783682248_9vdtmwn6q",
+      "taskName": "有价值草稿纸分类分拣、典型整理及存档盖章规则定制",
+      "taskDate": "2026-04-21",
+      "priority": "low",
+      "dependencies": [],
+      "estimatedHours": 1.5,
+      "description": "对有价值草稿纸进行分类分拣，选取典型草稿纸存档；后续自行定制分类分数及盖章相关规则",
+      "tags": [
+        "资料整理",
+        "归档管理"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1776873894133_h99rhh47d",
+      "taskName": "构建人格发展模型概念地图",
+      "taskDate": "2025-12-31",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 8,
+      "description": "结合渐进式生成地貌项目与精神分析理论，构建人格发展模型概念地图，用于自身发展及未来发展预测",
+      "tags": [
+        "概念地图",
+        "人格模型",
+        "精神分析",
+        "项目结合"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1776873894133_xf0u4pdl6",
+      "taskName": "优化题型划分提示词功能",
+      "taskDate": "2025-12-31",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 6,
+      "description": "升级原有题型划分提示词，支持题目知识延伸和题型定位功能",
+      "tags": [
+        "提示词优化",
+        "题型划分",
+        "知识延伸"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777048547080_fhc8d439v",
+      "taskName": "制作学院挑选表",
+      "taskDate": "2026-04-25",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 3,
+      "description": "统一格式制作学院挑选表，配备工具引导填写，支持存放证明与链接，实现可视化存储统一浏览，暂不实现地图功能",
+      "tags": [
+        "文档",
+        "表单",
+        "可视化"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1777048547080_xfv5qgmci",
+      "taskName": "搭建自建知识库",
+      "taskDate": "2026-04-25",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "整理对立问题并添加解决方案形成知识库，无法解答时调用多问题提问，规范命名",
+      "tags": [
+        "知识库",
+        "整理"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1777048547080_5xs45mc3v",
+      "taskName": "开发智慧分析师功能",
+      "taskDate": "2026-04-25",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 4,
+      "description": "实现题目导入、扫描提醒、题型划分、文件类型勾选、结论生成、打分入库功能",
+      "tags": [
+        "功能开发",
+        "自动化"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1777048547080_g8eggx4s5",
+      "taskName": "存量提示词归档入库",
+      "taskDate": "2026-04-25",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "对存量提示词归档重新分析，实现markdown一键导出、扫描、勾选、导入智能流程",
+      "tags": [
+        "归档",
+        "整理",
+        "自动化"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1777048547080_3rk1kayhk",
+      "taskName": "准备会议内容",
+      "taskDate": "2026-04-25",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 1,
+      "description": "整理筹备开会所需相关内容",
+      "tags": [
+        "会议",
+        "筹备"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1777048547080_3sem3qygr",
+      "taskName": "处理敬语问题日志",
+      "taskDate": "2026-04-22",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 1,
+      "description": "处理音频处理相关的敬语问题日志",
+      "tags": [
+        "日志",
+        "处理"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1777048547080_zu4cmvvyf",
+      "taskName": "开发群聊消息增量分析工具",
+      "taskDate": "2026-04-25",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 4,
+      "description": "基于官方导出日志开发增量分析工具，实现新增消息自动截取与数据分析",
+      "tags": [
+        "工具开发",
+        "数据分析"
+      ],
+      "completed": false,
+      "decisionTree": [
+        {
+          "id": "dt_1777098699028_1e95m6ij0",
+          "parentId": null,
+          "text": "新根节点",
+          "completed": false,
+          "branchCondition": ""
+        }
+      ]
+    },
+    {
+      "id": "task_1777048547080_yw4rb6jov",
+      "taskName": "提炼多方案生成抽象方法",
+      "taskDate": "2026-04-17",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "提炼多套渐进式方案生成方法，实现最小区域内最大化设计可能性探索",
+      "tags": [
+        "方法论",
+        "设计"
+      ],
+      "completed": false,
+      "decisionTree": [
+        {
+          "id": "root",
+          "parentId": null,
+          "text": "处理提示词文档结构",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "n1",
+          "parentId": "root",
+          "text": "解析1234级标题分割结构",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "n2",
+          "parentId": "n1",
+          "text": "识别提示词版本号标注",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "n3",
+          "parentId": "n2",
+          "text": "区分不同版本提示词",
+          "completed": false,
+          "branchCondition": "可清晰区分版本"
+        },
+        {
+          "id": "n4",
+          "parentId": "n2",
+          "text": "补充版本标识规则",
+          "completed": false,
+          "branchCondition": "无法清晰区分版本"
+        },
+        {
+          "id": "n5",
+          "parentId": "n3",
+          "text": "整理归类对应提示词内容",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "n6",
+          "parentId": "n4",
+          "text": "重新识别版本信息",
+          "completed": false,
+          "branchCondition": ""
+        }
+      ]
+    },
+    {
+      "id": "task_1777048547080_ame1kjfv2",
+      "taskName": "完善概念地图与人格模型",
+      "taskDate": "2026-04-25",
+      "priority": "low",
+      "dependencies": [],
+      "estimatedHours": 4,
+      "description": "结合精神分析理论构建人格发展模型，完善概念地图，支持自身发展预测",
+      "tags": [
+        "研究",
+        "模型构建"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1777048547080_n91mtgbgc",
+      "taskName": "升级题型划分提示词",
+      "taskDate": "2026-04-22",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "拓展题型划分提示词能力，支持知识延伸与题型定位",
+      "tags": [
+        "提示词",
+        "升级"
+      ],
+      "completed": false
+    },
+    {
+      "id": "task_1777098881790_gvuz1o252",
+      "taskName": "量化处理现有提示词文档",
+      "taskDate": "2026-04-25",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "对现有提示词文档进行量化处理，文档采用123级别标题分割，同一提示词演进带有版本号，优化提示词可延续性存储方案",
+      "tags": [
+        "提示词工程",
+        "文档处理"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777129296675_mtxq7sxnb",
+      "taskName": "开发打标签辅助工具",
+      "taskDate": "2026-05-02",
+      "priority": "low",
+      "dependencies": [],
+      "estimatedHours": 3,
+      "description": "抽空开发打标签辅助工具",
+      "tags": [
+        "开发",
+        "工具"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777129296675_doc3on82v",
+      "taskName": "补全规格化学习日志",
+      "taskDate": "2026-04-28",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "按规格补全对应时间的学习日志，完善计划-施行-分析-总结流程",
+      "tags": [
+        "学习",
+        "日志",
+        "管理"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777129296675_196a6ewid",
+      "taskName": "获取普林斯顿高中数学讲义",
+      "taskDate": "2026-04-30",
+      "priority": "low",
+      "dependencies": [],
+      "estimatedHours": 0.5,
+      "description": "查找并获取普林斯顿大学高中数学讲义",
+      "tags": [
+        "学习",
+        "数学",
+        "资料"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777129296675_3qclhxgnd",
+      "taskName": "汇总文档转换并迁移至Vue",
+      "taskDate": "2026-04-27",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 2.5,
+      "description": "将之前汇总的文档进行格式转换，迁移到Vue项目中",
+      "tags": [
+        "开发",
+        "Vue",
+        "文档"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777348625197_2rdukannw",
+      "taskName": "题目标签整理",
+      "taskDate": "2026-04-29",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "为各类题目添加对应标签，区分题型与解题套路",
+      "tags": [
+        "整理",
+        "标签"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777348688345_38hybj1tn",
+      "taskName": "开发刷题小工具",
+      "taskDate": "2026-04-29",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 6,
+      "description": "实现题目标签分类、导入工具、随机打乱、按背单词模式出题并提示题型与解题方法，快速刷题练套路",
+      "tags": [
+        "开发",
+        "小工具",
+        "刷题"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777348904394_r47yhmjsy",
+      "taskName": "开发英语翻译练习小工具",
+      "taskDate": "2026-05-05",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 8,
+      "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
+      "tags": [
+        "工具开发",
+        "英语学习",
+        "Vue"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777364119657_jbiohfops",
+      "taskName": "新增任务管理中心「担忧」子页面",
+      "taskDate": "2026-04-29",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "在任务管理中心中添加「担忧」子页面，用于展示对当前计划的担忧相关内容",
+      "tags": [
+        "开发",
+        "页面开发"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777524167275_9vcqezuv7",
+      "taskName": "开发语雀快速打标小工具",
+      "taskDate": "2026-04-30",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 4,
+      "description": "开发小工具支持预设内容填入（如## ①），可更换序号，实现大标签与子标签联动输入，通过鼠标右键快速打标。",
+      "tags": [
+        "工具开发",
+        "语雀",
+        "效率优化"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777524167275_bcxqm589j",
+      "taskName": "设计高效转换决策树工具及配套功能",
+      "taskDate": "2026-04-30",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 14,
+      "description": "包含：1) 提取任务卡片角色、增删查改与手动连线；2) 上传文档自动生成大标题（有色区）+小标题（白色区）的卡片，形成树形结构；3) 支持手动连线、新建卡片形成决策树；4) 导出为单页图片/PDF，卡片内可编写文本。同时准备配套提示词。",
+      "tags": [
+        "工具开发",
+        "决策树",
+        "提示词工程"
+      ],
+      "completed": false,
+      "decisionTree": [
+        {
+          "id": "root",
+          "parentId": null,
+          "text": "使用高效转换决策树工具",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "check_doc",
+          "parentId": "root",
+          "text": "检查是否已有现成文档",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "upload_doc",
+          "parentId": "check_doc",
+          "text": "上传文档自动生成卡片",
+          "completed": false,
+          "branchCondition": "有现成文档"
+        },
+        {
+          "id": "create_manual",
+          "parentId": "check_doc",
+          "text": "手动创建卡片并填写内容",
+          "completed": false,
+          "branchCondition": "无现成文档"
+        },
+        {
+          "id": "edit_cards",
+          "parentId": "root",
+          "text": "对卡片进行增删查改、调整位置",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "need_connect",
+          "parentId": "edit_cards",
+          "text": "判断是否需要连线形成决策树",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "manual_connect",
+          "parentId": "need_connect",
+          "text": "手动连线构建树形结构",
+          "completed": false,
+          "branchCondition": "需要连线"
+        },
+        {
+          "id": "skip_connect",
+          "parentId": "need_connect",
+          "text": "跳过连线，卡片独立存在",
+          "completed": false,
+          "branchCondition": "不需要连线"
+        },
+        {
+          "id": "need_export",
+          "parentId": "root",
+          "text": "判断是否需要导出",
+          "completed": false,
+          "branchCondition": ""
+        },
+        {
+          "id": "export_pdf",
+          "parentId": "need_export",
+          "text": "导出为单页图片/PDF（可打印）",
+          "completed": false,
+          "branchCondition": "需要导出"
+        },
+        {
+          "id": "end",
+          "parentId": "need_export",
+          "text": "任务结束",
+          "completed": false,
+          "branchCondition": "不需要导出"
+        }
+      ]
+    },
+    {
+      "id": "task_1777524167275_nl6kjv838",
+      "taskName": "修复电站设备信息页面缩放兼容问题",
+      "taskDate": "2026-04-30",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedHours": 2,
+      "description": "解决电站信息-电站设备信息页面在不同设备下缩放80%才不文字重叠的问题。",
+      "tags": [
+        "前端修复",
+        "布局兼容",
+        "光伏系统"
+      ],
+      "completed": false,
+      "decisionTree": []
+    },
+    {
+      "id": "task_1777524167275_p5umziadv",
+      "taskName": "编写电站设备信息仪表盘KPI测试代码",
+      "taskDate": "2026-04-30",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedHours": 3,
+      "description": "为仪表盘及右侧KPI卡片编写测试代码，探究最适合的字体大小与页面布局。",
+      "tags": [
+        "测试",
+        "前端优化",
+        "KPI",
+        "光伏系统"
+      ],
+      "completed": false,
+      "decisionTree": []
+    }
+  ],
+  "promptConfig": {
+    "taskPrompt": "你是一个任务拆解与决策树生成助手。用户会输入一段需求描述，请提取任务信息并输出JSON数组。\n\n每个任务对象包含：\n- taskName: 任务名称（必填）\n- taskDate: 预计完成日期，格式YYYY-MM-DD（必填，若未给出则默认为调用当天）\n- priority: 优先级 high/medium/low（必填）\n- dependencies: 前置任务名数组（可选，只能引用已存在的任务名）\n- estimatedHours: 预计耗时小时数（必填）\n- description: 任务详细描述（可选，保留用户原意）\n- tags: 标签数组（可选）\n- decisionTree: 该任务的决策树数组（必填，无决策分支时为空数组 []）\n\ndecisionTree 节点结构：\n{\n  \"id\": \"自动生成的唯一字符串\",\n  \"parentId\": \"父节点id，根节点为null\",\n  \"text\": \"节点描述\",\n  \"completed\": false,\n  \"branchCondition\": \"若为分支子节点，填写该分支的条件文本；否则可为空字符串\"\n}\n\n【任务拆解规则】\n1. 若用户已明确声明分块（如“已经区分好任务卡片，别给我乱拆”或使用编号列表分块），则严格按照用户的分块生成任务，一块只对应一个任务，不得拆分或合并。\n2. 若无明确分块，则自行提炼合理粒度的任务，注意保持依赖关系正确。\n\n【决策树生成规则（核心）】\n对于每个任务，请分析其描述（以及用户在输入中与该任务相关的上下文）：\n- 如果描述中包含明显的决策流程特征，例如：\n    * 条件判断（如果…则…、是否、判断、检查…后决定）\n    * 步骤序列中含有分支点（先做A，然后根据结果选择B或C）\n    * 多条并行路径最终汇合（同时进行…，都完成后进入下一步）\n    * 带有回退/重试的描述（失败则回到某步）\n  则必须生成对应的决策树，放在该任务的 decisionTree 字段中。\n- 如果描述仅包含线性操作、开发清单、配置说明等，无明显决策分支，则 decisionTree 置为空数组 []。\n\n生成决策树时：\n- 根节点表示任务起点或总览，parentId 为 null。\n- 分支条件写在子节点的 branchCondition 中，清晰简洁。\n- 若存在回退，在相应节点 text 中写明“失败则回退至XX”。\n- 节点总数不超过20个，层次清晰。\n\n【输出要求】\n- 只输出 JSON 数组，不要任何解释、注释或代码块。\n- 确保 tree 中无循环依赖。\n- 多个任务之间 decisionTree 独立生成，互不影响。",
+    "treePromptTemplate": "你是一个决策树生成助手。用户会描述一个任务的执行过程，请分析其中的步骤、分支、回退等，生成一个决策树JSON数组。\n每个节点包含字段：\n- id: 唯一字符串（自动生成）\n- parentId: 父节点id，根节点为null\n- text: 节点描述文本\n- completed: false\n- branchCondition: 如果有分支，填写该分支的条件文本；非分支节点可为空字符串\n\n规则：\n1. 只输出 JSON 数组，不要其他内容。\n2. 确保树结构完整，根节点 parentId 必须为 null。\n3. 分支条件写在子节点的 branchCondition 中，例如：父节点“检查条件”，子节点分别为{ text: \"执行A\", branchCondition: \"条件满足\" }和{ text: \"执行B\", branchCondition: \"条件不满足\" }。\n4. 对于失败回退，可以创建指向先序节点的引用？但为了简单，我们只生成树状分支，不包含回退边。请在节点描述中写明“如果失败则回退至XX”作为文本。\n5. 尽量保持简洁，节点数不超过20个。"
+  },
+  "worries": []
+}
