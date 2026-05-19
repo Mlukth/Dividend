@@ -1,5 +1,24 @@
 [
   {
+    "id": "task_1747300800000_promptcard_trunc",
+    "taskName": "修复提示词卡组添加新卡片时长文本截断问题",
+    "taskDate": "2026-05-15",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 2,
+    "description": "提示词卡组新增卡片功能在输入长提示词时会被截断，导致用户完整提示词内容丢失。用户尝试添加CDEV类型\"代码路径预检与分析\"卡片时，输入的完整提示词（含类型说明、cost定义、待分析提示词正文等）被截断。需检查输入框/接口的字数限制、数据库字段长度、以及前端表单校验逻辑。",
+    "tags": [
+      "bug修复",
+      "提示词卡组",
+      "前端",
+      "输入截断"
+    ],
+    "completed": false,
+    "expectedCompletionTime": "2026-05-17",
+    "goal": "",
+    "reminderText": ""
+  },
+  {
     "id": "task_1776765917944_43yn118rq",
     "taskName": "左侧栏提示词按钮化快捷拼接功能开发",
     "taskDate": "2026-04-22",
@@ -18,26 +37,6 @@
     "reminderText": ""
   },
   {
-    "id": "task_1776873894133_h99rhh47d",
-    "taskName": "构建人格发展模型概念地图",
-    "taskDate": "2025-12-31",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 8,
-    "description": "结合渐进式生成地貌项目与精神分析理论，构建人格发展模型概念地图，用于自身发展及未来发展预测",
-    "tags": [
-      "概念地图",
-      "人格模型",
-      "精神分析",
-      "项目结合"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
     "id": "task_1776873894133_xf0u4pdl6",
     "taskName": "优化题型划分提示词功能",
     "taskDate": "2025-12-31",
@@ -52,23 +51,6 @@
     ],
     "completed": false,
     "decisionTree": [],
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1777048547080_xfv5qgmci",
-    "taskName": "搭建自建知识库",
-    "taskDate": "2026-04-25",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "整理对立问题并添加解决方案形成知识库，无法解答时调用多问题提问，规范命名",
-    "tags": [
-      "知识库",
-      "整理"
-    ],
-    "completed": true,
     "expectedCompletionTime": "2026-05-04",
     "goal": "",
     "reminderText": ""
@@ -104,40 +86,6 @@
       "自动化"
     ],
     "completed": false,
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1777048547080_3rk1kayhk",
-    "taskName": "准备会议内容",
-    "taskDate": "2026-04-25",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "整理筹备开会所需相关内容",
-    "tags": [
-      "会议",
-      "筹备"
-    ],
-    "completed": true,
-    "expectedCompletionTime": "2026-05-02",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1777048547080_3sem3qygr",
-    "taskName": "处理敬语问题日志",
-    "taskDate": "2026-04-22",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "处理音频处理相关的敬语问题日志",
-    "tags": [
-      "日志",
-      "处理"
-    ],
-    "completed": true,
     "expectedCompletionTime": "2026-05-04",
     "goal": "",
     "reminderText": ""
@@ -237,77 +185,6 @@
     "reminderText": ""
   },
   {
-    "id": "task_1777048547080_ame1kjfv2",
-    "taskName": "完善概念地图与人格模型",
-    "taskDate": "2026-04-25",
-    "priority": "low",
-    "dependencies": [],
-    "estimatedHours": 4,
-    "description": "结合精神分析理论构建人格发展模型，完善概念地图，支持自身发展预测",
-    "tags": [
-      "研究",
-      "模型构建"
-    ],
-    "completed": true,
-    "expectedCompletionTime": "2026-05-08",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1777048547080_n91mtgbgc",
-    "taskName": "升级题型划分提示词",
-    "taskDate": "2026-04-22",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "拓展题型划分提示词能力，支持知识延伸与题型定位",
-    "tags": [
-      "提示词",
-      "升级"
-    ],
-    "completed": true,
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1777098881790_gvuz1o252",
-    "taskName": "量化处理现有提示词文档",
-    "taskDate": "2026-04-25",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "对现有提示词文档进行量化处理，文档采用123级别标题分割，同一提示词演进带有版本号，优化提示词可延续性存储方案",
-    "tags": [
-      "提示词工程",
-      "文档处理"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-02",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1777129296675_doc3on82v",
-    "taskName": "补全规格化学习日志",
-    "taskDate": "2026-04-28",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "按规格补全对应时间的学习日志，完善计划-施行-分析-总结流程",
-    "tags": [
-      "学习",
-      "日志",
-      "管理"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
     "id": "task_1777129296675_196a6ewid",
     "taskName": "获取普林斯顿高中数学讲义",
     "taskDate": "2026-04-30",
@@ -327,25 +204,6 @@
     "reminderText": ""
   },
   {
-    "id": "task_1777129296675_3qclhxgnd",
-    "taskName": "汇总文档转换并迁移至Vue",
-    "taskDate": "2026-04-27",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 2.5,
-    "description": "将之前汇总的文档进行格式转换，迁移到Vue项目中",
-    "tags": [
-      "开发",
-      "Vue",
-      "文档"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
     "id": "task_1777348688345_38hybj1tn",
     "taskName": "开发刷题小工具",
     "taskDate": "2026-04-29",
@@ -359,25 +217,6 @@
       "刷题"
     ],
     "completed": false,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-02",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1777348904394_r47yhmjsy",
-    "taskName": "开发英语翻译练习小工具",
-    "taskDate": "2026-05-05",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 8,
-    "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
-    "tags": [
-      "工具开发",
-      "英语学习",
-      "Vue"
-    ],
-    "completed": true,
     "decisionTree": [],
     "expectedCompletionTime": "2026-05-02",
     "goal": "",
@@ -580,24 +419,6 @@
     "reminderText": ""
   },
   {
-    "id": "task_1778058359892_deti5lt6c",
-    "taskName": "修复统计器故障",
-    "taskDate": "2026-04-30",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "排查并修复统计器存在的问题",
-    "tags": [
-      "工具修复",
-      "数据统计"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-07",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
     "id": "task_1778058359892_z6fb5icul",
     "taskName": "背诵常用等价无穷小与泰勒展开",
     "taskDate": "2026-04-30",
@@ -681,37 +502,6 @@
     "expectedCompletionTime": "2026-05-12",
     "goal": "截图拖入→自动OCR→按规则分类输出",
     "id": "task_1778314916059_rb7uwqkrm",
-    "reminderText": ""
-  },
-  {
-    "taskName": "语雀文档导出",
-    "taskDate": "2026-05-09",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 0.5,
-    "description": "用户有份语雀文档需导出到D盘供Claude读取。需用户手动操作。",
-    "tags": [
-      "blocked",
-      "external"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "t006-1",
-        "parentId": null,
-        "text": "用户导出语雀文档到D盘",
-        "completed": false
-      },
-      {
-        "id": "t006-2",
-        "parentId": null,
-        "text": "Claude读取并理解文档内容",
-        "completed": false
-      }
-    ],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "获取语雀文档内容",
-    "id": "task_1778314916059_v8vctxfft",
     "reminderText": ""
   },
   {
@@ -802,43 +592,6 @@
     "reminderText": ""
   },
   {
-    "taskName": "个人知识库整理与智能化",
-    "taskDate": "2026-05-10",
-    "priority": "medium",
-    "estimatedHours": 6,
-    "description": "优先整理prompt知识库，提升智能化程度和可利用性。关联：task-sync.json任务卡片、D:\\docs\\文档、关联文档目录",
-    "tags": [
-      "知识库",
-      "整理",
-      "prompt"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "kb1",
-        "parentId": null,
-        "text": "盘点现有prompt资产",
-        "completed": false
-      },
-      {
-        "id": "kb2",
-        "parentId": null,
-        "text": "统一索引+分类体系",
-        "completed": false
-      },
-      {
-        "id": "kb3",
-        "parentId": null,
-        "text": "打通任务卡片与知识节点",
-        "completed": false
-      }
-    ],
-    "id": "task_1778342673781_l6hg0md4d",
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
     "id": "task_1778429180055_uss1zf9pr",
     "taskName": "11408院校信息准确性验证+搜索方法论",
     "taskDate": "2026-05-10",
@@ -874,82 +627,6 @@
     ],
     "expectedCompletionTime": "2026-05-12",
     "goal": "了解11408院校信息源可靠性+掌握用户搜索方法论",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778429180055_fcm535ytp",
-    "taskName": "[ETT] P0 提示词系统升级",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 3,
-    "description": "参考TaskCenterPro提示词弹窗+一键复制+智能JSON导入，改造ETT评分流程：可编辑评分prompt、一键拼接复制到剪贴板、粘贴AI返回JSON自动解析。目标：不用API也能窗口AI跑分。",
-    "tags": [
-      "ETT",
-      "提示词",
-      "窗口AI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "p0-1",
-        "parentId": null,
-        "text": "提示词配置弹窗",
-        "completed": true
-      },
-      {
-        "id": "p0-2",
-        "parentId": null,
-        "text": "一键复制拼接prompt到剪贴板",
-        "completed": true
-      },
-      {
-        "id": "p0-3",
-        "parentId": null,
-        "text": "粘贴AI JSON自动解析写入records",
-        "completed": true
-      },
-      {
-        "id": "p0-4",
-        "parentId": null,
-        "text": "UI切换API模式vs窗口模式",
-        "completed": true
-      }
-    ],
-    "expectedCompletionTime": "2026-05-13",
-    "goal": "打通窗口AI评分流程，省钱",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778429180055_d07vgtubk",
-    "taskName": "[ETT] P1 导出增强（自包含prompt）",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 0.5,
-    "description": "导出JSON增加scoringPrompt字段，做到自包含：一个文件=完整评分环境，窗口AI可复现。兼容新旧格式导入。",
-    "tags": [
-      "ETT",
-      "导出",
-      "窗口AI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "e1-1",
-        "parentId": null,
-        "text": "导出增加prompt字段",
-        "completed": true
-      },
-      {
-        "id": "e1-2",
-        "parentId": null,
-        "text": "导入兼容新旧格式",
-        "completed": true
-      }
-    ],
-    "expectedCompletionTime": "2026-05-13",
-    "goal": "导出一个文件=完整评分环境",
     "reminderText": ""
   },
   {
@@ -995,38 +672,6 @@
     ],
     "expectedCompletionTime": "2026-05-16",
     "goal": "评分后发现薄弱点→一键跳转B站学习",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778429180055_36g2jlq7k",
-    "taskName": "[ETT] P2 历史记录回看详情面板",
-    "taskDate": "2026-05-11",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "左侧范文列表增强：点击进入历史记录详情面板，展示历次评分+feedback+用时。配合P2错因定位可回看之前错误。",
-    "tags": [
-      "ETT",
-      "历史记录",
-      "UI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "h1-1",
-        "parentId": null,
-        "text": "历史详情面板组件",
-        "completed": false
-      },
-      {
-        "id": "h1-2",
-        "parentId": null,
-        "text": "同篇多次练习记录展示",
-        "completed": false
-      }
-    ],
-    "expectedCompletionTime": "2026-05-16",
-    "goal": "可回看每篇范文的历史评分与反馈",
     "reminderText": ""
   },
   {
@@ -1083,50 +728,6 @@
       "收尾"
     ],
     "completed": false,
-    "decisionTree": [
-      {
-        "id": "pd-1",
-        "parentId": null,
-        "text": "用户用真实语雀文件测试批量导入",
-        "completed": false
-      },
-      {
-        "id": "pd-2",
-        "parentId": null,
-        "text": "根据导入效果修正BATCH_IMPORT_PROMPT",
-        "completed": false
-      },
-      {
-        "id": "pd-3",
-        "parentId": null,
-        "text": "最终选定设计方案",
-        "completed": false
-      },
-      {
-        "id": "pd-4",
-        "parentId": null,
-        "text": "迁入小工具研发部正式目录",
-        "completed": false
-      }
-    ],
-    "expectedCompletionTime": "2026-05-14",
-    "goal": "提示词卡组可用、可导入语雀数据、正式上线",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778485405304_4w8ivoij3",
-    "taskName": "提示词卡组系统收尾",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 3,
-    "description": "SlayTheSpire/Diff版提示词管理器接近完成。待收尾：①用真实语雀文件测试批量导入→验证BATCH_IMPORT_PROMPT效果→修正提示词模板 ②最终选定设计方案(Diff vs SlayTheSpire) ③将选定版迁入小工具研发部正式目录",
-    "tags": [
-      "提示词工程",
-      "工具开发",
-      "收尾"
-    ],
-    "completed": true,
     "decisionTree": [
       {
         "id": "pd-1",
@@ -1517,25 +1118,6 @@
       "刷题"
     ],
     "completed": false,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-02",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778563145447_1wesqgo2d",
-    "taskName": "开发英语翻译练习小工具",
-    "taskDate": "2026-05-05",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 8,
-    "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
-    "tags": [
-      "工具开发",
-      "英语学习",
-      "Vue"
-    ],
-    "completed": true,
     "decisionTree": [],
     "expectedCompletionTime": "2026-05-02",
     "goal": "",
@@ -2035,82 +1617,6 @@
     "reminderText": ""
   },
   {
-    "id": "task_1778563145447_s2hsg127z",
-    "taskName": "[ETT] P0 提示词系统升级",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 3,
-    "description": "参考TaskCenterPro提示词弹窗+一键复制+智能JSON导入，改造ETT评分流程：可编辑评分prompt、一键拼接复制到剪贴板、粘贴AI返回JSON自动解析。目标：不用API也能窗口AI跑分。",
-    "tags": [
-      "ETT",
-      "提示词",
-      "窗口AI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "p0-1",
-        "parentId": null,
-        "text": "提示词配置弹窗",
-        "completed": true
-      },
-      {
-        "id": "p0-2",
-        "parentId": null,
-        "text": "一键复制拼接prompt到剪贴板",
-        "completed": true
-      },
-      {
-        "id": "p0-3",
-        "parentId": null,
-        "text": "粘贴AI JSON自动解析写入records",
-        "completed": true
-      },
-      {
-        "id": "p0-4",
-        "parentId": null,
-        "text": "UI切换API模式vs窗口模式",
-        "completed": true
-      }
-    ],
-    "expectedCompletionTime": "2026-05-13",
-    "goal": "打通窗口AI评分流程，省钱",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778563145447_95f9m1eoa",
-    "taskName": "[ETT] P1 导出增强（自包含prompt）",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 0.5,
-    "description": "导出JSON增加scoringPrompt字段，做到自包含：一个文件=完整评分环境，窗口AI可复现。兼容新旧格式导入。",
-    "tags": [
-      "ETT",
-      "导出",
-      "窗口AI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "e1-1",
-        "parentId": null,
-        "text": "导出增加prompt字段",
-        "completed": true
-      },
-      {
-        "id": "e1-2",
-        "parentId": null,
-        "text": "导入兼容新旧格式",
-        "completed": true
-      }
-    ],
-    "expectedCompletionTime": "2026-05-13",
-    "goal": "导出一个文件=完整评分环境",
-    "reminderText": ""
-  },
-  {
     "id": "task_1778563145447_itmioyptw",
     "taskName": "[ETT] P2 B站知识点视频链接库+错因匹配",
     "taskDate": "2026-05-11",
@@ -2316,380 +1822,6 @@
     "reminderText": ""
   },
   {
-    "id": "task_1778601813070_divdbka66",
-    "taskName": "构建人格发展模型概念地图",
-    "taskDate": "2025-12-31",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 8,
-    "description": "结合渐进式生成地貌项目与精神分析理论，构建人格发展模型概念地图，用于自身发展及未来发展预测",
-    "tags": [
-      "概念地图",
-      "人格模型",
-      "精神分析",
-      "项目结合"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_q6iipgmkh",
-    "taskName": "搭建自建知识库",
-    "taskDate": "2026-04-25",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "整理对立问题并添加解决方案形成知识库，无法解答时调用多问题提问，规范命名",
-    "tags": [
-      "知识库",
-      "整理"
-    ],
-    "completed": true,
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_l4uztl9g5",
-    "taskName": "准备会议内容",
-    "taskDate": "2026-04-25",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "整理筹备开会所需相关内容",
-    "tags": [
-      "会议",
-      "筹备"
-    ],
-    "completed": true,
-    "expectedCompletionTime": "2026-05-02",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_2jbcw0czs",
-    "taskName": "处理敬语问题日志",
-    "taskDate": "2026-04-22",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "处理音频处理相关的敬语问题日志",
-    "tags": [
-      "日志",
-      "处理"
-    ],
-    "completed": true,
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_nxbir65hn",
-    "taskName": "完善概念地图与人格模型",
-    "taskDate": "2026-04-25",
-    "priority": "low",
-    "dependencies": [],
-    "estimatedHours": 4,
-    "description": "结合精神分析理论构建人格发展模型，完善概念地图，支持自身发展预测",
-    "tags": [
-      "研究",
-      "模型构建"
-    ],
-    "completed": true,
-    "expectedCompletionTime": "2026-05-08",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_nhbntlk30",
-    "taskName": "升级题型划分提示词",
-    "taskDate": "2026-04-22",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "拓展题型划分提示词能力，支持知识延伸与题型定位",
-    "tags": [
-      "提示词",
-      "升级"
-    ],
-    "completed": true,
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_5zul53slb",
-    "taskName": "量化处理现有提示词文档",
-    "taskDate": "2026-04-25",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "对现有提示词文档进行量化处理，文档采用123级别标题分割，同一提示词演进带有版本号，优化提示词可延续性存储方案",
-    "tags": [
-      "提示词工程",
-      "文档处理"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-02",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_myhxxvdoa",
-    "taskName": "补全规格化学习日志",
-    "taskDate": "2026-04-28",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "按规格补全对应时间的学习日志，完善计划-施行-分析-总结流程",
-    "tags": [
-      "学习",
-      "日志",
-      "管理"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_tmvummy7k",
-    "taskName": "汇总文档转换并迁移至Vue",
-    "taskDate": "2026-04-27",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 2.5,
-    "description": "将之前汇总的文档进行格式转换，迁移到Vue项目中",
-    "tags": [
-      "开发",
-      "Vue",
-      "文档"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-04",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_tccrdnly3",
-    "taskName": "开发英语翻译练习小工具",
-    "taskDate": "2026-05-05",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 8,
-    "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
-    "tags": [
-      "工具开发",
-      "英语学习",
-      "Vue"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-02",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_y22hpqcza",
-    "taskName": "修复统计器故障",
-    "taskDate": "2026-04-30",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 2,
-    "description": "排查并修复统计器存在的问题",
-    "tags": [
-      "工具修复",
-      "数据统计"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-07",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "taskName": "语雀文档导出",
-    "taskDate": "2026-05-09",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 0.5,
-    "description": "用户有份语雀文档需导出到D盘供Claude读取。需用户手动操作。",
-    "tags": [
-      "blocked",
-      "external"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "t006-1",
-        "parentId": null,
-        "text": "用户导出语雀文档到D盘",
-        "completed": false
-      },
-      {
-        "id": "t006-2",
-        "parentId": null,
-        "text": "Claude读取并理解文档内容",
-        "completed": false
-      }
-    ],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "获取语雀文档内容",
-    "id": "task_1778601813071_8t9bcjqeb",
-    "reminderText": ""
-  },
-  {
-    "taskName": "个人知识库整理与智能化",
-    "taskDate": "2026-05-10",
-    "priority": "medium",
-    "estimatedHours": 6,
-    "description": "优先整理prompt知识库，提升智能化程度和可利用性。关联：task-sync.json任务卡片、D:\\docs\\文档、关联文档目录",
-    "tags": [
-      "知识库",
-      "整理",
-      "prompt"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "kb1",
-        "parentId": null,
-        "text": "盘点现有prompt资产",
-        "completed": false
-      },
-      {
-        "id": "kb2",
-        "parentId": null,
-        "text": "统一索引+分类体系",
-        "completed": false
-      },
-      {
-        "id": "kb3",
-        "parentId": null,
-        "text": "打通任务卡片与知识节点",
-        "completed": false
-      }
-    ],
-    "id": "task_1778601813071_1v8vcf1xw",
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_xelpgbbl2",
-    "taskName": "[ETT] P0 提示词系统升级",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 3,
-    "description": "参考TaskCenterPro提示词弹窗+一键复制+智能JSON导入，改造ETT评分流程：可编辑评分prompt、一键拼接复制到剪贴板、粘贴AI返回JSON自动解析。目标：不用API也能窗口AI跑分。",
-    "tags": [
-      "ETT",
-      "提示词",
-      "窗口AI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "p0-1",
-        "parentId": null,
-        "text": "提示词配置弹窗",
-        "completed": true
-      },
-      {
-        "id": "p0-2",
-        "parentId": null,
-        "text": "一键复制拼接prompt到剪贴板",
-        "completed": true
-      },
-      {
-        "id": "p0-3",
-        "parentId": null,
-        "text": "粘贴AI JSON自动解析写入records",
-        "completed": true
-      },
-      {
-        "id": "p0-4",
-        "parentId": null,
-        "text": "UI切换API模式vs窗口模式",
-        "completed": true
-      }
-    ],
-    "expectedCompletionTime": "2026-05-13",
-    "goal": "打通窗口AI评分流程，省钱",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_lwnfoc10g",
-    "taskName": "[ETT] P1 导出增强（自包含prompt）",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 0.5,
-    "description": "导出JSON增加scoringPrompt字段，做到自包含：一个文件=完整评分环境，窗口AI可复现。兼容新旧格式导入。",
-    "tags": [
-      "ETT",
-      "导出",
-      "窗口AI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "e1-1",
-        "parentId": null,
-        "text": "导出增加prompt字段",
-        "completed": true
-      },
-      {
-        "id": "e1-2",
-        "parentId": null,
-        "text": "导入兼容新旧格式",
-        "completed": true
-      }
-    ],
-    "expectedCompletionTime": "2026-05-13",
-    "goal": "导出一个文件=完整评分环境",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_mbd2iekiu",
-    "taskName": "[ETT] P2 历史记录回看详情面板",
-    "taskDate": "2026-05-11",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "左侧范文列表增强：点击进入历史记录详情面板，展示历次评分+feedback+用时。配合P2错因定位可回看之前错误。",
-    "tags": [
-      "ETT",
-      "历史记录",
-      "UI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "h1-1",
-        "parentId": null,
-        "text": "历史详情面板组件",
-        "completed": false
-      },
-      {
-        "id": "h1-2",
-        "parentId": null,
-        "text": "同篇多次练习记录展示",
-        "completed": false
-      }
-    ],
-    "expectedCompletionTime": "2026-05-16",
-    "goal": "可回看每篇范文的历史评分与反馈",
-    "reminderText": ""
-  },
-  {
     "id": "task_1778601813071_pmm49ikg0",
     "taskName": "提示词卡组系统收尾",
     "taskDate": "2026-05-11",
@@ -2703,50 +1835,6 @@
       "收尾"
     ],
     "completed": false,
-    "decisionTree": [
-      {
-        "id": "pd-1",
-        "parentId": null,
-        "text": "用户用真实语雀文件测试批量导入",
-        "completed": false
-      },
-      {
-        "id": "pd-2",
-        "parentId": null,
-        "text": "根据导入效果修正BATCH_IMPORT_PROMPT",
-        "completed": false
-      },
-      {
-        "id": "pd-3",
-        "parentId": null,
-        "text": "最终选定设计方案",
-        "completed": false
-      },
-      {
-        "id": "pd-4",
-        "parentId": null,
-        "text": "迁入小工具研发部正式目录",
-        "completed": false
-      }
-    ],
-    "expectedCompletionTime": "2026-05-14",
-    "goal": "提示词卡组可用、可导入语雀数据、正式上线",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_4o8jispis",
-    "taskName": "提示词卡组系统收尾",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 3,
-    "description": "SlayTheSpire/Diff版提示词管理器接近完成。待收尾：①用真实语雀文件测试批量导入→验证BATCH_IMPORT_PROMPT效果→修正提示词模板 ②最终选定设计方案(Diff vs SlayTheSpire) ③将选定版迁入小工具研发部正式目录",
-    "tags": [
-      "提示词工程",
-      "工具开发",
-      "收尾"
-    ],
-    "completed": true,
     "decisionTree": [
       {
         "id": "pd-1",
@@ -2939,25 +2027,6 @@
     "reminderText": ""
   },
   {
-    "id": "task_1778601813071_pfz486ret",
-    "taskName": "开发英语翻译练习小工具",
-    "taskDate": "2026-05-05",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 8,
-    "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
-    "tags": [
-      "工具开发",
-      "英语学习",
-      "Vue"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-02",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
     "id": "task_1778601813071_9nfnbxuw1",
     "taskName": "修复统计器故障",
     "taskDate": "2026-04-30",
@@ -3041,82 +2110,6 @@
     "id": "task_1778601813071_zrd4lwuhk",
     "expectedCompletionTime": "2026-05-12",
     "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_ywm0bbgxl",
-    "taskName": "[ETT] P0 提示词系统升级",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 3,
-    "description": "参考TaskCenterPro提示词弹窗+一键复制+智能JSON导入，改造ETT评分流程：可编辑评分prompt、一键拼接复制到剪贴板、粘贴AI返回JSON自动解析。目标：不用API也能窗口AI跑分。",
-    "tags": [
-      "ETT",
-      "提示词",
-      "窗口AI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "p0-1",
-        "parentId": null,
-        "text": "提示词配置弹窗",
-        "completed": true
-      },
-      {
-        "id": "p0-2",
-        "parentId": null,
-        "text": "一键复制拼接prompt到剪贴板",
-        "completed": true
-      },
-      {
-        "id": "p0-3",
-        "parentId": null,
-        "text": "粘贴AI JSON自动解析写入records",
-        "completed": true
-      },
-      {
-        "id": "p0-4",
-        "parentId": null,
-        "text": "UI切换API模式vs窗口模式",
-        "completed": true
-      }
-    ],
-    "expectedCompletionTime": "2026-05-13",
-    "goal": "打通窗口AI评分流程，省钱",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778601813071_96unz102b",
-    "taskName": "[ETT] P1 导出增强（自包含prompt）",
-    "taskDate": "2026-05-11",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 0.5,
-    "description": "导出JSON增加scoringPrompt字段，做到自包含：一个文件=完整评分环境，窗口AI可复现。兼容新旧格式导入。",
-    "tags": [
-      "ETT",
-      "导出",
-      "窗口AI"
-    ],
-    "completed": true,
-    "decisionTree": [
-      {
-        "id": "e1-1",
-        "parentId": null,
-        "text": "导出增加prompt字段",
-        "completed": true
-      },
-      {
-        "id": "e1-2",
-        "parentId": null,
-        "text": "导入兼容新旧格式",
-        "completed": true
-      }
-    ],
-    "expectedCompletionTime": "2026-05-13",
-    "goal": "导出一个文件=完整评分环境",
     "reminderText": ""
   },
   {
@@ -3237,6 +2230,106 @@
     ],
     "expectedCompletionTime": "2026-05-14",
     "goal": "提示词卡组可用、可导入语雀数据、正式上线",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778603320000_mcpagent01",
+    "taskName": "探索MCP+多Agent+Harness架构，接入第三方模型API",
+    "taskDate": "2026-05-13",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 4,
+    "description": "探索Claude Code的MCP协议、多Agent编排（Agent工具并行子代理）、Harness/hooks扩展机制，并研究如何配置第三方模型API（如用户已有的其他模型key）实现多模型切换。目标：形成可落地的多模型协作方案",
+    "tags": [
+      "架构探索",
+      "MCP",
+      "多Agent",
+      "模型API"
+    ],
+    "completed": false,
+    "decisionTree": [
+      {
+        "step": "调研Claude Code MCP协议现状",
+        "done": false
+      },
+      {
+        "step": "调研Agent工具并行子代理能力",
+        "done": false
+      },
+      {
+        "step": "调研Harness/hooks/skills扩展机制",
+        "done": false
+      },
+      {
+        "step": "研究settings.json多模型配置方案",
+        "done": false
+      },
+      {
+        "step": "整理成可落地方案文档",
+        "done": false
+      }
+    ],
+    "expectedCompletionTime": "2026-05-14",
+    "goal": "形成多模型协作落地方案",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778689626445_doubaoapi01",
+    "taskName": "豆包Web→API桥接：UI自动化发消息方案验证与完善",
+    "taskDate": "2026-05-13",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 4,
+    "description": "将豆包网页聊天转为本地HTTP API供半自动工作流调用。v1(API+签名→CAPTCHA)→v2(浏览器fetch→CAPTCHA)→v3(Playwright UI自动化→可行但反爬检测严格)。已改为匿名模式+增强反检测，文本提取改为TreeWalker定位消息气泡取下一个兄弟元素。当前状态：豆包反爬冷却中，冷却后验证新的提取逻辑。",
+    "tags": [
+      "自动化",
+      "Playwright",
+      "豆包",
+      "API桥接",
+      "blocked"
+    ],
+    "completed": false,
+    "decisionTree": [
+      {
+        "step": "方案选型: API逆向 vs UI自动化",
+        "status": "done",
+        "result": "UI自动化可行, API逆向被反爬拦截"
+      },
+      {
+        "step": "v3首次验证(3+5=8)",
+        "status": "done",
+        "result": "curl请求返回正确AI回复"
+      },
+      {
+        "step": "改为匿名模式(不登录 不绑账号 不怕封)",
+        "status": "done",
+        "result": "chromium.launch() + 增强反检测脚本(navigator/webdriver/chrome/plugins/languages)"
+      },
+      {
+        "step": "文本提取改为TreeWalker定位消息气泡+取兄弟元素",
+        "status": "done",
+        "result": "避免整页文本差集法的UTF-8边界问题"
+      },
+      {
+        "step": "等待豆包反爬冷却+验证新提取逻辑",
+        "status": "pending",
+        "result": "反复重启触发频率限制 需等冷却后测试"
+      },
+      {
+        "step": "支持headless模式(服务端部署)",
+        "status": "pending"
+      },
+      {
+        "step": "支持指定会话ID继续对话",
+        "status": "pending"
+      },
+      {
+        "step": "换会话: 新对话前需导航回/chat/",
+        "status": "pending"
+      }
+    ],
+    "expectedCompletionTime": "2026-05-16",
+    "goal": "通过curl POST /chat发送消息，获得豆包AI回复，作为工作流中的AI模块使用",
     "reminderText": ""
   },
   {
@@ -3620,136 +2713,7 @@
     "reminderText": ""
   },
   {
-    "id": "task_1778602906633_asv77jus",
-    "taskName": "提示词库重构：语雀5文件→80条标准化卡片",
-    "taskDate": "2026-05-12",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 4,
-    "description": "从语雀导出5个markdown文件提取80条提示词，建立编码体系(CDEV/PM/INFO/LEARN/DOC/TOOL)，去AI回复、去重、details块提取。产出prompt-library.md(5059行)",
-    "tags": [
-      "提示词库",
-      "提取脚本",
-      "编码体系"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "人工可维护的提示词正文库",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778602906634_4deek8ir",
-    "taskName": "提示词库目录索引+使用手册",
-    "taskDate": "2026-05-12",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "创建prompt-library-index.md(按编码目录)和prompt-library-manual.md(增/改/废/测试日志规范)，人工管理层闭环",
-    "tags": [
-      "文档",
-      "使用手册"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778602906635_ritpmoyc",
-    "taskName": "卡组JSON提取脚本extract-cards.mjs",
-    "taskDate": "2026-05-12",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "解析prompt-library.md→80张卡JSON，icon按cat1自动分配，cost按内容长度0-3，变体/备注/测试日志全字段。输出public/prompt-cards.json",
-    "tags": [
-      "脚本",
-      "卡组"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778602906636_t9e9sf33",
-    "taskName": "PromptManager组件重构：weblab设计+分类体系",
-    "taskDate": "2026-05-12",
-    "priority": "high",
-    "dependencies": [],
-    "estimatedHours": 3,
-    "description": "重写PromptManager-SlayTheSpire.vue(649行)：替换攻/技/能三分法→CDEV/PM/INFO/LEARN/DOC六分类；weblab暗底+点阵+玻璃卡+金银铜金属渐变；localStorage使用跟踪；变体切换左右联动；灵感备注+测试日志显示",
-    "tags": [
-      "前端",
-      "Vue3",
-      "UI重构"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778602906637_1geofcbd",
-    "taskName": "dev.cmd自动杀端口启动脚本",
-    "taskDate": "2026-05-12",
-    "priority": "low",
-    "dependencies": [],
-    "estimatedHours": 0.2,
-    "description": "创建dev.cmd：每次运行自动netstat找5174端口→taskkill→npm run dev，解决端口被占用手动杀进程的问题",
-    "tags": [
-      "工具",
-      "脚本"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778602906638_ffcsblk0",
-    "taskName": "卡片金银铜稀有度优化（可读性修复）",
-    "taskDate": "2026-05-12",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 1,
-    "description": "铜级(0-49次)：只加铜色左边线不铺底色保持可读；青铜/银/金才上weblab全金属渐变；深底白字/浅底黑字适配。修复弹窗稀有度文字颜色",
-    "tags": [
-      "前端",
-      "UI优化",
-      "可读性"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778602906639_be17su7f",
-    "taskName": "提示词卡片美术需求文档",
-    "taskDate": "2026-05-12",
-    "priority": "medium",
-    "dependencies": [],
-    "estimatedHours": 0.5,
-    "description": "撰写D:/docs/prompt-card-design-brief.md：含配色表、布局图、卡片规格、稀有度方案、交互表，供前端设计平台(v0/Bolt)使用",
-    "tags": [
-      "文档",
-      "设计规范"
-    ],
-    "completed": true,
-    "decisionTree": [],
-    "expectedCompletionTime": "2026-05-12",
-    "goal": "",
-    "reminderText": ""
-  },
-  {
-    "id": "task_1778603320000_mcpagent01",
+    "id": "task_1778773616737_n8i5baj3a",
     "taskName": "探索MCP+多Agent+Harness架构，接入第三方模型API",
     "taskDate": "2026-05-13",
     "priority": "high",
@@ -3764,14 +2728,881 @@
     ],
     "completed": false,
     "decisionTree": [
-      {"step": "调研Claude Code MCP协议现状", "done": false},
-      {"step": "调研Agent工具并行子代理能力", "done": false},
-      {"step": "调研Harness/hooks/skills扩展机制", "done": false},
-      {"step": "研究settings.json多模型配置方案", "done": false},
-      {"step": "整理成可落地方案文档", "done": false}
+      {
+        "step": "调研Claude Code MCP协议现状",
+        "done": false
+      },
+      {
+        "step": "调研Agent工具并行子代理能力",
+        "done": false
+      },
+      {
+        "step": "调研Harness/hooks/skills扩展机制",
+        "done": false
+      },
+      {
+        "step": "研究settings.json多模型配置方案",
+        "done": false
+      },
+      {
+        "step": "整理成可落地方案文档",
+        "done": false
+      }
     ],
     "expectedCompletionTime": "2026-05-14",
     "goal": "形成多模型协作落地方案",
     "reminderText": ""
+  },
+  {
+    "id": "task_1778773616737_gthg38joe",
+    "taskName": "豆包Web→API桥接：UI自动化发消息方案验证与完善",
+    "taskDate": "2026-05-13",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 4,
+    "description": "将豆包网页聊天转为本地HTTP API供半自动工作流调用。v1(API+签名→CAPTCHA)→v2(浏览器fetch→CAPTCHA)→v3(Playwright UI自动化→可行但反爬检测严格)。已改为匿名模式+增强反检测，文本提取改为TreeWalker定位消息气泡取下一个兄弟元素。当前状态：豆包反爬冷却中，冷却后验证新的提取逻辑。",
+    "tags": [
+      "自动化",
+      "Playwright",
+      "豆包",
+      "API桥接",
+      "blocked"
+    ],
+    "completed": false,
+    "decisionTree": [
+      {
+        "step": "方案选型: API逆向 vs UI自动化",
+        "status": "done",
+        "result": "UI自动化可行, API逆向被反爬拦截"
+      },
+      {
+        "step": "v3首次验证(3+5=8)",
+        "status": "done",
+        "result": "curl请求返回正确AI回复"
+      },
+      {
+        "step": "改为匿名模式(不登录 不绑账号 不怕封)",
+        "status": "done",
+        "result": "chromium.launch() + 增强反检测脚本(navigator/webdriver/chrome/plugins/languages)"
+      },
+      {
+        "step": "文本提取改为TreeWalker定位消息气泡+取兄弟元素",
+        "status": "done",
+        "result": "避免整页文本差集法的UTF-8边界问题"
+      },
+      {
+        "step": "等待豆包反爬冷却+验证新提取逻辑",
+        "status": "pending",
+        "result": "反复重启触发频率限制 需等冷却后测试"
+      },
+      {
+        "step": "支持headless模式(服务端部署)",
+        "status": "pending"
+      },
+      {
+        "step": "支持指定会话ID继续对话",
+        "status": "pending"
+      },
+      {
+        "step": "换会话: 新对话前需导航回/chat/",
+        "status": "pending"
+      }
+    ],
+    "expectedCompletionTime": "2026-05-16",
+    "goal": "通过curl POST /chat发送消息，获得豆包AI回复，作为工作流中的AI模块使用",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_xnrcg1lvg",
+    "taskName": "开发英语翻译练习小工具",
+    "taskDate": "2026-05-05",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 8,
+    "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
+    "tags": [
+      "工具开发",
+      "英语学习",
+      "Vue"
+    ],
+    "completed": true,
+    "decisionTree": [],
+    "expectedCompletionTime": "2026-05-02",
+    "goal": "",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_xv21z0ugx",
+    "taskName": "[ETT] P0 提示词系统升级",
+    "taskDate": "2026-05-11",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 3,
+    "description": "参考TaskCenterPro提示词弹窗+一键复制+智能JSON导入，改造ETT评分流程：可编辑评分prompt、一键拼接复制到剪贴板、粘贴AI返回JSON自动解析。目标：不用API也能窗口AI跑分。",
+    "tags": [
+      "ETT",
+      "提示词",
+      "窗口AI"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "p0-1",
+        "parentId": null,
+        "text": "提示词配置弹窗",
+        "completed": true
+      },
+      {
+        "id": "p0-2",
+        "parentId": null,
+        "text": "一键复制拼接prompt到剪贴板",
+        "completed": true
+      },
+      {
+        "id": "p0-3",
+        "parentId": null,
+        "text": "粘贴AI JSON自动解析写入records",
+        "completed": true
+      },
+      {
+        "id": "p0-4",
+        "parentId": null,
+        "text": "UI切换API模式vs窗口模式",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-13",
+    "goal": "打通窗口AI评分流程，省钱",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_z9pb60xib",
+    "taskName": "[ETT] P1 导出增强（自包含prompt）",
+    "taskDate": "2026-05-11",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 0.5,
+    "description": "导出JSON增加scoringPrompt字段，做到自包含：一个文件=完整评分环境，窗口AI可复现。兼容新旧格式导入。",
+    "tags": [
+      "ETT",
+      "导出",
+      "窗口AI"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "e1-1",
+        "parentId": null,
+        "text": "导出增加prompt字段",
+        "completed": true
+      },
+      {
+        "id": "e1-2",
+        "parentId": null,
+        "text": "导入兼容新旧格式",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-13",
+    "goal": "导出一个文件=完整评分环境",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_ex0iaksph",
+    "taskName": "开发英语翻译练习小工具",
+    "taskDate": "2026-05-05",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 8,
+    "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
+    "tags": [
+      "工具开发",
+      "英语学习",
+      "Vue"
+    ],
+    "completed": true,
+    "decisionTree": [],
+    "expectedCompletionTime": "2026-05-02",
+    "goal": "",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_pjurjdl7g",
+    "taskName": "[ETT] P0 提示词系统升级",
+    "taskDate": "2026-05-11",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 3,
+    "description": "参考TaskCenterPro提示词弹窗+一键复制+智能JSON导入，改造ETT评分流程：可编辑评分prompt、一键拼接复制到剪贴板、粘贴AI返回JSON自动解析。目标：不用API也能窗口AI跑分。",
+    "tags": [
+      "ETT",
+      "提示词",
+      "窗口AI"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "p0-1",
+        "parentId": null,
+        "text": "提示词配置弹窗",
+        "completed": true
+      },
+      {
+        "id": "p0-2",
+        "parentId": null,
+        "text": "一键复制拼接prompt到剪贴板",
+        "completed": true
+      },
+      {
+        "id": "p0-3",
+        "parentId": null,
+        "text": "粘贴AI JSON自动解析写入records",
+        "completed": true
+      },
+      {
+        "id": "p0-4",
+        "parentId": null,
+        "text": "UI切换API模式vs窗口模式",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-13",
+    "goal": "打通窗口AI评分流程，省钱",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_m29zjz1ds",
+    "taskName": "[ETT] P1 导出增强（自包含prompt）",
+    "taskDate": "2026-05-11",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 0.5,
+    "description": "导出JSON增加scoringPrompt字段，做到自包含：一个文件=完整评分环境，窗口AI可复现。兼容新旧格式导入。",
+    "tags": [
+      "ETT",
+      "导出",
+      "窗口AI"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "e1-1",
+        "parentId": null,
+        "text": "导出增加prompt字段",
+        "completed": true
+      },
+      {
+        "id": "e1-2",
+        "parentId": null,
+        "text": "导入兼容新旧格式",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-13",
+    "goal": "导出一个文件=完整评分环境",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_yobjxzen5",
+    "taskName": "开发英语翻译练习小工具",
+    "taskDate": "2026-05-05",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 8,
+    "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
+    "tags": [
+      "工具开发",
+      "英语学习",
+      "Vue"
+    ],
+    "completed": true,
+    "decisionTree": [],
+    "expectedCompletionTime": "2026-05-02",
+    "goal": "",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_gvdkllsb6",
+    "taskName": "[ETT] P0 提示词系统升级",
+    "taskDate": "2026-05-11",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 3,
+    "description": "参考TaskCenterPro提示词弹窗+一键复制+智能JSON导入，改造ETT评分流程：可编辑评分prompt、一键拼接复制到剪贴板、粘贴AI返回JSON自动解析。目标：不用API也能窗口AI跑分。",
+    "tags": [
+      "ETT",
+      "提示词",
+      "窗口AI"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "p0-1",
+        "parentId": null,
+        "text": "提示词配置弹窗",
+        "completed": true
+      },
+      {
+        "id": "p0-2",
+        "parentId": null,
+        "text": "一键复制拼接prompt到剪贴板",
+        "completed": true
+      },
+      {
+        "id": "p0-3",
+        "parentId": null,
+        "text": "粘贴AI JSON自动解析写入records",
+        "completed": true
+      },
+      {
+        "id": "p0-4",
+        "parentId": null,
+        "text": "UI切换API模式vs窗口模式",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-13",
+    "goal": "打通窗口AI评分流程，省钱",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_ljoutfmew",
+    "taskName": "[ETT] P1 导出增强（自包含prompt）",
+    "taskDate": "2026-05-11",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 0.5,
+    "description": "导出JSON增加scoringPrompt字段，做到自包含：一个文件=完整评分环境，窗口AI可复现。兼容新旧格式导入。",
+    "tags": [
+      "ETT",
+      "导出",
+      "窗口AI"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "e1-1",
+        "parentId": null,
+        "text": "导出增加prompt字段",
+        "completed": true
+      },
+      {
+        "id": "e1-2",
+        "parentId": null,
+        "text": "导入兼容新旧格式",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-13",
+    "goal": "导出一个文件=完整评分环境",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_urbtjwcvi",
+    "taskName": "开发英语翻译练习小工具",
+    "taskDate": "2026-05-05",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 8,
+    "description": "开发一款英语翻译练习工具，将优秀范文转为翻译题供逐篇翻译，支持每日1篇练习打卡、日历式进度展示、历史练习与批改记录存储，可对接API实现自动出题、批改、审阅及数据可视化",
+    "tags": [
+      "工具开发",
+      "英语学习",
+      "Vue"
+    ],
+    "completed": true,
+    "decisionTree": [],
+    "expectedCompletionTime": "2026-05-02",
+    "goal": "",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_qto0u64so",
+    "taskName": "[ETT] P0 提示词系统升级",
+    "taskDate": "2026-05-11",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 3,
+    "description": "参考TaskCenterPro提示词弹窗+一键复制+智能JSON导入，改造ETT评分流程：可编辑评分prompt、一键拼接复制到剪贴板、粘贴AI返回JSON自动解析。目标：不用API也能窗口AI跑分。",
+    "tags": [
+      "ETT",
+      "提示词",
+      "窗口AI"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "p0-1",
+        "parentId": null,
+        "text": "提示词配置弹窗",
+        "completed": true
+      },
+      {
+        "id": "p0-2",
+        "parentId": null,
+        "text": "一键复制拼接prompt到剪贴板",
+        "completed": true
+      },
+      {
+        "id": "p0-3",
+        "parentId": null,
+        "text": "粘贴AI JSON自动解析写入records",
+        "completed": true
+      },
+      {
+        "id": "p0-4",
+        "parentId": null,
+        "text": "UI切换API模式vs窗口模式",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-13",
+    "goal": "打通窗口AI评分流程，省钱",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778773631222_1j5g318jp",
+    "taskName": "[ETT] P1 导出增强（自包含prompt）",
+    "taskDate": "2026-05-11",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 0.5,
+    "description": "导出JSON增加scoringPrompt字段，做到自包含：一个文件=完整评分环境，窗口AI可复现。兼容新旧格式导入。",
+    "tags": [
+      "ETT",
+      "导出",
+      "窗口AI"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "e1-1",
+        "parentId": null,
+        "text": "导出增加prompt字段",
+        "completed": true
+      },
+      {
+        "id": "e1-2",
+        "parentId": null,
+        "text": "导入兼容新旧格式",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-13",
+    "goal": "导出一个文件=完整评分环境",
+    "reminderText": ""
+  },
+  {
+    "id": "task_cv_api_pause_20260514",
+    "taskName": "[AI接入] CV自动化 + 官方API方案 — 暂停，技术力上去后再搞",
+    "taskDate": "2026-05-14",
+    "priority": "medium",
+    "dependencies": [],
+    "estimatedHours": 0,
+    "description": "两套AI接入方案已探索完毕，暂停开发。方案1 CV自动化(Doubao Playwright UI + 千问CV pyautogui)，核心问题: 豆包设备指纹风控已封死硬件层面，千问CV校准复杂、分辨率敏感。方案2 官方API(DashScope/通义千问)，OpenAI兼容格式，新用户7000万tokens免费额度，qwen3.5-plus支持多模态视觉OCR。代码位置: D:\\scripts\\doubao-api\\ 和 D:\\scripts\\qianwen-cv\\。",
+    "tags": [
+      "AI",
+      "CV",
+      "API",
+      "暂停"
+    ],
+    "completed": false,
+    "status": "blocked",
+    "decisionTree": [
+      {
+        "id": "cv-d1",
+        "parentId": null,
+        "text": "豆包设备指纹风控分析完成",
+        "completed": true
+      },
+      {
+        "id": "cv-d2",
+        "parentId": null,
+        "text": "千问CV方案: calibrate.py + server.py 已写好",
+        "completed": true
+      },
+      {
+        "id": "cv-d3",
+        "parentId": null,
+        "text": "CV方案用户体验差: 校准复杂、换屏全废、OCR不可靠",
+        "completed": true
+      },
+      {
+        "id": "cv-d4",
+        "parentId": null,
+        "text": "DashScope API方案已调研: 免费额度、多模态、OpenAI兼容",
+        "completed": true
+      },
+      {
+        "id": "cv-d5",
+        "parentId": null,
+        "text": "等技术力上去再继续",
+        "completed": false
+      },
+      {
+        "id": "cv-d6",
+        "parentId": "cv-d5",
+        "text": "Qwen3.5本地部署可行性调查 + 现有3套方案对比评估 (2026-05-15) — 完成，见 D:/docs/lessons-learned/08-qwen-api-local-deploy-research.md",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "待定",
+    "goal": "暂停AI接入方案，技术力成熟后再继续",
+    "reminderText": "汇报已完成: D:/docs/lessons-learned/08-qwen-api-local-deploy-research.md"
+  },
+  {
+    "id": "task_1778773898061_5xvowbxux",
+    "taskName": "[AI接入] CV自动化 + 官方API方案 — 暂停，技术力上去后再搞",
+    "taskDate": "2026-05-14",
+    "priority": "medium",
+    "dependencies": [],
+    "estimatedHours": 0,
+    "description": "两套AI接入方案已探索完毕，暂停开发。方案1 CV自动化(Doubao Playwright UI + 千问CV pyautogui)，核心问题: 豆包设备指纹风控已封死硬件层面，千问CV校准复杂、分辨率敏感。方案2 官方API(DashScope/通义千问)，OpenAI兼容格式，新用户7000万tokens免费额度，qwen3.5-plus支持多模态视觉OCR。代码位置: D:\\scripts\\doubao-api\\ 和 D:\\scripts\\qianwen-cv\\。",
+    "tags": [
+      "AI",
+      "CV",
+      "API",
+      "暂停"
+    ],
+    "completed": false,
+    "status": "blocked",
+    "decisionTree": [
+      {
+        "id": "cv-d1",
+        "parentId": null,
+        "text": "豆包设备指纹风控分析完成",
+        "completed": true
+      },
+      {
+        "id": "cv-d2",
+        "parentId": null,
+        "text": "千问CV方案: calibrate.py + server.py 已写好",
+        "completed": true
+      },
+      {
+        "id": "cv-d3",
+        "parentId": null,
+        "text": "CV方案用户体验差: 校准复杂、换屏全废、OCR不可靠",
+        "completed": true
+      },
+      {
+        "id": "cv-d4",
+        "parentId": null,
+        "text": "DashScope API方案已调研: 免费额度、多模态、OpenAI兼容",
+        "completed": true
+      },
+      {
+        "id": "cv-d5",
+        "parentId": null,
+        "text": "等技术力上去再继续",
+        "completed": false
+      },
+      {
+        "id": "cv-d6",
+        "parentId": "cv-d5",
+        "text": "Qwen3.5本地部署可行性调查 + 现有3套方案对比评估 (2026-05-15) — 完成，见 D:/docs/lessons-learned/08-qwen-api-local-deploy-research.md",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "待定",
+    "goal": "暂停AI接入方案，技术力成熟后再继续",
+    "reminderText": "代码在 D:\\scripts\\doubao-api\\ 和 D:\\scripts\\qianwen-cv\\"
+  },
+  {
+    "id": "task_lessons_learned_1778778401473",
+    "taskName": "[经验] 开发经验教训库归档",
+    "taskDate": "2026-05-15",
+    "priority": "medium",
+    "dependencies": [],
+    "estimatedHours": 0.3,
+    "description": "D:/docs/lessons-learned/ 已建7条分类教训: [反爬][搜索][hooks][止损][沟通][环境][工具选型]，每条含日期和关联链接",
+    "tags": [
+      "经验",
+      "归档"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "l1",
+        "parentId": null,
+        "text": "7条教训分类归档",
+        "completed": true
+      },
+      {
+        "id": "l2",
+        "parentId": null,
+        "text": "README索引建好",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-15",
+    "goal": "固化豆包/千问事件的经验教训",
+    "reminderText": ""
+  },
+  {
+    "id": "task_stack_1778778401473",
+    "taskName": "[点子] 任务栈 — 一键粘贴想法问网页AI的小工具",
+    "taskDate": "2026-05-15",
+    "priority": "medium",
+    "dependencies": [],
+    "estimatedHours": 2,
+    "description": "辅助一键粘贴想法给网页版AI的小工具。核心功能: 快速输入/粘贴问题→一键复制到剪贴板→提示打开网页AI。可扩展: 预置模板、历史记录、悬浮窗。",
+    "tags": [
+      "点子",
+      "工具",
+      "待评审"
+    ],
+    "completed": false,
+    "decisionTree": [
+      {
+        "id": "s1",
+        "parentId": null,
+        "text": "需求细化: 具体功能范围",
+        "completed": false
+      },
+      {
+        "id": "s2",
+        "parentId": null,
+        "text": "先搜现成开源方案",
+        "completed": false
+      },
+      {
+        "id": "s3",
+        "parentId": null,
+        "text": "MVP开发",
+        "completed": false
+      }
+    ],
+    "expectedCompletionTime": "待定",
+    "goal": "一键粘贴想法问网页AI，减少操作摩擦",
+    "reminderText": "先搜现成开源剪贴板管理工具，有就魔改"
+  },
+  {
+    "id": "task_1778847450503_ts7z5hhrp",
+    "taskName": "修复提示词卡组添加新卡片时长文本截断问题",
+    "taskDate": "2026-05-15",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 2,
+    "description": "提示词卡组新增卡片功能在输入长提示词时会被截断，导致用户完整提示词内容丢失。用户尝试添加CDEV类型\"代码路径预检与分析\"卡片时，输入的完整提示词（含类型说明、cost定义、待分析提示词正文等）被截断。需检查输入框/接口的字数限制、数据库字段长度、以及前端表单校验逻辑。",
+    "tags": [
+      "bug修复",
+      "提示词卡组",
+      "前端",
+      "输入截断"
+    ],
+    "completed": false,
+    "expectedCompletionTime": "2026-05-17",
+    "goal": "",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778847450505_hs0amsuod",
+    "taskName": "[经验] 开发经验教训库归档",
+    "taskDate": "2026-05-15",
+    "priority": "medium",
+    "dependencies": [],
+    "estimatedHours": 0.3,
+    "description": "D:/docs/lessons-learned/ 已建7条分类教训: [反爬][搜索][hooks][止损][沟通][环境][工具选型]，每条含日期和关联链接",
+    "tags": [
+      "经验",
+      "归档"
+    ],
+    "completed": true,
+    "decisionTree": [
+      {
+        "id": "l1",
+        "parentId": null,
+        "text": "7条教训分类归档",
+        "completed": true
+      },
+      {
+        "id": "l2",
+        "parentId": null,
+        "text": "README索引建好",
+        "completed": true
+      }
+    ],
+    "expectedCompletionTime": "2026-05-15",
+    "goal": "固化豆包/千问事件的经验教训",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778847450505_bkpt71aba",
+    "taskName": "[点子] 任务栈 — 一键粘贴想法问网页AI的小工具",
+    "taskDate": "2026-05-15",
+    "priority": "medium",
+    "dependencies": [],
+    "estimatedHours": 2,
+    "description": "辅助一键粘贴想法给网页版AI的小工具。核心功能: 快速输入/粘贴问题→一键复制到剪贴板→提示打开网页AI。可扩展: 预置模板、历史记录、悬浮窗。",
+    "tags": [
+      "点子",
+      "工具",
+      "待评审"
+    ],
+    "completed": false,
+    "decisionTree": [
+      {
+        "id": "s1",
+        "parentId": null,
+        "text": "需求细化: 具体功能范围",
+        "completed": false
+      },
+      {
+        "id": "s2",
+        "parentId": null,
+        "text": "先搜现成开源方案",
+        "completed": false
+      },
+      {
+        "id": "s3",
+        "parentId": null,
+        "text": "MVP开发",
+        "completed": false
+      }
+    ],
+    "expectedCompletionTime": "待定",
+    "goal": "一键粘贴想法问网页AI，减少操作摩擦",
+    "reminderText": "先搜现成开源剪贴板管理工具，有就魔改"
+  },
+  {
+    "id": "task_1778950034853_msvision",
+    "taskName": "下载微软视觉识别模型并部署试用",
+    "taskDate": "2026-05-17",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 3,
+    "description": "下载微软视觉识别模型（Florence/Florence-2 或其他微软开源视觉模型），本地部署并试用。评估其OCR、目标检测、图像描述等能力，看能否替代现有CV方案或与豆包/千问互补。",
+    "tags": [
+      "AI",
+      "视觉识别",
+      "模型部署",
+      "微软"
+    ],
+    "completed": false,
+    "decisionTree": [
+      {
+        "id": "mv-1",
+        "parentId": null,
+        "text": "调研微软开源视觉模型（Florence-2等）",
+        "completed": false
+      },
+      {
+        "id": "mv-2",
+        "parentId": null,
+        "text": "下载模型权重+安装依赖",
+        "completed": false
+      },
+      {
+        "id": "mv-3",
+        "parentId": null,
+        "text": "跑通demo：OCR/检测/描述",
+        "completed": false
+      },
+      {
+        "id": "mv-4",
+        "parentId": null,
+        "text": "评估与现有CV方案对比",
+        "completed": false
+      }
+    ],
+    "expectedCompletionTime": "2026-05-18",
+    "goal": "本地跑通微软视觉模型，评估实用性",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1778950034854_bilibili_kaoyan",
+    "taskName": "处理B站优质考研up主内容",
+    "taskDate": "2026-05-17",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 4,
+    "description": "针对B站某优质考研up主，整理其视频/动态内容。包括：提取知识点体系、关键视频BV号归档、按科目/章节分类、对接ETT知识库或已有B站链接库。目标：把优质内容结构化存储，方便后续检索和学习。",
+    "tags": [
+      "B站",
+      "考研",
+      "内容处理",
+      "知识库"
+    ],
+    "completed": false,
+    "decisionTree": [
+      {
+        "id": "bk-1",
+        "parentId": null,
+        "text": "确认up主+列出待处理视频/内容清单",
+        "completed": false
+      },
+      {
+        "id": "bk-2",
+        "parentId": null,
+        "text": "爬取/提取知识点体系+关键内容",
+        "completed": false
+      },
+      {
+        "id": "bk-3",
+        "parentId": null,
+        "text": "按科目/章节分类归档",
+        "completed": false
+      },
+      {
+        "id": "bk-4",
+        "parentId": null,
+        "text": "对接ETT知识库或B站链接库",
+        "completed": false
+      }
+    ],
+    "expectedCompletionTime": "2026-05-19",
+    "goal": "结构化优质考研内容，可检索可复用",
+    "reminderText": ""
+  },
+  {
+    "id": "task_1779205705437_408depth",
+    "taskName": "408各科学到什么程度算到位（分层评估标准）",
+    "taskDate": "2026-05-19",
+    "priority": "medium",
+    "dependencies": [],
+    "estimatedHours": 1,
+    "description": "408考研四科分层掌握标准，按目标分数段划分基础层/进阶层/高分层。来源：2026-05-18邮件",
+    "tags": [
+      "考研",
+      "408",
+      "学习规划",
+      "分层标准"
+    ],
+    "completed": false,
+    "decisionTree": [
+      {
+        "step": "数据结构(45分)",
+        "done": false,
+        "detail": "基础25-30: 遍历+排序 | 进阶32-38: 图算法+B树+手写代码 | 高分38-43: KMP+DP+综合题"
+      },
+      {
+        "step": "计组(45分)",
+        "done": false,
+        "detail": "基础20-25: 补码+存储+指令 | 进阶28-35: Cache+流水线+数据通路 | 高分35-42: 完整指令执行流程"
+      },
+      {
+        "step": "操作系统(35分)",
+        "done": false,
+        "detail": "基础18-22: 进程+调度+死锁 | 进阶24-30: PV操作+页面置换+文件系统 | 高分30-34: PV零失误+多级页表联动"
+      },
+      {
+        "step": "计网(25分)",
+        "done": false,
+        "detail": "基础12-16: TCP/IP+三次握手+子网 | 进阶17-22: 拥塞控制+路由+NAT | 高分22-25: 协议头部+序号计算+全栈分析"
+      },
+      {
+        "step": "院校对标",
+        "done": false,
+        "detail": "双非一本85-100 | 中流211:100-115 | 强势211/末流985:115-125 | 顶级985:125-135+"
+      }
+    ],
+    "expectedCompletionTime": "2026-05-19",
+    "goal": "建立四科分层评估体系，明确各科各层次具体掌握标准",
+    "reminderText": "",
+    "sourceEmail": {
+      "date": "2026-05-18T07:52:17.000Z",
+      "body": "如果用qwen3.5本地部署，其编程能力和你现在的api相比，差距有多大，同时，如果使用本地qwen来代替部分脚本或者某些自动脚本的任务能不能帮我们现在这个api省下一些token开支。任务卡片加这个这样的内容:因为我们的进度复习启动的比较晚，所以我想知道，加上后面我预备要写的很多考研相关的资料，各门学科究竟要学到什么程度才算到位（毫无疑问的是，这个东西肯定是要分层次的）"
+    }
   }
 ]
