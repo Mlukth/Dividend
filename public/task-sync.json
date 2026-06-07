@@ -1,5 +1,26 @@
 [
   {
+    "id": "task_20260607_git_backup",
+    "taskName": "pv-station-admin 本地git仓库 + 定期自动commit",
+    "taskDate": "2026-06-07",
+    "priority": "high",
+    "dependencies": [],
+    "estimatedHours": 1,
+    "description": "设置定期自动commit防误操作丢代码。已完成：仓库存在、.gitignore已更新、首次提交完成。待做：定期自动commit脚本、可选远程push",
+    "decisionTree": [
+      {"id": "dt_git_01", "parentId": null, "text": "更新.gitignore排除backups/和运行时JSON", "completed": true, "branchCondition": ""},
+      {"id": "dt_git_02", "parentId": null, "text": "执行首次全量commit", "completed": true, "branchCondition": ""},
+      {"id": "dt_git_03", "parentId": null, "text": "创建定期自动commit脚本（每30分钟）", "completed": false, "branchCondition": ""},
+      {"id": "dt_git_04", "parentId": null, "text": "可选：设置远程push自动备份", "completed": false, "branchCondition": ""}
+    ],
+    "tags": ["git", "备份", "安全"],
+    "completed": false,
+    "expectedCompletionTime": "2026-06-08",
+    "goal": "避免git checkout等误操作导致未提交代码永久丢失",
+    "reminderText": "已发生ETT重建事故（git checkout误覆盖1000+行代码）",
+    "sourceMaterials": []
+  },
+  {
     "id": "task_1777048547080_5xs45mc3v",
     "taskName": "开发智慧分析师功能",
     "taskDate": "2026-04-25",
