@@ -507,7 +507,7 @@ const generatePowerData = () => {
     
     power = Math.max(0, power)
     data.push([
-      `${hour.toString().padStart(2, '0')}:${(i % 4) * 15.toString().padStart(2, '0')}`,
+      `${hour.toString().padStart(2, '0')}:${(i % 4) * (15).toString().padStart(2, '0')}`,
       power.toFixed(1)
     ])
   }

@@ -1,25 +1,132 @@
 # EnglishTranslationTool — 英语翻译练习工具
 
 ## 用途
-考研英语一翻译练习+AI评分工具。将范文转为翻译题，用户逐篇翻译后DeepSeek API四维评分。
+考研英语一翻译练习+AI评分+水波训练+图片导入工具。将范文转为翻译题，用户逐篇翻译后AI四维评分，支持水波式长难句训练和图片OCR导入。
 
-## 功能
-- **范文库**：内置30篇考研英语一真题范文，支持AI自动分段添加新范文
-- **翻译练习**：原文展示→用户输入译文→计时器
-- **AI评分**：DeepSeek API四维评分（准确性/语法结构/词汇表达/流畅度，各25分）
-- **对照高亮**：用户译文 vs 参考译文逐句对齐diff
-- **日历打卡**：el-calendar每日完成标记，色标显示分数
-- **统计图表**：ECharts趋势折线图+四维雷达图
-- **数据管理**：JSON导入导出，localStorage持久化
+## 核心功能
+
+### 翻译练习
+- 原文展示 → 用户输入译文（打字即自动计时）→ AI评分
+- 可手动点"开始练习"/"结束练习"控制计时
+- 划词模式：鼠标选中原文单词显示翻译
+- 批注系统：canvas自由画笔，标注原文重点
+
+### AI评分（API模式）
+- DeepSeek API四维评分：准确性/语法结构/词汇表达/流畅度，各25分
+- 返回字段：score/mistakeWave（水波纠错）/unknownItems（生词短语）/errorSpans（精确标红）
+- 水波纠错：英文句式分析，含patternEN/同类例句/下次如何拆解
+- 生词自动归入词汇池，带范围标签（四级/六级/考研/雅思/托福/超纲）
+
+### 水波训练（独立模式）
+- 输入读不懂的英文长难句 → AI逻辑切分 → 逐片段白话解释
+- 点击卡住的片段 → AI深入解答（这个结构在做什么/类比简单句/下次怎么办）
+- 生成"今日水波"总结（核心卡点/扩散认知/下次如何）
+- 分析结果缓存 JSON 文件，避免重复API调用
+
+### 窗口AI模式
+- 一键复制评分提示词 → 粘贴到任意AI窗口 → 贴回JSON → 解析评分
+- 复制后粘贴区保持显示，计时器冻结，贴回JSON时记录实际耗时
+- 和API模式共用同一套评分逻辑和数据结构
+
+### 图片导入翻译题
+- 两种导入方式：单题多图（多张截图→一篇题）、批处理（每张图→一篇题）
+- 两种提取模式：教辅·一字不易（逐字照抄）/ 参考·灵活提取（综合判断）
+- 多图自动合成一张PNG，一键复制图片+提示词到AI窗口
+- AI自动识别截图来源（sourceNote），导入时存入范文记录
+- 后续评分时自动附带教辅资料来源，AI评分更有上下文
+- **教辅关键字串流**：图片导入时 AI 返回的 `raw_text_archive`（截图全文存档）和每段的 `raw_teaching_note`（教辅详解）会被保存到 essay 对象中。评分时 `buildScoringPrompt()` 自动将这些教辅内容追加到提示词的【教辅详解存档】和【逐句教辅解析】块中，AI 评分时可参考教辅原版分析。
+
+### 词汇池
+- 评分后自动积累生词短语，按类别分组（法律/经济/科技/抽象/固定搭配等）
+- 每个词显示范围标签（四级/六级/考研/雅思/托福/超纲）和出现次数
+
+### 范文库管理
+- 内置考研英语一真题范文
+- 支持手动添加/AI自动分段/图片导入
+- 拖拽排序（自定义顺序持久化）
+- 删除按钮、最后活动时间追踪（类似Windows文件管理器）
+- 日历打卡：每日完成标记，色标显示分数
+
+### 历史面板
+- 每篇文章的评分历史记录，含译文/分数/反馈/标注
+- 统计面板：连续打卡天数/练习篇数/平均分/今日耗时/累计用时
+- 打字即自动开始计时，无需手动点击"开始练习"
+- ECharts趋势折线图+四维雷达图
+
+### 译文对照
+- 用户译文 vs 参考译文逐句对齐
+- AI返回errorSpans精确标红有误字词片段（非整句标红）
+- 参考译文独立编号分段展示
+
+### 提示词系统（重要）
+
+### 持久化方式
+提示词不再仅存 localStorage，改为 **JSON 文件双向同步**：
+
+| 存储层 | 位置 | 用途 |
+|--------|------|------|
+| **主存储** | `public/ett-prompts.json` | 评分/分段/水波/图片导入x2 共五个系统提示词，点击"保存"写入 |
+| **API** | `GET/POST /api/ett-prompts` | vite.config.js 中间件，读写 JSON 文件 |
+| **兜底** | 代码中 `SCORING_SYSTEM_PROMPT` 等常量 | JSON 文件不可用时 fallback |
+
+**数据流**：页面加载 → `GET /api/ett-prompts` → 填充 `promptConfig` → 缺 key 则自动补默认值并回写文件 → 用户编辑 → 点击"保存" → `POST /api/ett-prompts` → 写入 JSON 文件
+
+修改提示词只需在 UI 的"评分提示词配置"对话框编辑后点保存即可，无需改代码。
+
+**自动初始化**：JSON 文件缺少任何系统提示词 key 时，`loadPromptConfig` 会用代码常量填充默认值并自动写回文件，确保文件始终包含全部五个 key。
+
+### 五个系统提示词
+- **评分提示词** (`scoringPrompt`)：API评分和窗口AI模式共用
+- **分段提示词** (`segmentPrompt`)：添加范文时 AI 自动分段出题
+- **水波训练提示词** (`wavePrompt`)：逻辑切分、卡点解答、水波总结共用
+
+### 图片导入提示词（就近编辑 + JSON 持久化）
+两个图片导入提示词在图片导入对话框内编辑（就近原则），但持久化到 `ett-prompts.json`：
+- `imageStrictPrompt` — 教辅·一字不易模式
+- `imageRefPrompt` — 参考·灵活提取模式
+
+切换模式时自动从 `promptConfig` 加载，点击"保存提示词"按钮写入 JSON 文件。刷新页面或关对话框不丢失。
+
+### 自定义提示词模板
+存 `public/ett-custom-prompts.json`（API读写），多组增删改。
 
 ## 技术
 - Vue 3 Composition API + Element Plus + ECharts
 - DeepSeek API (deepseek-chat)，API Key存localStorage
-- 纯客户端，无需后端
+- Canvas批注系统 + 图片合成
+- HTML5 Drag & Drop（范文拖拽排序）
+- Clipboard API（图片+文本一并复制）
+- **全量 JSON 文件存储**：所有数据通过 vite.config.js 中间件读写 JSON 文件（见下方存储表）
+- **教辅关键字串流**：图片导入→存储 `rawTextArchive`/`rawTeachingNote`→评分时注入提示词
 
-## 数据存储
-- localStorage key: `ett_data`（题库+记录+设置）
-- localStorage key: `ett_apikey`（API Key）
+## 数据存储（全部 JSON 文件化）
+
+| 文件 | API 端点 | 内容 |
+|------|----------|------|
+| `public/ett-data.json` | `GET/POST /api/ett-data` | essays + records + essayOrder + annotations + tokenUsage — 主数据库 |
+| `public/ett-prompts.json` | `GET/POST /api/ett-prompts` | scoringPrompt + segmentPrompt + wavePrompt + imageStrictPrompt + imageRefPrompt |
+| `public/ett-custom-prompts.json` | `GET/POST /api/ett-custom-prompts` | 自定义提示词模板数组 |
+| `public/ett-wave-cache.json` | `GET/POST /api/ett-wave-cache` | 水波分析结果缓存 |
+
+| ~~旧 localStorage key~~ | 状态 |
+|------|------|
+| ~~`ett_data`~~ | 已迁移到 `ett-data.json` |
+| ~~`ett_prompt_config`~~ | 已迁移到 `ett-prompts.json` |
+| ~~`ett_custom_prompts`~~ | 已迁移到 `ett-custom-prompts.json` |
+| ~~`ett_wave_cache`~~ | 已迁移到 `ett-wave-cache.json` |
+| ~~`ett_token_usage`~~ | 合并入 `ett-data.json` |
+| ~~`ett_essay_order`~~ | 合并入 `ett-data.json` |
+| ~~`ett_annotations`~~ | 合并入 `ett-data.json` |
+| `ett_apikey` | **保留 localStorage**（敏感信息，不存文件） |
+
+**读写机制**：加载时 `GET` 对应端点，修改后 800ms 防抖自动 `POST`。旧数据首次加载时自动迁移。
+| essay.rawTextArchive | 图片导入时截图全文存档（评分时注入提示词） |
+| essay.segments[].rawTeachingNote | 每句教辅详解原文（评分时注入提示词） |
 
 ## 路由
 - 自动路由：`/auto/小工具研发部(vue版本)/EnglishTranslationTool.vue`
+
+## 模型限制
+- AI评分精度依赖DeepSeek API能力
+- 图片导入OCR质量取决于截图清晰度和AI视觉模型精度
+- 教辅·一字不易模式虽强调逐字照抄，仍需肉眼校对AI OCR结果

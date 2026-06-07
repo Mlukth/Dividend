@@ -287,33 +287,64 @@ const importPlaceholder = computed(() => importMode.value === 'batch'
   ? '[{"code":"PM-clarify-004","name":"...","type":"PM","cat1":"PM-提示词管理","cat2":"clarify-需求澄清","cat2Label":"需求澄清","desc":"...","cost":2,"content":"..."}]'
   : '{"name":"...","type":"CDEV|PM|INFO|LEARN|DOC","cat1":"...","cat2":"...","tags":["..."],"desc":"...","cost":2}')
 
-const SINGLE_IMPORT_PROMPT = `请分析以下提示词内容，提取结构化信息，返回严格JSON（不要加任何其他文字）：
+	function getExistingContext() {
+	  const catMap = {}
+	  const allTags = new Set()
+	  for (const c of cards.value) {
+	    if (c.cat1 && c.cat2) {
+	      if (!catMap[c.cat1]) catMap[c.cat1] = {}
+	      catMap[c.cat1][c.cat2] = c.cat2Label || c.cat2
+	    }
+	    if (c.tags) c.tags.forEach(t => allTags.add(t))
+	  }
+	  let catRef = ''
+	  for (const [cat1, cat2s] of Object.entries(catMap)) {
+	    const items = Object.entries(cat2s).map(([k, v]) => `${k}-${v}`).join(' / ')
+	    catRef += `- ${cat1}: ${items}
+`
+	  }
+	  return { catRef: catRef.trimEnd(), existingTags: [...allTags].join('、') }
+	}
+
+	function buildSingleImportPrompt() {
+	  const ctx = cards.value.length > 0 ? getExistingContext() : null
+	  let hint = ''
+	  if (ctx) {
+	    hint = `
+项目现有分类体系（优先匹配，若无匹配可新增）：
+${ctx.catRef}
+现有标签（优先复用）：${ctx.existingTags}
+`
+	  }
+	  return `请分析以下提示词内容，提取结构化信息，返回严格JSON（不要加任何其他文字）：
 
 {
   "name": "提示词名称",
   "type": "CDEV|PM|INFO|LEARN|DOC",
   "cat1": "CDEV-代码工程|PM-提示词管理|INFO-信息处理|LEARN-学习辅助|DOC-文书产出",
-  "cat2": "二级分类key（如 extract-组件提取、clarify-需求澄清）",
+  "cat2": "二级分类key",
   "cat2Label": "二级分类中文名",
   "tags": ["标签1","标签2"],
   "desc": "一句话描述（80字内）",
   "cost": 1-3的复杂度数字
-}
-
+}${hint}
 类型说明：CDEV=代码工程(产出/调试/工程)、PM=提示词管理(需求/复用/会话)、INFO=信息处理(提取/对比/核查)、LEARN=学习辅助(刷题/语言/笔记)、DOC=文书产出(文档生成)
 cost: 1=简单指令(<500字), 2=需要上下文(500-2000字), 3=复杂多步骤(>2000字)
 
 待分析提示词：`
+	}
 
-const BATCH_IMPORT_PROMPT = `你是提示词库结构化整理专家。请解析以下提示词文档，提取每条提示词为结构化JSON数组。
+	function buildBatchImportPrompt() {
+	  const ctx = cards.value.length > 0 ? getExistingContext() : null
+	  let catSection = ''
+	  if (ctx) {
+	    catSection = `
+${ctx.catRef}
+`
+	  }
+	  return `你是提示词库结构化整理专家。请解析以下提示词文档，提取每条提示词为结构化JSON数组。
 
-分类体系（必须使用）：
-- CDEV-代码工程: extract-组件提取/protocol-输出协议/debug-调试定位/scaffold-工程基建/anti-loop-防退化
-- PM-提示词管理: clarify-需求澄清/locate-路径定位/iterate-迭代复用/session-会话管控/guide-引导发现
-- INFO-信息处理: extract-信息提取/compare-横向对比/filter-条件筛选/verify-事实核查
-- LEARN-学习辅助: exam-考试刷题/lang-语言学习/note-笔记整理
-- DOC-文书产出: gen-文档生成
-
+分类体系（优先匹配，若无匹配可新增）：${catSection}
 提取规则：
 1. 每个独立提示词作为一个对象
 2. type 根据上述分类体系判断（CDEV/PM/INFO/LEARN/DOC）
@@ -340,10 +371,11 @@ const BATCH_IMPORT_PROMPT = `你是提示词库结构化整理专家。请解析
 ]
 
 待处理文档：`
+	}
 
-function buildImportPrompt() {
-  return importMode.value === 'batch' ? BATCH_IMPORT_PROMPT : SINGLE_IMPORT_PROMPT
-}
+	function buildImportPrompt() {
+	  return importMode.value === 'batch' ? buildBatchImportPrompt() : buildSingleImportPrompt()
+	}
 
 function copyImportPrompt() {
   const prompt = buildImportPrompt()
@@ -539,19 +571,21 @@ async function reloadCards() {
 .spire-card {
   position: relative; width: 240px; height: 340px;
   background: #1a1108; border: 2px solid #3a2a1a; border-radius: 8px;
-  cursor: pointer; transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer; transition: transform 0.25s ease, border-color 0.3s, box-shadow 0.3s, background 0.3s;
   overflow: hidden; display: flex; flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  will-change: transform;
-  -webkit-font-smoothing: antialiased;
-  backface-visibility: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
 }
+/* 内框 */
 .spire-card::before {
   content: ''; position: absolute; inset: 3px;
-  border: 1px solid rgba(200,164,92,0.1); border-radius: 6px;
+  border: 1px solid rgba(200,164,92,0.08); border-radius: 6px;
   pointer-events: none; z-index: 2;
+  transition: border-color 0.3s;
 }
-.spire-card:hover { transform: translateY(-8px) scale(1.04); }
+/* hover: 仅抬起 */
+.spire-card:hover {
+  transform: translateY(-4px);
+}
 
 /* 类型左竖线 */
 .spire-card.CDEV  { border-left: 3px solid #6b2a2a; }

@@ -22,6 +22,7 @@
         <el-upload :show-file-list="false" :before-upload="importData" accept=".json" style="display:inline-block;margin-left:4px">
           <el-button size="small">导入</el-button>
         </el-upload>
+        <el-button size="small" type="success" @click="openImageImport" style="margin-left:4px">图片导入</el-button>
         <el-switch v-model="darkMode" size="small" active-text="🌙" style="margin-left:12px" />
       </div>
     </div>
@@ -70,14 +71,41 @@
       </aside>
 
       <!-- 中间栏：翻译练习区 -->
-      <main class="ett-main">
+      <main class="ett-main" :class="{ 'anno-main': annoMode }" ref="annoMainRef">
+        <!-- 批注浮动工具栏 -->
+        <div v-if="annoMode" class="anno-float-toolbar">
+          <span v-for="c in drawColors" :key="c.color"
+            class="color-dot" :class="{ active: drawColor === c.color && !isErasing }"
+            :style="{ background: c.css }"
+            @click="setDrawColor(c.color)" :title="c.name"></span>
+          <el-divider direction="vertical" />
+          <span class="toolbar-label">粗细</span>
+          <el-slider v-model="drawWidth" :min="1" :max="12" size="small" style="width:70px" />
+          <el-divider direction="vertical" />
+          <el-button size="small" :type="isErasing ? 'warning' : 'default'" @click="toggleErase">
+            {{ isErasing ? '橡皮擦中' : '橡皮擦' }}
+          </el-button>
+          <el-button size="small" @click="clearAnnoDrawings" :disabled="currentAnnoCount === 0">清除</el-button>
+          <span class="anno-count" v-if="currentAnnoCount > 0">{{ currentAnnoCount }}笔</span>
+          <el-button size="small" type="info" @click="toggleAnnoMode" style="margin-left:auto">退出批注</el-button>
+        </div>
+        <canvas v-if="annoMode" ref="annoCanvasRef"
+          class="anno-canvas"
+          @mousedown="onAnnoMouseDown"
+          @mousemove="onAnnoMouseMove"
+          @mouseup="onAnnoMouseUp"
+          @mouseleave="onAnnoMouseUp"
+        ></canvas>
         <template v-if="currentEssay">
           <!-- 原文区 -->
           <div class="section">
             <div class="section-header">
               <span class="section-label">原文</span>
               <span class="section-source">{{ currentEssay.source }}</span>
-              <el-button size="small" text @click="toggleHighlight" v-if="practiceStarted">划词模式</el-button>
+              <el-button size="small" text @click="toggleHighlight" v-if="practiceStarted && !annoMode">划词模式</el-button>
+              <el-button size="small" :type="annoMode ? 'warning' : 'default'" @click="toggleAnnoMode" style="margin-left:auto">
+                {{ annoMode ? '退出批注' : '批注模式' }}
+              </el-button>
             </div>
             <div class="original-text" ref="originalRef">
               <p v-for="(seg, i) in currentEssay.segments" :key="i" class="orig-seg"
@@ -277,6 +305,48 @@
       </template>
     </el-dialog>
   </div>
+
+
+    <!-- 图片导入翻译题对话框 -->
+    <el-dialog v-model="showImageImportDialog" title="图片导入翻译题" width="700px" destroy-on-close @opened="onImageDialogOpened">
+      <div class="image-import-layout">
+        <div class="image-import-left">
+          <div class="image-paste-label">截图粘贴区（Ctrl+V 粘贴截图）</div>
+          <div
+            class="image-paste-zone"
+            :class="{ 'has-image': imagePreviewUrl }"
+            @paste="onImagePaste"
+            tabindex="0"
+            ref="imagePasteZoneRef"
+          >
+            <img v-if="imagePreviewUrl" :src="imagePreviewUrl" class="pasted-image-preview" />
+            <div v-else class="paste-placeholder">
+              <span class="paste-icon">🖼️</span>
+              <span>在此区域点击后 Ctrl+V 粘贴截图</span>
+            </div>
+          </div>
+        </div>
+        <div class="image-import-right">
+          <div class="image-import-section">
+            <div class="image-import-label">提示词模板（可修改）</div>
+            <el-input v-model="imageImportPrompt" type="textarea" :rows="8" resize="vertical" />
+            <el-button type="primary" size="small" @click="copyImagePrompt" style="margin-top:8px" :disabled="!imagePreviewUrl">
+              一键复制提示词
+            </el-button>
+            <span class="hint-text" style="margin-left:8px">复制后粘贴到其他AI窗口，同时粘贴截图</span>
+          </div>
+          <el-divider />
+          <div class="image-import-section">
+            <div class="image-import-label">粘贴AI返回的JSON结果：</div>
+            <el-input v-model="imageImportResult" type="textarea" :rows="8" placeholder="粘贴另一个AI返回的JSON..." />
+            <el-button type="success" size="small" @click="importFromImageJson" style="margin-top:8px" :disabled="!imageImportResult.trim()">
+              解析并导入题目
+            </el-button>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+
 </template>
 
 <script setup>
@@ -317,6 +387,63 @@ const promptConfig = ref({
   segmentPrompt: ''
 })
 const windowAIInput = ref('')
+// 图片导入
+const showImageImportDialog = ref(false)
+const imagePreviewUrl = ref('')
+const imagePasteZoneRef = ref(null)
+const imageImportPrompt = ref('')
+const imageImportResult = ref('')
+
+// 批注系统（全局，每个essay独立存储）
+const annoMode = ref(false)
+const isDrawing = ref(false)
+const drawColor = ref('#FF0000')
+const drawWidth = ref(3)
+const isErasing = ref(false)
+const currentAnnoStroke = ref([])
+const annoCanvasRef = ref(null)
+const annoMainRef = ref(null)
+const originalRef = ref(null)
+
+const drawColors = [
+  { color: '#FF0000', css: '#FF0000', name: '红色' },
+  { color: '#00AA00', css: '#00AA00', name: '绿色' },
+  { color: '#0066FF', css: '#0066FF', name: '蓝色' },
+  { color: '#FF8800', css: '#FF8800', name: '橙色' },
+  { color: '#000000', css: '#000000', name: '黑色' },
+]
+
+// 每个essay的批注存储: { [essayId]: [{points, color, width}, ...] }
+const ANNO_STORAGE_KEY = 'ett_annotations'
+const essayAnnotations = ref({})
+const currentAnnoCount = computed(() => {
+  if (!currentEssayId.value) return 0
+  return (essayAnnotations.value[currentEssayId.value] || []).length
+})
+
+const IMAGE_IMPORT_DEFAULT_PROMPT = `请分析这张考研英语一翻译真题的截图，提取并生成以下JSON格式的数据：
+
+{
+  "title": "文章标题",
+  "source": "来源（如：考研英语一 20XX年 Text X）",
+  "date": "YYYY-MM-DD",
+  "originalEN": "完整的英文原文",
+  "referenceTranslation": "参考中文译文",
+  "segments": [
+    {
+      "en": "英文分句1",
+      "contextZH": "简短中文背景提示",
+      "keyPoints": ["考点1", "考点2"]
+    }
+  ]
+}
+
+要求：
+1. originalEN为完整英文原文段落
+2. referenceTranslation为对应的参考中文翻译
+3. segments按句子拆分，keyPoints标注每句的语法考点（如定语从句、被动语态、倒装、虚拟语气等）
+4. 只返回JSON，不要加任何其他文字`;
+
 
 // P2: 历史面板
 const showHistoryPanel = ref(false)
@@ -696,10 +823,10 @@ async function addEssay() {
 // ========== 导入导出 ==========
 function exportData() {
   const blob = new Blob([JSON.stringify({
-    essays: essays.value, records: records.value, settings,
+    essays: essays.value, records: records.value, settings, annotations: essayAnnotations.value,
     scoringPrompt: promptConfig.value.scoringPrompt,
     segmentPrompt: promptConfig.value.segmentPrompt,
-    exportVersion: 2
+    exportVersion: 3
   }, null, 2)], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a'); a.href = url; a.download = `english-translation-backup-${new Date().toISOString().slice(0,10)}.json`; a.click()
@@ -715,6 +842,8 @@ function importData(file) {
       if (data.essays) essays.value = data.essays
       if (data.records) records.value = data.records
       if (data.settings) Object.assign(settings, data.settings)
+      if (data.annotations) essayAnnotations.value = data.annotations
+      if (data.exportVersion >= 3) saveAnnotations()
       if (data.scoringPrompt) promptConfig.value.scoringPrompt = data.scoringPrompt
       if (data.segmentPrompt) promptConfig.value.segmentPrompt = data.segmentPrompt
       saveData()
@@ -752,6 +881,299 @@ function renderRadarChart() {
   chart.resize()
 }
 
+
+// ========== 图片导入 ==========
+function openImageImport() {
+  imageImportPrompt.value = IMAGE_IMPORT_DEFAULT_PROMPT
+  imagePreviewUrl.value = ''
+  imageImportResult.value = ''
+  showImageImportDialog.value = true
+}
+
+function onImageDialogOpened() {
+  nextTick(() => {
+    if (imagePasteZoneRef.value) imagePasteZoneRef.value.focus()
+  })
+}
+
+function onImagePaste(e) {
+  const items = e.clipboardData?.items
+  if (!items) return
+  for (const item of items) {
+    if (item.type.startsWith('image/')) {
+      e.preventDefault()
+      const blob = item.getAsFile()
+      const reader = new FileReader()
+      reader.onload = (ev) => { imagePreviewUrl.value = ev.target.result }
+      reader.readAsDataURL(blob)
+      return
+    }
+  }
+}
+
+async function copyImagePrompt() {
+  if (!imageImportPrompt.value.trim()) { ElMessage.warning('提示词为空'); return }
+  try {
+    await navigator.clipboard.writeText(imageImportPrompt.value)
+    ElMessage.success('提示词已复制，粘贴到其他AI窗口并附上截图即可')
+  } catch {
+    ElMessage.error('复制失败，请手动复制')
+  }
+}
+
+function importFromImageJson() {
+  if (!imageImportResult.value.trim()) { ElMessage.warning('请粘贴AI返回的JSON'); return }
+  try {
+    const jsonMatch = imageImportResult.value.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) throw new Error('未识别到JSON')
+    const parsed = JSON.parse(jsonMatch[0])
+    if (!parsed.originalEN) throw new Error('JSON缺少originalEN字段')
+
+    essays.value.push({
+      id: generateId(),
+      date: parsed.date || new Date().toISOString().slice(0, 10),
+      title: parsed.title || '图片导入',
+      source: parsed.source || '图片导入',
+      originalEN: parsed.originalEN,
+      referenceTranslation: parsed.referenceTranslation || '',
+      segments: parsed.segments || [{ en: parsed.originalEN, contextZH: '', keyPoints: [] }]
+    })
+    ElMessage.success(`导入成功：${parsed.title || '未命名'}（${parsed.segments?.length || 1}段）`)
+    showImageImportDialog.value = false
+  } catch (e) {
+    ElMessage.error('JSON解析失败：' + e.message)
+  }
+}
+
+// ========== 批注系统 ==========
+function loadAnnotations() {
+  try {
+    const raw = localStorage.getItem(ANNO_STORAGE_KEY)
+    if (raw) essayAnnotations.value = JSON.parse(raw)
+  } catch { essayAnnotations.value = {} }
+}
+loadAnnotations()
+
+function saveAnnotations() {
+  localStorage.setItem(ANNO_STORAGE_KEY, JSON.stringify(essayAnnotations.value))
+}
+
+function toggleAnnoMode() {
+  annoMode.value = !annoMode.value
+  if (annoMode.value) {
+    nextTick(() => {
+      initAnnoCanvas()
+      const main = annoMainRef.value
+      if (main) {
+        main.addEventListener('scroll', onMainScroll, { passive: true })
+      }
+      window.addEventListener('resize', onWindowResize)
+    })
+  } else {
+    const main = annoMainRef.value
+    if (main) {
+      main.removeEventListener('scroll', onMainScroll)
+    }
+    window.removeEventListener('resize', onWindowResize)
+  }
+}
+
+function initAnnoCanvas() {
+  const canvas = annoCanvasRef.value
+  const main = annoMainRef.value
+  if (!canvas || !main) return
+
+  // Cover the FULL scrollable content of .ett-main
+  const w = main.scrollWidth
+  const h = main.scrollHeight
+  canvas.width = w
+  canvas.height = h
+  canvas.style.width = w + 'px'
+  canvas.style.height = h + 'px'
+  redrawAnnoCanvas()
+}
+
+function redrawAnnoCanvas() {
+  const canvas = annoCanvasRef.value
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+  const anns = getCurrentAnno()
+  for (const ann of anns) {
+    drawAnnoStroke(ctx, ann.points, ann.color, ann.width)
+  }
+  if (currentAnnoStroke.value.length > 1) {
+    drawAnnoStroke(ctx, currentAnnoStroke.value, drawColor.value, drawWidth.value)
+  }
+}
+
+function drawAnnoStroke(ctx, points, color, width) {
+  if (points.length < 2) return
+  ctx.beginPath()
+  ctx.strokeStyle = color
+  ctx.lineWidth = width
+  ctx.lineCap = 'round'
+  ctx.lineJoin = 'round'
+  ctx.moveTo(points[0].x, points[0].y)
+  for (let i = 1; i < points.length; i++) {
+    ctx.lineTo(points[i].x, points[i].y)
+  }
+  ctx.stroke()
+}
+
+function getAnnoCoords(e) {
+  const canvas = annoCanvasRef.value
+  const main = annoMainRef.value
+  if (!canvas || !main) return null
+  const rect = canvas.getBoundingClientRect()
+  const scaleX = canvas.width / rect.width
+  const scaleY = canvas.height / rect.height
+  // Account for scroll position so annotations align with scrolled content
+  return {
+    x: (e.clientX - rect.left) * scaleX,
+    y: (e.clientY - rect.top) * scaleY + main.scrollTop * scaleY
+  }
+}
+
+function getCurrentAnno() {
+  if (!currentEssayId.value) return []
+  return essayAnnotations.value[currentEssayId.value] || []
+}
+
+function setCurrentAnno(anns) {
+  if (currentEssayId.value) {
+    essayAnnotations.value[currentEssayId.value] = anns
+    saveAnnotations()
+  }
+}
+
+function onAnnoMouseDown(e) {
+  if (!annoMode.value) return
+  const pos = getAnnoCoords(e)
+  if (!pos) return
+
+  if (isErasing.value) {
+    const erased = eraseAnnoAtPos(pos)
+    if (erased) redrawAnnoCanvas()
+  } else {
+    isDrawing.value = true
+    currentAnnoStroke.value = [{ x: pos.x, y: pos.y }]
+  }
+}
+
+function onAnnoMouseMove(e) {
+  if (!annoMode.value) return
+  const pos = getAnnoCoords(e)
+  if (!pos) return
+
+  if (isDrawing.value) {
+    currentAnnoStroke.value.push({ x: pos.x, y: pos.y })
+    redrawAnnoCanvas()
+  } else if (isErasing.value && e.buttons === 1) {
+    const erased = eraseAnnoAtPos(pos)
+    if (erased) redrawAnnoCanvas()
+  }
+}
+
+function onAnnoMouseUp() {
+  if (isDrawing.value && currentAnnoStroke.value.length > 1) {
+    const anns = getCurrentAnno()
+    anns.push({
+      points: [...currentAnnoStroke.value],
+      color: drawColor.value,
+      width: drawWidth.value
+    })
+    setCurrentAnno(anns)
+  }
+  isDrawing.value = false
+  currentAnnoStroke.value = []
+}
+
+function eraseAnnoAtPos(pos) {
+  const size = drawWidth.value * 4 + 4
+  const half = size / 2
+  const rect = { left: pos.x - half, right: pos.x + half, top: pos.y - half, bottom: pos.y + half }
+
+  const anns = getCurrentAnno()
+  const newAnns = []
+  let changed = false
+
+  for (const ann of anns) {
+    const segments = splitAnnoStrokeByRect(ann.points, rect)
+    if (segments.length === 1 && segments[0].length === ann.points.length) {
+      newAnns.push(ann)
+    } else {
+      changed = true
+      for (const seg of segments) {
+        if (seg.length > 1) {
+          newAnns.push({ points: seg, color: ann.color, width: ann.width })
+        }
+      }
+    }
+  }
+
+  if (changed) setCurrentAnno(newAnns)
+  return changed
+}
+
+function splitAnnoStrokeByRect(points, rect) {
+  const segments = []
+  let current = []
+  for (const p of points) {
+    const inside = p.x >= rect.left && p.x <= rect.right && p.y >= rect.top && p.y <= rect.bottom
+    if (inside) {
+      if (current.length > 1) { segments.push(current); current = [] }
+      else { current = [] }
+    } else {
+      if (current.length === 0) current.push(p)
+      else current.push(p)
+    }
+  }
+  if (current.length > 1) segments.push(current)
+  return segments
+}
+
+function setDrawColor(color) {
+  drawColor.value = color
+  isErasing.value = false
+}
+
+function toggleErase() {
+  isErasing.value = !isErasing.value
+}
+
+function clearAnnoDrawings() {
+  setCurrentAnno([])
+  currentAnnoStroke.value = []
+  redrawAnnoCanvas()
+}
+
+// 切换essay时重新初始化canvas
+watch(currentEssayId, (newId, oldId) => {
+  if (annoMode.value && newId) {
+    nextTick(() => { initAnnoCanvas() })
+  }
+})
+
+// 监听主区域滚动，同步canvas覆盖
+function onMainScroll() {
+  if (!annoMode.value) return
+  const main = annoMainRef.value
+  const canvas = annoCanvasRef.value
+  if (!main || !canvas) return
+  // Resize canvas when content changes (e.g., scoredRecord appears)
+  const w = main.scrollWidth
+  const h = main.scrollHeight
+  if (canvas.width !== w || canvas.height !== h) {
+    initAnnoCanvas()
+  }
+}
+
+// 窗口大小变化时重设canvas
+function onWindowResize() {
+  if (annoMode.value) initAnnoCanvas()
+}
 // ========== 生命周期 ==========
 onMounted(() => {
   loadData()
@@ -790,8 +1212,8 @@ onMounted(() => {
 
 /* 中间 */
 .ett-main { flex:1; overflow-y:auto; padding:12px; }
-.section { margin-bottom:16px; border:1px solid #eee; border-radius:8px; padding:12px; }
-.section-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.section { margin-bottom:16px; border:1px solid #eee; border-radius:8px; padding:12px; position:relative; z-index:1; }
+.section-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; position:relative; z-index:60; }
 .section-label { font-weight:700; font-size:14px; }
 .section-source { font-size:12px; color:#8492a6; }
 .timer { font-family:monospace; font-size:14px; color:#409EFF; margin-left:auto; }
@@ -867,6 +1289,48 @@ onMounted(() => {
 .hint-text { font-size:11px; color:#8492a6; margin-top:4px; }
 .mode-desc p { margin:4px 0; font-size:12px; color:#606266; }
 .mode-desc b { color:#333; }
+
+
+/* Image import dialog */
+/* Image import dialog */
+.image-import-layout { display:flex; gap:16px; }
+.image-import-left { width:340px; flex-shrink:0; }
+.image-import-right { flex:1; display:flex; flex-direction:column; }
+.image-paste-label { font-size:13px; font-weight:600; margin-bottom:6px; }
+.image-paste-zone {
+  width:100%; height:320px; border:2px dashed #d9d9d9; border-radius:8px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  outline:none; transition:border-color .2s; overflow:hidden; background:#f5f5f5;
+}
+.image-paste-zone:focus { border-color:#409EFF; }
+.image-paste-zone.has-image { border-style:solid; border-color:#67C23A; padding:0; background:#fff; }
+.paste-placeholder { text-align:center; color:#c0c4cc; display:flex; flex-direction:column; align-items:center; gap:8px; font-size:13px; }
+.paste-icon { font-size:36px; }
+.pasted-image-preview { width:100%; height:100%; object-fit:contain; }
+.image-import-section { display:flex; flex-direction:column; }
+.image-import-label { font-size:13px; font-weight:600; margin-bottom:6px; }
+
+/* Annotation system */
+.anno-main { position:relative; }
+.anno-float-toolbar {
+  display:flex; align-items:center; gap:6px; padding:4px 10px;
+  background:#fffaeb; border:1px solid #ffe8a0; border-bottom:2px solid #f0c040;
+  border-radius:0 0 6px 6px; flex-wrap:wrap;
+  position:sticky; top:0; z-index:100;
+}
+.toolbar-label { font-size:11px; color:#606266; white-space:nowrap; }
+.color-dot {
+  width:18px; height:18px; border-radius:50%; cursor:pointer;
+  border:2px solid transparent; transition:border-color .15s, transform .15s; flex-shrink:0;
+}
+.color-dot:hover { transform:scale(1.15); }
+.color-dot.active { border-color:#333; box-shadow:0 0 0 2px rgba(0,0,0,0.15); }
+.anno-count { font-size:11px; color:#8492a6; white-space:nowrap; margin-left:4px; }
+
+.anno-canvas {
+  position:absolute; top:0; left:0; z-index:50; cursor:crosshair;
+  pointer-events:auto; background:transparent;
+}
 
 /* responsive */
 @media (max-width:1000px) { .ett-body { flex-direction:column; } .ett-left,.ett-right { width:100%; border:none; } }

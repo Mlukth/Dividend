@@ -91,10 +91,22 @@
 
       <!-- 通知权限 -->
       <div class="section-card">
-        <el-button @click="requestNotificationPermission" :type="notificationPermission === 'granted' ? 'success' : 'primary'" size="small">
-          {{ notificationPermission === 'granted' ? '✅ 通知已开启' : '🔔 开启截止提醒通知' }}
+        <el-button
+          v-if="notificationPermission !== 'granted'"
+          @click="requestNotificationPermission"
+          type="primary" size="small"
+        >
+          🔔 开启截止提醒通知
         </el-button>
-        <span style="margin-left:10px;font-size:13px;color:#64748b;">需要浏览器通知权限</span>
+        <el-button
+          v-else
+          @click="toggleNotifications"
+          :type="notificationsEnabled ? 'success' : 'info'"
+          size="small"
+        >
+          {{ notificationsEnabled ? '✅ 通知已开启' : '🔕 通知已关闭' }}
+        </el-button>
+        <span style="margin-left:10px;font-size:13px;color:#64748b;">点击按钮可开关</span>
       </div>
     </div>
 
@@ -137,6 +149,9 @@
           </el-radio-button>
           <el-radio-button value="flowchart">
             <el-icon><Connection /></el-icon> 流程图
+          </el-radio-button>
+          <el-radio-button value="qwen-cards">
+            <el-icon><Tickets /></el-icon> Qwen卡片
           </el-radio-button>
         </el-radio-group>
         <el-radio-group
@@ -191,6 +206,9 @@
                 <div v-if="task.tags?.length" class="task-tags">
                   <el-tag v-for="tag in task.tags" :key="tag" size="small">{{ tag }}</el-tag>
                 </div>
+                <div v-if="task.sourceMaterials && task.sourceMaterials.length > 0" class="task-source-indicator">
+                  <el-tag effect="plain" size="small" type="info" style="cursor:pointer" @click="openSourceDialog(task)">📋 原始需求 ×{{ task.sourceMaterials.length }}</el-tag>
+                </div>
                 <div v-if="task.decisionTree && task.decisionTree.length > 0" class="tree-progress">
                   <el-progress
                     :percentage="calcTreeProgress(task.decisionTree)"
@@ -241,6 +259,81 @@
         </div>
         <div v-else class="empty-flow">
           <el-empty description="暂无任务数据" />
+        </div>
+      </div>
+
+      <!-- Qwen任务卡片视图 -->
+      <div v-show="currentView === 'qwen-cards'" class="qwen-cards-view">
+        <div v-if="qwenCards.length === 0" class="empty-full">
+          <el-empty description="暂无 Qwen 自动生成的任务卡片" />
+        </div>
+        <div v-else class="qwen-cards-scroll">
+          <div class="qwen-toolbar">
+            <div class="qwen-toolbar-left">
+              <el-checkbox v-model="qwenSelectAll" @change="toggleSelectAllQwen" :indeterminate="qwenSelectIndeterminate">全选</el-checkbox>
+              <span class="qwen-count">共 {{ qwenCards.length }} 张卡片，已选 {{ selectedQwenCardIds.size }}</span>
+            </div>
+            <el-button
+              type="primary"
+              :disabled="selectedQwenCardIds.size === 0"
+              @click="transferToTimeline"
+            >
+              <el-icon><Connection /></el-icon> 转移到时间轴
+            </el-button>
+          </div>
+          <div class="task-grid">
+            <div
+              v-for="task in qwenCards"
+              :key="task.id"
+              class="task-card"
+              :class="[`priority-${task.priority}`, { completed: task.completed }]"
+            >
+              <div class="card-header">
+                <el-checkbox
+                  :model-value="selectedQwenCardIds.has(task.id)"
+                  @change="(val) => toggleQwenSelect(task.id, val)"
+                >选择</el-checkbox>
+                <el-tag :type="getPriorityType(task.priority)" size="small">
+                  {{ getPriorityText(task.priority) }}
+                </el-tag>
+              </div>
+              <h4 class="task-name" :class="{ 'line-through': task.completed }">{{ task.taskName }}</h4>
+              <p v-if="task.description" class="task-desc">{{ task.description }}</p>
+              <div v-if="task.goal" class="task-goal">
+                <el-icon><Aim /></el-icon> {{ task.goal }}
+              </div>
+              <div class="task-meta">
+                <span><el-icon><Clock /></el-icon> {{ task.estimatedHours }}h</span>
+                <span v-if="task.dependencies?.length">
+                  <el-icon><Link /></el-icon> {{ task.dependencies.length }}
+                </span>
+              </div>
+              <div v-if="task.expectedCompletionTime" class="task-deadline-info">
+                <span class="deadline-label">预期完成：</span>{{ task.expectedCompletionTime }}
+              </div>
+              <div v-if="task.tags?.length" class="task-tags">
+                <el-tag v-for="tag in task.tags" :key="tag" size="small">{{ tag }}</el-tag>
+              </div>
+              <div v-if="task.sourceMaterials && task.sourceMaterials.length > 0" class="task-source-indicator">
+                <el-tag effect="plain" size="small" type="info" style="cursor:pointer" @click="openSourceDialog(task)">📋 原始需求 ×{{ task.sourceMaterials.length }}</el-tag>
+              </div>
+              <div v-if="task.decisionTree && task.decisionTree.length > 0" class="tree-progress">
+                <el-progress
+                  :percentage="calcTreeProgress(task.decisionTree)"
+                  :stroke-width="6"
+                  :show-text="true"
+                  :color="progressColor(task.decisionTree)"
+                >
+                  <span class="progress-text">{{ Math.round(calcTreeProgress(task.decisionTree)) }}%</span>
+                </el-progress>
+              </div>
+              <div class="card-actions">
+                <el-button link type="primary" @click="openDecisionTree(task)">🌳 决策树</el-button>
+                <el-button link type="primary" @click="editTask(task)">编辑</el-button>
+                <el-button link type="danger" @click="deleteTask(task.id)">删除</el-button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -308,12 +401,57 @@
             <el-option v-for="tag in allTags" :key="tag" :value="tag" :label="tag" />
           </el-select>
         </el-form-item>
+        <el-divider content-position="left">📋 原始需求来源</el-divider>
+        <div class="source-materials-section">
+          <div v-for="(sm, idx) in editingTask.sourceMaterials" :key="idx" class="source-material-item">
+            <el-select v-model="sm.source" style="width: 100px">
+              <el-option value="email" label="邮件" />
+              <el-option value="cli" label="CLI对话" />
+              <el-option value="manual" label="手动" />
+            </el-select>
+            <el-date-picker v-model="sm.date" type="date" value-format="YYYY-MM-DD" style="width: 130px" />
+            <el-input v-model="sm.content" type="textarea" :rows="2" placeholder="原始需求内容" style="flex:1" />
+            <el-button link type="danger" @click="editingTask.sourceMaterials.splice(idx, 1)"><el-icon><Delete /></el-icon></el-button>
+          </div>
+          <el-button link type="primary" @click="editingTask.sourceMaterials.push({source:'email', date:new Date().toISOString().slice(0,10), content:''})">+ 添加原始需求</el-button>
+        </div>
       </el-form>
       <template #footer>
         <el-button @click="editDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="saveTask">保存</el-button>
       </template>
     </el-dialog>
+
+    <!-- ==================== 原始需求浮窗层（多窗口可拖动） ==================== -->
+    <div class="source-float-layer">
+      <div
+        v-for="win in floatingSourceWindows"
+        :key="win.id"
+        class="source-float-win"
+        :class="{ minimized: win.minimized }"
+        :style="{ left: win.x + 'px', top: win.y + 'px', width: win.w + 'px', zIndex: win.z }"
+        @pointerdown="bringSourceToFront(win.id)"
+      >
+        <div class="source-float-titlebar" @pointerdown.prevent="startSourceDrag($event, win.id)">
+          <span class="source-float-name">{{ win.task.taskName }}</span>
+          <div class="source-float-actions">
+            <button class="source-float-btn" @click.stop="minimizeSourceWindow(win.id)" :title="win.minimized ? '展开' : '最小化'">
+              {{ win.minimized ? '▤' : '—' }}
+            </button>
+            <button class="source-float-btn source-float-close" @click.stop="closeFloatingSourceWindow(win.id)" title="关闭">✕</button>
+          </div>
+        </div>
+        <div class="source-float-body" v-show="!win.minimized">
+          <div v-for="(sm, idx) in (win.task.sourceMaterials || [])" :key="idx" class="source-viewer-item">
+            <div class="source-viewer-meta">
+              <el-tag size="small">{{ sm.source }}</el-tag>
+              <span class="source-viewer-date">{{ sm.date }}</span>
+            </div>
+            <el-input :model-value="sm.content" type="textarea" :rows="8" readonly style="font-size:15px;line-height:1.8" />
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- ==================== 决策树弹窗（完整保留） ==================== -->
     <el-dialog
@@ -467,7 +605,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick, onUnmounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch, nextTick, onUnmounted } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
@@ -475,7 +613,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Clock, Connection, Edit, Download, Upload, Link,
   FullScreen, ZoomIn, ZoomOut, Microphone, CopyDocument,
-  FolderOpened, DocumentAdd, UploadFilled, Delete, RefreshLeft, WarningFilled, Aim
+  FolderOpened, DocumentAdd, UploadFilled, Delete, RefreshLeft, WarningFilled, Aim, Tickets
 } from '@element-plus/icons-vue'
 
 // ============== 内置提示词常量 ==============
@@ -537,6 +675,8 @@ const {
 // ============== 响应式状态 ==============
 const currentView = ref('timeline')
 const groupMode = ref('date')
+const selectedQwenCardIds = ref(new Set())
+const qwenSelectAll = ref(false)
 const tasks = ref([])
 const editDialogVisible = ref(false)
 const showPromptDialog = ref(false)
@@ -552,6 +692,71 @@ const worryCollapseActive = ref([])
 const worries = ref([])
 const newWorry = ref({ title: '', desc: '' })
 
+const sourceDialogVisible = ref(false)
+const viewingSourceTask = ref(null)
+
+// 浮窗系统（多窗口可拖动，复用考研院校地图工作台模式）
+const floatingSourceWindows = reactive([])
+let globalSourceZIndex = 10
+let sourceDragTarget = null
+let sourceDragOffX = 0
+let sourceDragOffY = 0
+
+function openFloatingSourceWindow(task) {
+  const exist = floatingSourceWindows.find(w => w.id === task.id)
+  if (exist) {
+    exist.minimized = false
+    exist.z = ++globalSourceZIndex
+    return
+  }
+  floatingSourceWindows.push({
+    id: task.id,
+    task,
+    x: 80 + (floatingSourceWindows.length % 5) * 40,
+    y: 80 + (floatingSourceWindows.length % 5) * 30,
+    w: 700,
+    minimized: false,
+    z: ++globalSourceZIndex
+  })
+}
+
+function closeFloatingSourceWindow(id) {
+  const idx = floatingSourceWindows.findIndex(w => w.id === id)
+  if (idx > -1) floatingSourceWindows.splice(idx, 1)
+}
+
+function minimizeSourceWindow(id) {
+  const w = floatingSourceWindows.find(w => w.id === id)
+  if (w) w.minimized = !w.minimized
+}
+
+function bringSourceToFront(id) {
+  const w = floatingSourceWindows.find(w => w.id === id)
+  if (w) w.z = ++globalSourceZIndex
+}
+
+function startSourceDrag(e, id) {
+  const w = floatingSourceWindows.find(w => w.id === id)
+  if (!w) return
+  bringSourceToFront(id)
+  sourceDragTarget = w
+  sourceDragOffX = e.clientX - w.x
+  sourceDragOffY = e.clientY - w.y
+  document.addEventListener('pointermove', onSourceDrag)
+  document.addEventListener('pointerup', stopSourceDrag)
+}
+
+function onSourceDrag(e) {
+  if (!sourceDragTarget) return
+  sourceDragTarget.x = Math.max(0, Math.min(window.innerWidth - 100, e.clientX - sourceDragOffX))
+  sourceDragTarget.y = Math.max(0, Math.min(window.innerHeight - 60, e.clientY - sourceDragOffY))
+}
+
+function stopSourceDrag() {
+  sourceDragTarget = null
+  document.removeEventListener('pointermove', onSourceDrag)
+  document.removeEventListener('pointerup', stopSourceDrag)
+}
 const decisionTreeDialogVisible = ref(false)
 const currentDecisionTask = ref(null)
 const showAiImportPanel = ref(false)
@@ -565,6 +770,7 @@ const promptConfig = ref({
 })
 
 const notificationPermission = ref(Notification?.permission || 'default')
+const notificationsEnabled = ref(true)
 const remindedTaskIds = ref(new Set())
 
 // ============== 辅助函数 ==============
@@ -604,6 +810,17 @@ const allTags = computed(() => {
     if (task.tags) task.tags.forEach(tag => tags.add(tag))
   })
   return Array.from(tags)
+})
+
+const qwenCards = computed(() => {
+  return tasks.value
+    .filter(t => t.tags?.includes('[Q]') && !t.transferredToTimeline)
+    .sort((a, b) => new Date(b.taskDate || 0) - new Date(a.taskDate || 0))
+})
+
+const qwenSelectIndeterminate = computed(() => {
+  if (selectedQwenCardIds.value.size === 0) return false
+  return selectedQwenCardIds.value.size < qwenCards.value.length
 })
 
 // ============== 泳道热度图辅助（流程图视图用） ==============
@@ -652,44 +869,56 @@ const loadSyncedTasks = async () => {
   try {
     const res = await fetch('/api/task-sync?' + Date.now())
     if (!res.ok) return
-    const syncedTasks = await res.json()
+    let syncedTasks = await res.json()
+    if (!Array.isArray(syncedTasks) || !syncedTasks.length) return
+    // 先对文件自身去重：同名任务只保留最完整那条（有decisionTree优先，然后日期最新）
+    const byName = new Map()
+    for (const st of syncedTasks) {
+      const exist = byName.get(st.taskName)
+      if (!exist) { byName.set(st.taskName, st); continue }
+      const stScore = (st.decisionTree?.length || 0) * 10 + (st.taskDate > (exist.taskDate || '') ? 1 : 0)
+      const exScore = (exist.decisionTree?.length || 0) * 10
+      if (stScore > exScore) byName.set(st.taskName, st)
+    }
+    syncedTasks = Array.from(byName.values())
+
+    const existingIds = new Set(tasks.value.map(t => t.id))
     const existingNames = new Set(tasks.value.map(t => t.taskName))
     let added = 0
     let updated = 0
     for (const st of syncedTasks) {
-      if (!existingNames.has(st.taskName)) {
-        st.id = generateId()
-        if (!st.expectedCompletionTime) st.expectedCompletionTime = getDefaultExpectedTime(st.priority || 'medium')
-        if (!st.goal) st.goal = ''
-        if (!st.reminderText) st.reminderText = ''
-        tasks.value.push(st)
-        added++
-      } else {
-        const exist = tasks.value.find(t => t.taskName === st.taskName)
-        if (exist && st.decisionTree && st.decisionTree.length) {
-          if (!exist.decisionTree || exist.decisionTree.length === 0) {
-            exist.decisionTree = st.decisionTree
-            updated++
-          } else {
+      if (existingIds.has(st.id)) {
+        const exist = tasks.value.find(t => t.id === st.id)
+        if (exist && st.decisionTree?.length) {
+          if (!exist.decisionTree?.length) { exist.decisionTree = st.decisionTree; updated++ }
+          else {
             for (const syncNode of st.decisionTree) {
               const existNode = exist.decisionTree.find(n => n.text === syncNode.text)
-              if (existNode && syncNode.completed) {
-                existNode.completed = true
-              } else if (!existNode) {
-                exist.decisionTree.push(syncNode)
-              }
+              if (existNode && syncNode.completed) existNode.completed = true
+              else if (!existNode) exist.decisionTree.push(syncNode)
             }
             updated++
           }
         }
+        continue
+      }
+      if (!existingNames.has(st.taskName)) {
+        if (!st.expectedCompletionTime) st.expectedCompletionTime = getDefaultExpectedTime(st.priority || 'medium')
+        if (!st.goal) st.goal = ''
+        if (!st.reminderText) st.reminderText = ''
+        if (!st.sourceMaterials) st.sourceMaterials = []
+        tasks.value.push(st)
+        existingNames.add(st.taskName)
+        existingIds.add(st.id)
+        added++
       }
     }
     if (added || updated) {
       saveTasks()
-      console.log(`[TaskSync] 新增 ${added}，更新 ${updated}`)
+      console.log(`[TaskSync] new ${added}, upd ${updated}`)
     }
   } catch (e) {
-    console.warn('[TaskSync] 同步失败:', e.message)
+    console.warn('[TaskSync] fail:', e.message)
   }
 }
 
@@ -730,6 +959,7 @@ onMounted(() => {
         if (!t.expectedCompletionTime) t.expectedCompletionTime = getDefaultExpectedTime(t.priority)
         if (!t.goal) t.goal = ''
         if (!t.reminderText) t.reminderText = ''
+        if (!t.sourceMaterials) t.sourceMaterials = []
       })
     } catch (e) {}
   }
@@ -772,8 +1002,14 @@ const requestNotificationPermission = async () => {
   else ElMessage.warning('通知权限被拒绝')
 }
 
+const toggleNotifications = () => {
+  notificationsEnabled.value = !notificationsEnabled.value
+  ElMessage.success(notificationsEnabled.value ? '通知已开启' : '通知已关闭')
+}
+
 const checkAndNotifyDeadlines = () => {
   if (notificationPermission.value !== 'granted') return
+  if (!notificationsEnabled.value) return
   const now = new Date()
   now.setHours(0, 0, 0, 0)
   tasks.value.forEach(task => {
@@ -785,9 +1021,10 @@ const checkAndNotifyDeadlines = () => {
       if (remindedTaskIds.value.has(task.id)) return
       const reminder = task.reminderText || `任务「${task.taskName}」已到期，目标：${task.goal || '未设置'}`
       const title = '任务截止提醒'
-      const options = { body: reminder, icon: '/favicon.ico' }
+      const options = { body: reminder, icon: '/favicon.ico', tag: task.id, requireInteraction: true }
       try {
-        new Notification(title, options)
+        const notif = new Notification(title, options)
+        notif.onclick = () => { notif.close(); window.focus() }
         remindedTaskIds.value.add(task.id)
       } catch (e) {}
     }
@@ -848,7 +1085,8 @@ const handleSmartImport = () => {
       decisionTree: t.decisionTree || [],
       expectedCompletionTime: t.expectedCompletionTime || getDefaultExpectedTime(t.priority || 'medium'),
       goal: t.goal || '',
-      reminderText: t.reminderText || ''
+	      reminderText: t.reminderText || '',
+	      sourceMaterials: t.sourceMaterials || []
     }))
     tasks.value = [...tasks.value, ...newTasks]
     saveTasks()
@@ -895,7 +1133,8 @@ const handleFileImport = (event) => {
           decisionTree: t.decisionTree || [],
           expectedCompletionTime: t.expectedCompletionTime || getDefaultExpectedTime(t.priority || 'medium'),
           goal: t.goal || '',
-          reminderText: t.reminderText || ''
+	          reminderText: t.reminderText || '',
+	          sourceMaterials: t.sourceMaterials || []
         }))
         tasks.value = [...tasks.value, ...newTasks]
         saveTasks()
@@ -964,6 +1203,7 @@ const deleteAllCompletedTasks = async () => {
 }
 const editTask = (task) => {
   editingTask.value = { ...task }
+  if (!editingTask.value.sourceMaterials) editingTask.value.sourceMaterials = []
   if (!editingTask.value.expectedCompletionTime) editingTask.value.expectedCompletionTime = getDefaultExpectedTime(editingTask.value.priority)
   editDialogVisible.value = true
 }
@@ -981,9 +1221,42 @@ const deleteTask = (taskId) => {
   ElMessageBox.confirm('确定要删除这个任务吗？', '提示', { type: 'warning' }).then(() => {
     tasks.value = tasks.value.filter(t => t.id !== taskId)
     remindedTaskIds.value.delete(taskId)
+    selectedQwenCardIds.value.delete(taskId)
     saveTasks()
     ElMessage.success('任务已删除')
   }).catch(() => {})
+}
+
+const toggleQwenSelect = (taskId, val) => {
+  if (val) selectedQwenCardIds.value.add(taskId)
+  else selectedQwenCardIds.value.delete(taskId)
+  // trigger reactivity for Set
+  selectedQwenCardIds.value = new Set(selectedQwenCardIds.value)
+}
+
+const toggleSelectAllQwen = (val) => {
+  if (val) {
+    selectedQwenCardIds.value = new Set(qwenCards.value.map(t => t.id))
+  } else {
+    selectedQwenCardIds.value = new Set()
+  }
+}
+
+const transferToTimeline = () => {
+  if (selectedQwenCardIds.value.size === 0) return
+  let count = 0
+  for (const task of tasks.value) {
+    if (selectedQwenCardIds.value.has(task.id)) {
+      task.tags = (task.tags || []).filter(t => t !== '[Q]')
+      task.transferredToTimeline = true
+      task.transferredAt = Date.now()
+      count++
+    }
+  }
+  selectedQwenCardIds.value = new Set()
+  qwenSelectAll.value = false
+  saveTasks()
+  ElMessage.success(`已转移 ${count} 张卡片到时间轴`)
 }
 
 // ============== 时间轴数据 ==============
@@ -1024,16 +1297,20 @@ function groupBySimilarity(tasks, threshold = 0.4) {
   }
   return groups
 }
+const timelineTasks = computed(() => {
+  return tasks.value.filter(t => !t.tags?.includes('[Q]') || t.transferredToTimeline)
+})
+
 const timelineData = computed(() => {
   if (groupMode.value === 'similarity') {
-    const groups = groupBySimilarity(tasks.value)
+    const groups = groupBySimilarity(timelineTasks.value)
     return groups.map((group, index) => ({
       date: group.length === 1 ? group[0].taskName : `相似任务组 ${index+1}（${group.length}个任务）`,
       tasks: group
     }))
   }
   const grouped = {}
-  tasks.value.forEach(task => {
+  timelineTasks.value.forEach(task => {
     const date = task.taskDate || '未设置'
     if (!grouped[date]) grouped[date] = { date, tasks: [] }
     grouped[date].tasks.push(task)
@@ -1124,6 +1401,10 @@ const rebuildTreeFlow = () => {
     label: node.branchCondition || '',
     labelStyle: { fill: '#475569', fontWeight: 500, fontSize: 12, background: '#fff', padding: '2px 6px', borderRadius: '4px', border: '1px solid #e2e8f0' }
   }))
+}
+
+const openSourceDialog = (task) => {
+  openFloatingSourceWindow(task)
 }
 
 const openDecisionTree = (task) => {
@@ -1296,6 +1577,12 @@ const importTreeFromJson = () => {
 .task-deadline-info { font-size: 12px; color: #909399; margin-top: 5px; }
 .deadline-label { font-weight: 600; }
 .task-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.task-source-indicator { margin-bottom: 8px; }
+.source-materials-section { max-height: 240px; overflow-y: auto; }
+.source-material-item { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px; }
+.source-viewer-item { margin-bottom: 20px; }
+.source-viewer-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+.source-viewer-date { color: #909399; font-size: 13px; }
 .tree-progress { margin: 12px 0; }
 .card-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid #edf2f7; }
 .empty-full { height: 100%; display: flex; align-items: center; justify-content: center; }
@@ -1320,6 +1607,13 @@ const importTreeFromJson = () => {
 .task-deadline { width: 80px; font-size: 12px; color: #475569; text-align: right; }
 .empty-flow { height: 100%; display: flex; align-items: center; justify-content: center; }
 
+/* Qwen卡片视图 */
+.qwen-cards-view { flex: 1; overflow-y: auto; padding-right: 4px; }
+.qwen-cards-scroll { width: 100%; }
+.qwen-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 12px 16px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; }
+.qwen-toolbar-left { display: flex; align-items: center; gap: 16px; }
+.qwen-count { font-size: 13px; color: #64748b; }
+
 /* 决策树 */
 .tree-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #ebeef5; }
 .tree-toolbar-left { display: flex; gap: 12px; }
@@ -1338,6 +1632,71 @@ const importTreeFromJson = () => {
 :deep(.vue-flow) { background: transparent; }
 :deep(.vue-flow__edge-path) { stroke-width: 2.5; }
 :deep(.vue-flow__handle) { width: 10px; height: 10px; background: #165DFF; }
+
+/* ==================== 原始需求浮窗层（多窗口可拖动） ==================== */
+.source-float-layer {
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
+}
+.source-float-win {
+  position: absolute;
+  pointer-events: auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.04);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+.source-float-win:hover { box-shadow: 0 12px 48px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.06); }
+.source-float-win.minimized { height: auto !important; }
+
+.source-float-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: grab;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.source-float-titlebar:active { cursor: grabbing; }
+.source-float-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.source-float-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.source-float-btn {
+  width: 24px; height: 24px;
+  border: none; background: none;
+  font-size: 12px; color: #94a3b8;
+  cursor: pointer; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.source-float-btn:hover { background: #e2e8f0; color: #1e293b; }
+.source-float-close:hover { background: #fecaca; color: #dc2626; }
+
+.source-float-body {
+  padding: 16px;
+  max-height: 60vh;
+  overflow-y: auto;
+  font-size: 13px;
+  flex: 1;
+}
 
 @media screen and (max-width: 1000px) {
   .app-layout { flex-direction: column; }

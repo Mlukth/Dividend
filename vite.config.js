@@ -149,6 +149,60 @@ function fileMovePlugin() {
         res.end('unknown action')
       })
 
+      // ETT 通用 JSON 文件 API 工厂
+      const ettFileAPI = (route, filename, defaultVal) => {
+        const filePath = path.resolve(__dirname, 'public', filename)
+        server.middlewares.use(route, async (req, res) => {
+          res.setHeader('Content-Type', 'application/json')
+          if (req.method === 'GET') {
+            try {
+              const data = fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf-8') : defaultVal
+              res.end(data)
+            } catch (e) { res.statusCode = 500; res.end(JSON.stringify({ error: e.message })) }
+          } else if (req.method === 'POST') {
+            const rawBody = await new Promise((resolve) => {
+              let body = ''
+              req.on('data', c => { body += c })
+              req.on('end', () => resolve(body))
+            })
+            try {
+              const parsed = JSON.parse(rawBody)
+              if (!parsed || Object.keys(parsed).length === 0) {
+                res.statusCode = 400
+                res.end(JSON.stringify({ error: 'Empty or invalid JSON body' }))
+                return
+              }
+              fs.writeFileSync(filePath, JSON.stringify(parsed, null, 2), 'utf-8')
+              res.end(JSON.stringify({ success: true }))
+            } catch (e) { res.statusCode = 500; res.end(JSON.stringify({ error: e.message })) }
+          } else { res.statusCode = 405; res.end() }
+        })
+      }
+      ettFileAPI('/api/ett-prompts', 'ett-prompts.json', '{}')
+      ettFileAPI('/api/ett-data', 'ett-data.json', '{"essays":[],"records":[],"essayOrder":[],"annotations":{},"tokenUsage":{"prompt":0,"completion":0,"total":0,"calls":0}}')
+      ettFileAPI('/api/ett-custom-prompts', 'ett-custom-prompts.json', '[]')
+      ettFileAPI('/api/ett-wave-cache', 'ett-wave-cache.json', '{}')
+
+      // ETT 自动备份 — 每次页面加载时写入 backups/ 文件夹
+      server.middlewares.use('/api/ett-backup', async (req, res) => {
+        res.setHeader('Content-Type', 'application/json')
+        if (req.method !== 'POST') { res.statusCode = 405; res.end(); return }
+        const rawBody = await new Promise((resolve) => {
+          let body = ''
+          req.on('data', c => { body += c })
+          req.on('end', () => resolve(body))
+        })
+        try {
+          const backupDir = path.resolve(__dirname, 'backups')
+          if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true })
+          const dateStr = new Date().toISOString().slice(0, 10)
+          const filePath = path.join(backupDir, `ett-backup-${dateStr}.json`)
+          const parsed = JSON.parse(rawBody)
+          fs.writeFileSync(filePath, JSON.stringify(parsed, null, 2), 'utf-8')
+          res.end(JSON.stringify({ success: true, path: filePath }))
+        } catch (e) { res.statusCode = 500; res.end(JSON.stringify({ error: e.message })) }
+      })
+
       // 任务卡片双向同步
       const TASK_SYNC_FILE = path.resolve(__dirname, 'public', 'task-sync.json')
       server.middlewares.use('/api/task-sync', async (req, res) => {
@@ -161,19 +215,15 @@ function fileMovePlugin() {
         } else if (req.method === 'POST') {
           const body = await parseBody(req)
           try {
-            const existing = fs.existsSync(TASK_SYNC_FILE) ? JSON.parse(fs.readFileSync(TASK_SYNC_FILE, 'utf-8')) : []
             const incoming = body.tasks || body
             if (!Array.isArray(incoming)) {
+              const existing = fs.existsSync(TASK_SYNC_FILE) ? JSON.parse(fs.readFileSync(TASK_SYNC_FILE, 'utf-8')) : []
               res.end(JSON.stringify({ success: true, count: existing.length }))
               return
             }
-            // 按id真合并：同id覆盖更新，新id追加，文件独有不丢失
-            const byId = new Map()
-            for (const t of existing) byId.set(t.id, t)
-            for (const t of incoming) byId.set(t.id, t)
-            const merged = Array.from(byId.values())
-            fs.writeFileSync(TASK_SYNC_FILE, JSON.stringify(merged, null, 2), 'utf-8')
-            res.end(JSON.stringify({ success: true, count: merged.length }))
+            // 完全替换：前端发来的就是完整的最新状态（含用户增删改）
+            fs.writeFileSync(TASK_SYNC_FILE, JSON.stringify(incoming, null, 2), 'utf-8')
+            res.end(JSON.stringify({ success: true, count: incoming.length }))
           } catch (e) { res.statusCode = 500; res.end(JSON.stringify({ error: e.message })) }
         } else { res.statusCode = 405; res.end() }
       })
