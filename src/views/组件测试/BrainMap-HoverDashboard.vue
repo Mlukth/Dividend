@@ -17,18 +17,19 @@
           <div class="chain-sep" v-if="gi > 0">→</div>
           <div class="goal-bead-wrap"
             @mouseenter="showHover($event, goal, 'cliA', gi)"
-            @mouseleave="leaveBead">
-            <div :class="['bead', 'goal-bead', goal.planMode ? 'plan-'+goal.status : goal.status]">
+            @mouseleave="leaveBead"
+            @click="openReport(goal)">
+            <div :class="beadCls(goal)">
               <span class="bead-icon">{{ icon(goal.status) }}</span>
               <span class="bead-label">{{ goal.name }}</span>
             </div>
-            <!-- attempt 计数徽章 -->
             <span v-if="goal.attempts && goal.attempts.length > 0" class="att-count"
               :class="goal.failedCount > 0 ? 'has-fail' : 'all-ok'">
               {{ goal.successCount }}/{{ goal.attempts.length }}
             </span>
-            <!-- 失败警告点 -->
             <span v-if="goal.failedCount > 0" class="warn-dot" title="有失败方案">!</span>
+            <!-- 游标点: 当前活跃节点右上角 -->
+            <span v-if="goal.status === 'active'" class="cursor-dot"></span>
           </div>
         </template>
       </div>
@@ -46,8 +47,9 @@
           <div class="chain-sep" v-if="gi > 0">→</div>
           <div class="goal-bead-wrap"
             @mouseenter="showHover($event, goal, 'cliB', gi)"
-            @mouseleave="leaveBead">
-            <div :class="['bead', 'goal-bead', goal.planMode ? 'plan-'+goal.status : goal.status]">
+            @mouseleave="leaveBead"
+            @click="openReport(goal)">
+            <div :class="beadCls(goal)">
               <span class="bead-icon">{{ icon(goal.status) }}</span>
               <span class="bead-label">{{ goal.name }}</span>
             </div>
@@ -55,7 +57,8 @@
               :class="goal.failedCount > 0 ? 'has-fail' : 'all-ok'">
               {{ goal.successCount }}/{{ goal.attempts.length }}
             </span>
-            <span v-if="goal.failedCount > 0" class="warn-dot">!</span>
+            <span v-if="goal.failedCount > 0" class="warn-dot" title="有失败方案">!</span>
+            <span v-if="goal.status === 'active'" class="cursor-dot"></span>
           </div>
         </template>
       </div>
@@ -94,7 +97,7 @@
         </div>
       </div>
       <div class="hp-footer">
-        <button class="hp-btn" @click="openReport(hover.goal)">📋 完整报告</button>
+        <span style="font-size:9px;color:#484f58">点击珠子查看完整报告</span>
       </div>
     </div>
 
@@ -140,14 +143,15 @@
 
     <!-- 图例 -->
     <div class="legend">
-      <span class="legend-title">节点：</span>
-      <span class="legend-item"><span class="bead goal-bead active" style="width:28px;height:28px;min-width:28px;min-height:28px;font-size:8px;display:inline-flex">▶</span> 进行中</span>
-      <span class="legend-item"><span class="bead goal-bead done" style="width:28px;height:28px;min-width:28px;min-height:28px;font-size:8px;display:inline-flex">✓</span> 完成</span>
-      <span class="legend-item"><span class="bead goal-bead plan-done" style="width:28px;height:28px;min-width:28px;min-height:28px;font-size:8px;display:inline-flex">✓</span> 计划完成</span>
-      <span class="legend-item"><span class="bead goal-bead plan-pending" style="width:28px;height:28px;min-width:28px;min-height:28px;font-size:8px;display:inline-flex">⏳</span> 计划待定</span>
-      <span class="legend-item"><span class="att-count all-ok" style="position:static">3/3</span> 全部成功</span>
+      <span class="legend-title">珠子尺寸差异：</span>
+      <span class="legend-item"><span class="bead goal-bead goal-active" style="width:28px;height:28px;min-width:28px;min-height:28px;font-size:8px;display:inline-flex">▶</span> 进行中 62px</span>
+      <span class="legend-item"><span class="bead goal-bead goal-done" style="width:24px;height:24px;min-width:24px;min-height:24px;font-size:7px;display:inline-flex">✓</span> 完成 48px</span>
+      <span class="legend-item"><span class="bead goal-bead plan-active" style="width:30px;height:30px;min-width:30px;min-height:30px;font-size:8px;display:inline-flex">▶</span> 计划激活 74px</span>
+      <span class="legend-item"><span class="bead goal-bead plan-pending" style="width:26px;height:26px;min-width:26px;min-height:26px;font-size:7px;display:inline-flex">⏳</span> 计划待定 56px</span>
+      <span class="legend-item"><span class="cursor-dot" style="position:static;display:inline-block;margin:0"></span> 游标</span>
+      <span class="legend-item"><span class="att-count all-ok" style="position:static">3/3</span> 全成功</span>
       <span class="legend-item"><span class="att-count has-fail" style="position:static">1/3</span> 有失败</span>
-      <span class="legend-item"><span class="warn-dot" style="position:static;margin:0">!</span> 失败警告</span>
+      <span class="legend-item"><span class="warn-dot" style="position:static;margin:0">!</span> 警告</span>
     </div>
   </div>
 </template>
@@ -156,6 +160,20 @@
 import { ref, reactive } from 'vue'
 
 function icon(s) { return s === 'done' ? '✓' : s === 'failed' ? '✗' : s === 'active' ? '▶' : '⏳' }
+function beadCls(g) {
+  // 匹配脑图真实尺寸: root 44-48, plan-active 74, plan-done 48, goal 38-56, plan-pending 56
+  const base = 'bead goal-bead '
+  if (g.planMode) {
+    if (g.status === 'active') return base + 'plan-active'
+    if (g.status === 'done') return base + 'plan-done'
+    if (g.status === 'failed') return base + 'plan-failed'
+    return base + 'plan-pending'
+  }
+  if (g.status === 'active') return base + 'goal-active'
+  if (g.status === 'done') return base + 'goal-done'
+  if (g.status === 'failed') return base + 'goal-failed'
+  return base + 'goal-pending'
+}
 
 // session A: 脑图项目
 const cliA = reactive({ goals: makeGoalsA() })
@@ -270,19 +288,28 @@ function openReport(goal) {
 .chain-sep { color: #30363d; font-size: 16px; font-weight: bold; flex-shrink: 0; margin: 0 2px }
 .goal-bead-wrap { position: relative; flex-shrink: 0; cursor: pointer }
 
-.bead { border-radius: 50%; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; transition: all .2s }
-.goal-bead { width: 58px; height: 58px; min-width: 58px; min-height: 58px; font-size: 8px }
+.bead { border-radius: 50%; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; transition: all .25s cubic-bezier(.4,0,.2,1); cursor: pointer; position: relative; overflow: hidden }
+.goal-bead { width: 56px; height: 56px; min-width: 56px; min-height: 56px }
 .goal-bead:hover { filter: brightness(1.2); z-index: 5 }
-.goal-bead.done { background: linear-gradient(135deg,#1a222a,#1a1e24); border: 2px solid #2d3a2d; color: #777; opacity: .5 }
-.goal-bead.active { background: linear-gradient(135deg,#1a3a2a,#1a3322); border: 3px solid #3fb950; color: #7ee787 }
-.goal-bead.pending { background: #1c2128; border: 2px dashed #555; color: #8b949e }
-.goal-bead.failed { background: #2d1a1a; border: 3px solid #f85149; color: #faa }
-.goal-bead.plan-done { background: linear-gradient(135deg,#1a2a1a,#1a241a); border: 2px dashed #3d5a3d; color: #768390; opacity: .5 }
-.goal-bead.plan-active { background: linear-gradient(135deg,#2d3c5a,#1e2d4a); border: 3px dashed #fac858; color: #f0d060; box-shadow: 0 0 16px rgba(250,200,88,.25) }
-.goal-bead.plan-pending { background: #1c2128; border: 2px dashed #666; color: #8b949e }
-.goal-bead.plan-failed { background: #2d1a1a; border: 3px dashed #f85149; color: #faa }
+
+/* 普通goal — 38-56px */
+.goal-bead.goal-active { width: 62px; height: 62px; min-width: 62px; min-height: 62px; background: linear-gradient(135deg,#1a3a2a,#1a3322); border: 3px solid #3fb950; color: #7ee787; font-size: 10px }
+.goal-bead.goal-done { width: 48px; height: 48px; min-width: 48px; min-height: 48px; background: linear-gradient(135deg,#1a222a,#1a1e24); border: 2px solid #2d3a2d; color: #555; opacity: .45; font-size: 9px }
+.goal-bead.goal-pending { width: 48px; height: 48px; min-width: 48px; min-height: 48px; background: #1c2128; border: 2px dashed #555; color: #8b949e; font-size: 8px }
+.goal-bead.goal-failed { width: 58px; height: 58px; min-width: 58px; min-height: 58px; background: #2d1a1a; border: 3px solid #f85149; color: #faa; font-size: 9px }
+
+/* 计划链 — 灰色虚线，激活时更大+黄框 */
+.goal-bead.plan-active { width: 74px; height: 74px; min-width: 74px; min-height: 74px; background: linear-gradient(135deg,#2d3c5a,#1e2d4a); border: 3px solid #fac858; color: #fff; font-size: 11px; box-shadow: 0 0 16px rgba(250,200,88,.25) }
+.goal-bead.plan-active::after { content:''; position:absolute; inset:-8px; border-radius:50%; border:2px solid rgba(250,200,88,.3); animation:ringPulse 2s ease-out infinite; pointer-events:none }
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.2);opacity:.8}}
+.goal-bead.plan-done { width: 48px; height: 48px; min-width: 48px; min-height: 48px; background: linear-gradient(135deg,#1a2a1a,#1a241a); border: 2px dashed #3d5a3d; color: #768390; opacity: .55; font-size: 9px }
+.goal-bead.plan-pending { width: 56px; height: 56px; min-width: 56px; min-height: 56px; background: #1c2128; border: 2px dashed #666; color: #8b949e; font-size: 9px }
+.goal-bead.plan-failed { width: 60px; height: 60px; min-width: 60px; min-height: 60px; background: #2d1a1a; border: 3px dashed #f85149; color: #faa; font-size: 9px }
 
 .bead-icon { font-size: 14px; line-height: 1 } .bead-label { font-size: 7px; max-width: 52px; text-align: center; word-break: break-all; line-height: 1.1; margin-top: 1px }
+
+/* 游标点 — 右上角黄色 */
+.cursor-dot { position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; border-radius: 50%; background: #fac858; z-index: 4; border: 1px solid #0d1117 }
 
 /* attempt 计数 */
 /* 徽章位置说明: cursor-dot在右上(top:-3,right:-3)，att-count放左下避免冲突 */
