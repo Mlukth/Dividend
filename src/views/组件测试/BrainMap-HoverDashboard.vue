@@ -244,19 +244,21 @@ let hoverTimer = null
 
 function showHover(e, goal, sessionKey, idx) {
   clearTimeout(hoverTimer)
-  const rect = e.currentTarget.getBoundingClientRect()
+  const beadWrap = e.currentTarget
+  const rect = beadWrap.getBoundingClientRect()
   const label = sessionKey === 'cliA' ? 'CLI-A · 脑图' : 'CLI-B · 知识库'
+  // 面板放在珠子下方，水平居中于珠子
   hover.show = true
-  hover.x = Math.min(rect.right + 6, window.innerWidth - 320)
-  hover.y = Math.max(10, Math.min(rect.top, window.innerHeight - 420))
+  hover.x = Math.max(8, Math.min(rect.left + rect.width/2 - 150, window.innerWidth - 310))
+  hover.y = rect.bottom + 6
   hover.goal = goal
   hover.sessionLabel = label
 }
 function leaveBead() {
-  // 延迟关闭，给鼠标移到面板的时间
+  // 短延迟让鼠标有机会移到面板
   hoverTimer = setTimeout(() => {
     if (!hover.panelHover) hover.show = false
-  }, 300)
+  }, 150)
 }
 function enterPanel() { clearTimeout(hoverTimer); hover.panelHover = true }
 function leavePanel() { hover.panelHover = false; hover.show = false }
