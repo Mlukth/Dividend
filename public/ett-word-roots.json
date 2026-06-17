@@ -1,0 +1,44 @@
+{
+  "emission": {
+    "word": "emission",
+    "breakdown": [
+      {
+        "part": "e-",
+        "type": "prefix",
+        "meaning": "向外、出",
+        "reliability": "common"
+      },
+      {
+        "part": "miss",
+        "type": "root",
+        "meaning": "发送、投掷",
+        "reliability": "common"
+      },
+      {
+        "part": "-ion",
+        "type": "suffix",
+        "meaning": "行为、状态、结果",
+        "reliability": "common"
+      }
+    ],
+    "hasMisleadingRoot": false,
+    "misleadingDetail": "",
+    "wordMeaning": "排放、散发（尤指气体、光、热等）",
+    "rootReasoning": "前缀 e- 表示“向外”，词根 miss 表示“发送、投掷”，后缀 -ion 表示行为或结果；组合起来就是“向外发送的行为或结果”，即“排放、散发”，常指气体、光、热等物质的释放。"
+  },
+  "much": {
+    "word": "much",
+    "breakdown": [
+      {
+        "part": "much",
+        "type": "root",
+        "meaning": "大的，多的",
+        "reliability": "common"
+      }
+    ],
+    "hasMisleadingRoot": false,
+    "misleadingDetail": "",
+    "wordMeaning": "许多，大量",
+    "rootReasoning": "单词'much'直接源自原始日耳曼语词根*mikilaz，意为'大的、多的'，在古英语中演变为mycel，后简化为much，表示数量上的大量或程度上的非常。"
+  }
+}

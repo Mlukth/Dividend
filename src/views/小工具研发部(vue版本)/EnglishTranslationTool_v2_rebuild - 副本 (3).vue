@@ -285,9 +285,6 @@
                 <el-button size="small" type="warning" @click="submitTranslation" :disabled="!userTranslation.trim()">
                   一键复制拼接prompt
                 </el-button>
-                <el-button size="small" type="success" @click="openQwen">
-                  🌐 打开 Qwen
-                </el-button>
               </template>
             </div>
             <el-input v-model="userTranslation" type="textarea" :rows="8" resize="vertical"
@@ -2234,10 +2231,6 @@ function saveScoreResult(parsed) {
 function openHistoryPanel(essayId) {
   historyEssayId.value = essayId
   showHistoryPanel.value = true
-}
-
-function openQwen() {
-  window.open('https://chat.qwen.ai', '_blank')
 }
 
 async function submitTranslation() {

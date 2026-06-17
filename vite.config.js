@@ -182,6 +182,7 @@ function fileMovePlugin() {
       ettFileAPI('/api/ett-data', 'ett-data.json', '{"essays":[],"records":[],"essayOrder":[],"annotations":{},"tokenUsage":{"prompt":0,"completion":0,"total":0,"calls":0}}')
       ettFileAPI('/api/ett-custom-prompts', 'ett-custom-prompts.json', '[]')
       ettFileAPI('/api/ett-wave-cache', 'ett-wave-cache.json', '{}')
+      ettFileAPI('/api/ett-word-roots', 'ett-word-roots.json', '{}')
 
       // ETT 自动备份 — 每次页面加载时写入 backups/ 文件夹
       server.middlewares.use('/api/ett-backup', async (req, res) => {
@@ -234,5 +235,5 @@ function fileMovePlugin() {
 export default defineConfig({
   plugins: [vue(), fileMovePlugin()],
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
-  server: { port: 5174, strictPort: true }
+  server: { port: 5174, strictPort: true, host: '0.0.0.0' }
 })

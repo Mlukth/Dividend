@@ -4,7 +4,7 @@
     <div class="ett-header">
       <h2 class="ett-title">英语翻译练习 — 考研英语一</h2>
       <div class="ett-header-actions">
-        <el-input v-model="apiKey" type="password" placeholder="API Key" size="small" :style="{width: isMobile ? '110px' : '240px'}" show-password />
+        <el-input v-model="apiKey" type="password" placeholder="DeepSeek API Key" size="small" style="width:240px" show-password />
         <el-radio-group v-model="scoringMode" size="small">
           <el-radio-button value="api">API评分</el-radio-button>
           <el-radio-button value="window">窗口AI</el-radio-button>
@@ -20,12 +20,10 @@
         </el-upload>
         <el-button size="small" type="info" @click="showVocabPoolDialog = true" :disabled="!vocabPool.length" style="margin-left:4px">生词池 ({{ vocabPool.length }})</el-button>
         <el-button size="small" type="success" @click="openImageImport" style="margin-left:4px">图片导入</el-button>
-        <el-button size="small" type="warning" @click="showPhrasePracticeDialog = true" :disabled="!phraseCards.length" style="margin-left:4px">短语默写 ({{ phraseCards.length }})</el-button>
         <el-switch v-model="darkMode" size="small" active-text="🌙" inactive-text="☀️" style="margin-left:12px" />
-        <el-button size="small" @click="syncFromServer" title="从服务器同步数据">同步</el-button>
 
-            <el-divider v-if="!isMobile" direction="vertical" />
-            <span v-if="!isMobile" class="token-usage" title="Token用量（本次会话）">
+            <el-divider direction="vertical" />
+            <span class="token-usage" title="Token用量（本次会话）">
               <span class="token-label">Tokens:</span>
               <span class="token-val">{{ (tokenUsage.total / 1000).toFixed(1) }}k</span>
               <span class="token-detail">({{ tokenUsage.calls }}次)</span>
@@ -285,9 +283,6 @@
                 <el-button size="small" type="warning" @click="submitTranslation" :disabled="!userTranslation.trim()">
                   一键复制拼接prompt
                 </el-button>
-                <el-button size="small" type="success" @click="openQwen">
-                  🌐 打开 Qwen
-                </el-button>
               </template>
             </div>
             <el-input v-model="userTranslation" type="textarea" :rows="8" resize="vertical"
@@ -325,7 +320,7 @@
       </main>
 
       <!-- 右侧栏：AI评分面板 -->
-      <aside class="ett-right" v-if="!isMobile || rightPanelRecord">
+      <aside class="ett-right">
         <template v-if="rightPanelRecord">
           <div class="score-card">
             <div class="total-score" :style="{ color: scoreColor(rightPanelRecord.totalScore) }">
@@ -568,7 +563,6 @@
         <el-radio-group v-model="imageExtractMode" @change="onExtractModeChange" size="small">
           <el-radio-button value="strict">教辅·一字不易</el-radio-button>
           <el-radio-button value="reference">参考·灵活提取</el-radio-button>
-          <el-radio-button value="phrase">反转短语·中留英填</el-radio-button>
         </el-radio-group>
         <el-button size="small" text @click="saveImagePrompt" style="margin-left:8px">保存当前提示词</el-button>
       </div>
@@ -618,9 +612,6 @@
               <el-button type="success" size="small" @click="importBatchFromImageJson" :disabled="!imageImportResult.trim()">
                 解析批量导入
               </el-button>
-              <el-button v-if="imageExtractMode === 'phrase'" type="warning" size="small" @click="importPhraseFromImageJson" :disabled="!imageImportResult.trim()">
-                导入短语
-              </el-button>
             </div>
           </div>
         </div>
@@ -662,79 +653,6 @@
           </div>
         </div>
       </div>
-    </el-dialog>
-
-    <!-- 短语默写练习弹窗 -->
-    <el-dialog v-model="showPhrasePracticeDialog" title="短语默写·中留英填" width="800px" destroy-on-close @closed="phraseRevealAnswer=false;phraseUserAnswer=''">
-      <div v-if="!phraseCards.length" style="text-align:center;padding:40px;color:#777">
-        <p>暂无短语卡片组，请先通过「图片导入 → 反转短语·中留英填」导入</p>
-      </div>
-      <div v-else class="phrase-practice-layout">
-        <!-- 左侧卡片组列表 -->
-        <div class="phrase-set-list">
-          <div class="phrase-set-label">
-            卡片组 ({{ phraseCards.length }})
-            <el-button size="small" text class="phrase-set-toggle" @click="phraseShowSetList = !phraseShowSetList">
-              {{ phraseShowSetList ? '收起' : '展开' }}
-            </el-button>
-          </div>
-          <div v-for="(set, si) in phraseCards" :key="set.id" v-show="phraseShowSetList"
-            class="phrase-set-item"
-            :class="{ active: phraseSelectedSetId === set.id }"
-            @click="selectPhraseSet(set.id)">
-            <el-button class="phrase-set-delete" size="small" text type="danger" @click.stop="deletePhraseSet(set.id)" title="删除">×</el-button>
-            <div class="phrase-set-title">{{ set.title }}</div>
-            <div class="phrase-set-meta">{{ set.pairs.length }}对 · {{ set.date }}</div>
-            <div class="phrase-set-progress">{{ getPhraseProgress(set) }}</div>
-          </div>
-        </div>
-        <!-- 右侧练习区 -->
-        <div class="phrase-practice-area" v-if="phraseSelectedSet">
-          <div class="phrase-practice-header">
-            <span class="phrase-practice-title">{{ phraseSelectedSet.title }}</span>
-            <span class="phrase-practice-source">{{ phraseSelectedSet.source }}</span>
-            <el-switch v-model="phraseFilterReview" size="small" active-text="只看需复习" inactive-text="全部" style="margin-left:auto" />
-          </div>
-          <div class="phrase-progress-bar">
-            <span>{{ displayPhrasePairs.length ? phraseCurrentIdx + 1 : 0 }} / {{ displayPhrasePairs.length }}</span>
-            <el-progress :percentage="displayPhrasePairs.length ? Math.round((phraseCurrentIdx + 1) / displayPhrasePairs.length * 100) : 0" :stroke-width="6" style="flex:1;margin:0 8px" />
-          </div>
-          <div v-if="displayPhrasePairs.length === 0" style="text-align:center;padding:40px;color:#777">
-            <p v-if="phraseFilterReview">暂无需要复习的短语，干得漂亮！</p>
-            <p v-else>暂无短语</p>
-          </div>
-          <div v-else class="phrase-card" :class="{ revealed: phraseRevealAnswer }">
-            <div class="phrase-zh-display">{{ displayPhrasePairs[phraseCurrentIdx]?.zh }}</div>
-            <el-divider />
-            <div class="phrase-en-area">
-              <div class="phrase-en-label">你的英文：</div>
-              <el-input v-model="phraseUserAnswer" type="textarea" :rows="3" resize="vertical"
-                placeholder="根据中文写出英文..." @keyup.enter.exact="phraseRevealAnswer ? phraseMarkReview() : revealPhraseAnswer()" />
-            </div>
-            <div class="phrase-answer-reveal" v-if="phraseRevealAnswer">
-              <div class="phrase-en-label">原文：</div>
-              <div class="phrase-en-original">{{ displayPhrasePairs[phraseCurrentIdx]?.en }}</div>
-            </div>
-            <div class="phrase-actions" v-if="phraseRevealAnswer">
-              <el-button type="danger" plain size="small" @click="phraseMarkReview">需复习</el-button>
-              <el-button type="success" size="small" @click="phraseMarkCorrect">正确</el-button>
-            </div>
-            <div class="phrase-actions" v-else>
-              <el-button type="primary" size="small" @click="revealPhraseAnswer" :disabled="!phraseUserAnswer.trim()">查看答案</el-button>
-            </div>
-          </div>
-          <div class="phrase-nav" v-if="displayPhrasePairs.length > 1">
-            <el-button size="small" @click="phrasePrevCard" :disabled="phraseCurrentIdx <= 0">上一张</el-button>
-            <el-button size="small" @click="phraseNextCard" :disabled="phraseCurrentIdx >= displayPhrasePairs.length - 1">下一张</el-button>
-          </div>
-        </div>
-        <div class="phrase-practice-area" v-else>
-          <el-empty description="请从左侧选择一个卡片组开始练习" :image-size="80" />
-        </div>
-      </div>
-      <template #footer>
-        <el-button @click="showPhrasePracticeDialog = false">关闭</el-button>
-      </template>
     </el-dialog>
 
     <!-- 词根词缀分析 -->
@@ -829,9 +747,6 @@ const elapsed = ref(0)
 let timerInterval = null
 
 const darkMode = ref(true)
-const isMobile = ref(false)
-function checkMobile() { isMobile.value = window.innerWidth < 768 }
-window.addEventListener('resize', checkMobile)
 const selectedSeg = ref(null)
 const showAddDialog = ref(false)
 const aiProcessing = ref(false)
@@ -845,7 +760,6 @@ const promptConfig = ref({
   segmentPrompt: '',
   imageStrictPrompt: '',
   imageRefPrompt: '',
-  imagePhrasePrompt: '',
   wavePrompt: ''
 })
 const windowAIInput = ref('')
@@ -863,116 +777,8 @@ const wordAnalyzing = ref(false)
 const userMeaningGuess = ref('')
 const showWordAnswer = ref(false)
 const wordAnalysisCache = reactive({})
-const wordRootsStore = reactive({})
-let _wordRootsDirty = false
-let _wordRootsTimer = null
-
-async function loadWordRoots() {
-  try {
-    const res = await fetch('/api/ett-word-roots')
-    if (res.ok) {
-      const data = await res.json()
-      Object.assign(wordRootsStore, data)
-      Object.assign(wordAnalysisCache, data)
-    }
-  } catch {}
-}
-function saveWordRoots() {
-  if (!_wordRootsDirty) return
-  _wordRootsDirty = false
-  clearTimeout(_wordRootsTimer)
-  _wordRootsTimer = setTimeout(() => {
-    fetch('/api/ett-word-roots', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(wordRootsStore)
-    }).catch(() => {})
-  }, 800)
-}
 const manualVocab = ref([])
 const customPrompts = ref([])
-// 反转短语卡片
-const phraseCards = ref([])
-const showPhrasePracticeDialog = ref(false)
-const phraseSelectedSetId = ref(null)
-const phraseCurrentIdx = ref(0)
-const phraseUserAnswer = ref('')
-const phraseRevealAnswer = ref(false)
-const phraseFilterReview = ref(false)
-const phraseShowSetList = ref(true)
-
-// 短语默写 computed
-const phraseSelectedSet = computed(() => phraseCards.value.find(c => c.id === phraseSelectedSetId.value) || null)
-const displayPhrasePairs = computed(() => {
-  if (!phraseSelectedSet.value) return []
-  if (!phraseFilterReview.value) return phraseSelectedSet.value.pairs
-  return phraseSelectedSet.value.pairs.filter((_, i) => phraseSelectedSet.value.practiceState[i] === 'review')
-})
-
-// 短语默写方法
-function selectPhraseSet(id) {
-  phraseSelectedSetId.value = id
-  phraseCurrentIdx.value = 0
-  phraseUserAnswer.value = ''
-  phraseRevealAnswer.value = false
-}
-function getPhraseProgress(set) {
-  const total = set.pairs.length
-  const done = Object.keys(set.practiceState || {}).length
-  const correct = Object.values(set.practiceState || {}).filter(s => s === 'correct').length
-  return done ? `已练${done}/${total} ✓${correct}` : '未开始'
-}
-function revealPhraseAnswer() {
-  if (!phraseUserAnswer.value.trim()) return
-  phraseRevealAnswer.value = true
-}
-function phraseMarkCorrect() {
-  const set = phraseSelectedSet.value
-  if (!set) return
-  set.practiceState[phraseCurrentIdx.value] = 'correct'
-  syncData()
-  phraseAdvance()
-}
-function phraseMarkReview() {
-  const set = phraseSelectedSet.value
-  if (!set) return
-  set.practiceState[phraseCurrentIdx.value] = 'review'
-  syncData()
-  phraseAdvance()
-}
-function phraseAdvance() {
-  const pairs = displayPhrasePairs.value
-  if (phraseCurrentIdx.value < pairs.length - 1) {
-    phraseCurrentIdx.value++
-    phraseUserAnswer.value = ''
-    phraseRevealAnswer.value = false
-  } else {
-    ElMessage.success('本轮练习完成！')
-    phraseRevealAnswer.value = false
-    phraseUserAnswer.value = ''
-  }
-}
-function phrasePrevCard() {
-  if (phraseCurrentIdx.value > 0) {
-    phraseCurrentIdx.value--
-    phraseUserAnswer.value = ''
-    phraseRevealAnswer.value = false
-  }
-}
-function phraseNextCard() {
-  phraseAdvance()
-}
-function deletePhraseSet(id) {
-  phraseCards.value = phraseCards.value.filter(c => c.id !== id)
-  if (phraseSelectedSetId.value === id) {
-    phraseSelectedSetId.value = phraseCards.value[0]?.id || null
-    phraseCurrentIdx.value = 0
-    phraseRevealAnswer.value = false
-  }
-  syncData()
-  ElMessage.success('卡片组已删除')
-}
-
 // 图片导入
 const showImageImportDialog = ref(false)
 const imagePreviewUrl = ref('')
@@ -1080,68 +886,6 @@ const IMAGE_IMPORT_PROMPT_REFERENCE = `请分析以下考研英语一翻译相�
 4. sourceNote用一句话描述截图资料类型
 5. raw_text_archive存截图全文OCR，raw_teaching_note存逐句教辅解析
 6. 只返回JSON，不要加任何其他文字`;
-
-const IMAGE_IMPORT_PROMPT_PHRASE = `请分析这张考研英语教辅截图（可能包含单词/短语替换表、例句+中文翻译、写作升级表达等表格型内容）。你的任务是将截图内容转化为"看中文写英文"的默写练习对。
-
-⚠️ 此工具用于"反转默写训练"：用户看到 zh 字段的中文提示，凭记忆写出对应的英文。所以 zh 必须是可直接当作翻译提示的自然中文，不能是标题/标签/分类名。
-
-请严格输出以下JSON格式，不要包含任何markdown标记（如\`\`\`json），不要任何额外解释文字：
-
-{
-  "title": "根据内容领域自拟简洁中文标题（如'图画描述引入句式''原因分析升级词''举例论证句式'等）",
-  "source": "来源（如：考研英语作文模板 B站：AI归来 微信公众号：AI归来）",
-  "date": "YYYY-MM-DD（如无法确定填当前日期）",
-  "sourceNote": "用一句话说明截图资料类型（如'被替换词→替换词升级表''待选句式+中文翻译'等）",
-  "pairs": [
-    {"en": "用户需要写出的英文", "zh": "帮用户回忆起这个英文的中文提示"},
-    {"en": "英文表达2", "zh": "中文提示2"}
-  ]
-}
-
-【zh 字段的核心铁律】
-zh 必须是用户读完后就知道要写什么英文的自然中文。以下是正确与错误的写法对比：
-
-❌ 错误 zh（标签/分类/元信息，不可用）：
-  "图画描述（升级前）"  ← 这是分类标签，不是中文意思
-  "图画描述."           ← 这是功能说明，不是翻译
-  "图画描述引入句被替换词" ← 这是小节标题
-  "如果是两幅图..."     ← 这是教学说明
-
-✅ 正确 zh（自然中文翻译或提示）：
-  "如上图所示"                        （对应 As is shown in the picture above）
-  "如上图象征性地描绘的那样"            （对应 As is symbolically depicted in the figure above）
-  "图中无可争议的是..."                （对应 What looks beyond dispute in the drawing is that）
-  "这幅漫画呈现了一个发人深省的场景："   （对应 The cartoon provides us with a thought-provoking scene:）
-  "同样地/相反地/不幸地/与此同时"      （对应 Similarly/On the contrary/Unfortunately/Meanwhile）
-
-【处理不同截图内容的规则】
-
-1. 替换词升级表（如"被替换词→替换词"或"升级前→升级后"）：
-   每行做成一个 pair，en=升级后的英文，zh=该英文的中文释义。
-   并在 zh 末尾用括号标注原词，如 "展示、描绘（原词：show）"
-   多个同义替换词可以合并为一对，用 / 分隔，如 en: "illustrated/ depicted/ demonstrated"
-   升级前的句子和升级后的句子各自独立成对，zh 写整句中文翻译。
-
-2. 待选句式+中文翻译：
-   en=英文句式（一字不易），zh=截图中已有的中文翻译。
-   如果截图没有中文翻译，请你自己准确翻译，zh 必须自然通顺、符合中文学术表达。
-
-3. 例句+中文翻译：
-   en=英文例句，zh=对应的中文翻译。
-
-4. 纯中文教学说明/注释（如"注1：受限于字数要求..."）：
-   不要提取为 pair。这些是教学提示，不是默写内容。
-
-5. 表格中的"被替换词"列（旧词/简单词）：
-   如果截图同时有升级表达，en 填升级表达，zh 填中文释义+括号标注原词。
-   不要为旧词单独建 pair（除非截图专门在训练旧词的英文拼写）。
-
-6. 图片中如果有手写或 OCR 导致的模糊/错误：
-   用你的理解修正为正确的英文，不要保留明显笔误。
-
-7. 英文必须从截图提取，保留原始大小写和标点。
-   不要遗漏任何可用的英文表达对。
-   只返回纯JSON，不要加任何其他文字。`;
 
 
 
@@ -1353,7 +1097,6 @@ function loadPromptConfig() {
   promptConfig.value.segmentPrompt = SEGMENT_PROMPT
   promptConfig.value.imageStrictPrompt = IMAGE_IMPORT_DEFAULT_PROMPT
   promptConfig.value.imageRefPrompt = IMAGE_IMPORT_PROMPT_REFERENCE
-  promptConfig.value.imagePhrasePrompt = IMAGE_IMPORT_PROMPT_PHRASE
   promptConfig.value.wavePrompt = WAVE_SYSTEM_PROMPT
   loadCustomPrompts()
 }
@@ -1658,37 +1401,8 @@ function scoreDotColor(dateStr) {
 // ========== 持久化 (localStorage + 自动备份) ==========
 function syncData() {
   clearTimeout(_dataSyncTimer)
-  _dataSyncTimer = setTimeout(async () => {
+  _dataSyncTimer = setTimeout(() => {
     try {
-      // 先拉取服务器 phraseCards，合并后再写入，避免本地旧数据覆盖服务器新数据
-      let mergedPhraseCards = phraseCards.value
-      try {
-        const res = await fetch('/api/ett-data')
-        if (res.ok) {
-          const serverData = await res.json()
-          if (serverData.phraseCards?.length) {
-            const localMap = new Map(phraseCards.value.map(c => [c.id, c]))
-            for (const sc of serverData.phraseCards) {
-              if (!localMap.has(sc.id)) {
-                mergedPhraseCards = [...mergedPhraseCards, sc]
-              } else {
-                // 合并 practiceState：两边都有的卡片，保留更完整的进度
-                const local = localMap.get(sc.id)
-                const merged = { ...local }
-                if (sc.practiceState) {
-                  for (const [k, v] of Object.entries(sc.practiceState)) {
-                    if (!merged.practiceState[k] || merged.practiceState[k] === 'pending') {
-                      merged.practiceState[k] = v
-                    }
-                  }
-                }
-                mergedPhraseCards = mergedPhraseCards.map(c => c.id === sc.id ? merged : c)
-              }
-            }
-          }
-        }
-      } catch {}
-      phraseCards.value = mergedPhraseCards
       const backup = {
         essays: essays.value,
         records: records.value,
@@ -1698,92 +1412,14 @@ function syncData() {
         customPrompts: customPrompts.value,
         waveCache: waveCache.value,
         manualVocab: manualVocab.value,
-        wordRoots: wordRootsStore,
-        phraseCards: mergedPhraseCards,
-        exportVersion: 6
+        exportVersion: 5
       }
       localStorage.setItem('ett_backup', JSON.stringify(backup))
-      fetch('/api/ett-data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(backup)
-      }).catch(() => {})
     } catch {}
   }, 800)
 }
-async function flushSave() {
-  clearTimeout(_dataSyncTimer)
-  try {
-    let mergedPhraseCards = phraseCards.value
-    try {
-      const res = await fetch('/api/ett-data')
-      if (res.ok) {
-        const serverData = await res.json()
-        if (serverData.phraseCards?.length) {
-          const localMap = new Map(phraseCards.value.map(c => [c.id, c]))
-          for (const sc of serverData.phraseCards) {
-            if (!localMap.has(sc.id)) {
-              mergedPhraseCards = [...mergedPhraseCards, sc]
-            }
-          }
-        }
-      }
-    } catch {}
-    phraseCards.value = mergedPhraseCards
-    const backup = {
-      essays: essays.value,
-      records: records.value,
-      essayOrder: essayOrder.value,
-      annotations: essayAnnotations.value,
-      tokenUsage: tokenUsage.value,
-      customPrompts: customPrompts.value,
-      waveCache: waveCache.value,
-      manualVocab: manualVocab.value,
-      wordRoots: wordRootsStore,
-      phraseCards: mergedPhraseCards,
-      exportVersion: 6
-    }
-    localStorage.setItem('ett_backup', JSON.stringify(backup))
-    fetch('/api/ett-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(backup)
-    }).catch(() => {})
-  } catch {}
-}
 function saveEssayOrder() { syncData() }
 function saveData() { syncData() }
-
-async function syncFromServer() {
-  try {
-    const res = await fetch('/api/ett-data')
-    if (!res.ok) throw new Error('网络错误')
-    const data = await res.json()
-    if (!data.essays?.length && !data.records?.length && !data.phraseCards?.length) {
-      ElMessage.info('服务器暂无数据')
-      return
-    }
-    // 合并策略：服务器有 phraseCards 就用服务器的，否则保留本地
-    const serverPhraseCards = data.phraseCards || []
-    const mergedPhraseCards = serverPhraseCards.length ? serverPhraseCards : phraseCards.value
-    essays.value = data.essays || []
-    records.value = data.records || []
-    essayOrder.value = data.essayOrder || []
-    essayAnnotations.value = data.annotations || {}
-    tokenUsage.value = data.tokenUsage || { prompt:0,completion:0,total:0,calls:0 }
-    if (data.customPrompts) customPrompts.value = data.customPrompts
-    if (data.waveCache) waveCache.value = data.waveCache
-    if (data.manualVocab) manualVocab.value = data.manualVocab
-    if (data.wordRoots) { Object.assign(wordRootsStore, data.wordRoots); Object.assign(wordAnalysisCache, data.wordRoots) }
-    phraseCards.value = mergedPhraseCards
-    // 立即写入 localStorage + 服务器，不走防抖
-    flushSave()
-    // 恢复波缓存
-    try { const wcRes = await fetch('/api/ett-wave-cache'); if (wcRes.ok) waveCache.value = await wcRes.json() } catch {}
-    currentEssayId.value = essays.value[0]?.id || null
-    ElMessage.success('数据已同步')
-  } catch (e) { ElMessage.error('同步失败: ' + e.message) }
-}
 
 async function loadData() {
   let loaded = false
@@ -1799,8 +1435,6 @@ async function loadData() {
       if (data.customPrompts) customPrompts.value = data.customPrompts
       if (data.waveCache) waveCache.value = data.waveCache
       if (data.manualVocab) manualVocab.value = data.manualVocab
-      if (data.wordRoots) { Object.assign(wordRootsStore, data.wordRoots); Object.assign(wordAnalysisCache, data.wordRoots) }
-      if (data.phraseCards) phraseCards.value = data.phraseCards
       loaded = true
     }
   } catch {}
@@ -1816,7 +1450,6 @@ async function loadData() {
           essayOrder.value = data.essayOrder || []
           essayAnnotations.value = data.annotations || {}
           tokenUsage.value = data.tokenUsage || { prompt:0,completion:0,total:0,calls:0 }
-          if (data.phraseCards) phraseCards.value = data.phraseCards
           // 迁移波缓存
           try {
             const wcRes = await fetch('/api/ett-wave-cache')
@@ -2078,14 +1711,10 @@ async function analyzeWordRoot(word) {
     if (result) {
       wordAnalysis.value = result
       wordAnalysisCache[word] = result
-      wordRootsStore[word] = result
     } else {
       wordAnalysis.value = { raw: rawContent, _parseFailed: true }
       wordAnalysisCache[word] = wordAnalysis.value
-      wordRootsStore[word] = { raw: rawContent, _parseFailed: true }
     }
-    _wordRootsDirty = true
-    saveWordRoots()
     if (data.usage) {
       tokenUsage.value.prompt += data.usage.prompt_tokens || 0
       tokenUsage.value.completion += data.usage.completion_tokens || 0
@@ -2234,10 +1863,6 @@ function saveScoreResult(parsed) {
 function openHistoryPanel(essayId) {
   historyEssayId.value = essayId
   showHistoryPanel.value = true
-}
-
-function openQwen() {
-  window.open('https://chat.qwen.ai', '_blank')
 }
 
 async function submitTranslation() {
@@ -2468,14 +2093,12 @@ function exportData() {
     waveCache: waveCache.value,
     essayOrder: essayOrder.value,
     manualVocab: manualVocab.value,
-    wordRoots: wordRootsStore,
-    phraseCards: phraseCards.value,
-    exportVersion: 6
+    exportVersion: 5
   }, null, 2)], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a'); a.href = url; a.download = `english-translation-backup-${new Date().toISOString().slice(0,10)}.json`; a.click()
   URL.revokeObjectURL(url)
-  ElMessage.success('完整备份已导出（含全部6组提示词、短语卡片、生词数据、批注、用量）')
+  ElMessage.success('完整备份已导出（含全部5组提示词、生词数据、批注、用量）')
 }
 
 let _autoExported = false
@@ -2496,8 +2119,7 @@ function autoExportOnLoad() {
         waveCache: waveCache.value,
         essayOrder: essayOrder.value,
         manualVocab: manualVocab.value,
-        phraseCards: phraseCards.value,
-        exportVersion: 6
+        exportVersion: 5
       }
       fetch('/api/ett-backup', {
         method: 'POST',
@@ -2522,14 +2144,11 @@ function importData(file) {
       if (data.waveCache) waveCache.value = data.waveCache
       if (data.customPrompts) customPrompts.value = data.customPrompts
       if (data.manualVocab) manualVocab.value = data.manualVocab
-      if (data.wordRoots) { Object.assign(wordRootsStore, data.wordRoots); Object.assign(wordAnalysisCache, data.wordRoots) }
-      if (data.phraseCards) phraseCards.value = data.phraseCards
       if (data.promptConfig) {
         if (data.promptConfig.scoringPrompt) promptConfig.value.scoringPrompt = data.promptConfig.scoringPrompt
         if (data.promptConfig.segmentPrompt) promptConfig.value.segmentPrompt = data.promptConfig.segmentPrompt
         if (data.promptConfig.imageStrictPrompt) promptConfig.value.imageStrictPrompt = data.promptConfig.imageStrictPrompt
         if (data.promptConfig.imageRefPrompt) promptConfig.value.imageRefPrompt = data.promptConfig.imageRefPrompt
-        if (data.promptConfig.imagePhrasePrompt) promptConfig.value.imagePhrasePrompt = data.promptConfig.imagePhrasePrompt
         if (data.promptConfig.wavePrompt) promptConfig.value.wavePrompt = data.promptConfig.wavePrompt
       } else {
         if (data.scoringPrompt) promptConfig.value.scoringPrompt = data.scoringPrompt
@@ -2609,8 +2228,6 @@ function onExtractModeChange(mode) {
   imageExtractMode.value = mode
   if (mode === 'strict') {
     imageImportPrompt.value = promptConfig.value.imageStrictPrompt || IMAGE_IMPORT_DEFAULT_PROMPT
-  } else if (mode === 'phrase') {
-    imageImportPrompt.value = promptConfig.value.imagePhrasePrompt || IMAGE_IMPORT_PROMPT_PHRASE
   } else {
     imageImportPrompt.value = promptConfig.value.imageRefPrompt || IMAGE_IMPORT_PROMPT_REFERENCE
   }
@@ -2619,8 +2236,6 @@ function onExtractModeChange(mode) {
 function saveImagePrompt() {
   if (imageExtractMode.value === 'strict') {
     promptConfig.value.imageStrictPrompt = imageImportPrompt.value
-  } else if (imageExtractMode.value === 'phrase') {
-    promptConfig.value.imagePhrasePrompt = imageImportPrompt.value
   } else {
     promptConfig.value.imageRefPrompt = imageImportPrompt.value
   }
@@ -2818,38 +2433,6 @@ function importBatchFromImageJson() {
     }
     sortEssays()
     ElMessage.success(`导入成功：${imported}篇`)
-    imageSlots.value = [{ url: '', blob: null }]
-    imageImportResult.value = ''
-    showImageImportDialog.value = false
-  } catch (e) {
-    ElMessage.error('JSON解析失败：' + e.message)
-  }
-}
-
-// ========== 反转短语导入 ==========
-function importPhraseFromImageJson() {
-  if (!imageImportResult.value.trim()) { ElMessage.warning('请粘贴AI返回的JSON'); return }
-  try {
-    let parsed = extractJSON(imageImportResult.value)
-    if (!parsed) throw new Error('未识别到JSON')
-    // Support both single object and array
-    let items = Array.isArray(parsed) ? parsed : [parsed]
-    let imported = 0
-    for (const item of items) {
-      if (!item.pairs?.length) continue
-      phraseCards.value.push({
-        id: generateId(),
-        title: item.title || '短语导入',
-        source: item.source || '图片导入',
-        date: item.date || new Date().toISOString().slice(0, 10),
-        sourceNote: item.sourceNote || '',
-        pairs: item.pairs.map(p => ({ en: p.en, zh: p.zh })),
-        practiceState: {}
-      })
-      imported += item.pairs.length
-    }
-    flushSave()
-    ElMessage.success(`导入成功：${items.length}组，共 ${imported} 个短语对`)
     imageSlots.value = [{ url: '', blob: null }]
     imageImportResult.value = ''
     showImageImportDialog.value = false
@@ -3212,7 +2795,7 @@ function onWindowResize() {
   if (annoMode.value) initAnnoCanvas()
 }
 
-watch([essays, records, essayOrder, essayAnnotations, tokenUsage, customPrompts, waveCache, phraseCards], syncData, { deep: true })
+watch([essays, records, essayOrder, essayAnnotations, tokenUsage, customPrompts, waveCache], syncData, { deep: true })
 watch(currentEssayId, (newId, oldId) => {
   // Save current essay's translation draft and timer state
   if (oldId) {
@@ -3264,23 +2847,10 @@ watch(darkMode, (v) => {
 
 // ========== 生命周期 ==========
 onMounted(async () => {
-  checkMobile()
   await loadData()
   loadPromptConfig()
   loadWaveCache()
-  loadWordRoots()
   autoExportOnLoad()
-  // 自动从服务器同步，避免本地旧数据覆盖服务器新数据
-  try {
-    const res = await fetch('/api/ett-data')
-    if (res.ok) {
-      const data = await res.json()
-      if (data.phraseCards?.length) {
-        phraseCards.value = data.phraseCards
-        flushSave()
-      }
-    }
-  } catch {}
   if (essays.value.length > 0 && !currentEssayId.value) currentEssayId.value = essays.value[0].id
 })
 </script>
@@ -3533,97 +3103,8 @@ onMounted(async () => {
   pointer-events:auto; background:transparent;
 }
 
-/* ========== 短语默写练习 ========== */
-.phrase-practice-layout { display:flex; gap:12px; min-height:400px; }
-.phrase-set-list { width:220px; flex-shrink:0; border-right:1px solid #1e1e1e; overflow-y:auto; max-height:460px; padding-right:8px; }
-.phrase-set-label { font-size:12px; color:#777; font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
-.phrase-set-toggle { font-size:11px; color:#ff5f00; padding:0 4px; }
-.phrase-set-item { padding:8px; border-radius:6px; cursor:pointer; margin-bottom:4px; border:1px solid transparent; transition:all .15s; position:relative; }
-.phrase-set-delete { position:absolute; top:4px; right:4px; font-size:16px; width:22px; height:22px; padding:0; border-radius:4px; opacity:0; transition:opacity .15s; color:#f87171; }
-.phrase-set-item:hover .phrase-set-delete { opacity:1; }
-.phrase-set-item:hover { background:#141414; }
-.phrase-set-item.active { background:#1a1008; border-color:#ff5f00; }
-.phrase-set-title { font-size:13px; font-weight:600; color:#f8fafc; }
-.phrase-set-meta { font-size:11px; color:#777; margin-top:2px; }
-.phrase-set-progress { font-size:11px; color:#ff5f00; margin-top:2px; }
-.phrase-practice-area { flex:1; display:flex; flex-direction:column; }
-.phrase-practice-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-.phrase-practice-title { font-size:15px; font-weight:700; color:#f8fafc; }
-.phrase-practice-source { font-size:11px; color:#777; }
-.phrase-progress-bar { display:flex; align-items:center; font-size:12px; color:#777; margin-bottom:12px; }
-.phrase-card { border:1px solid #1e1e1e; border-radius:10px; padding:20px; background:#0d0d0d; flex:1; }
-.phrase-card.revealed { border-color:#ff5f00; }
-.phrase-zh-display { font-size:18px; line-height:1.8; color:#f8fafc; padding:12px; background:#141414; border-radius:8px; margin-bottom:12px; }
-.phrase-en-area { margin-bottom:12px; }
-.phrase-en-label { font-size:12px; color:#777; font-weight:600; margin-bottom:4px; }
-.phrase-answer-reveal { margin-top:12px; padding:12px; background:#0a1a0a; border-radius:8px; border:1px solid #1a2a1a; }
-.phrase-en-original { font-size:16px; line-height:1.6; color:#4a4; font-weight:600; }
-.phrase-actions { display:flex; gap:8px; margin-top:12px; justify-content:center; }
-.phrase-nav { display:flex; gap:8px; justify-content:center; margin-top:12px; }
-
-/* Light mode for phrase practice */
-.ett-body:not(.dark) .phrase-set-list { border-right-color:#eee; }
-.ett-body:not(.dark) .phrase-set-item:hover { background:#f8f9fa; }
-.ett-body:not(.dark) .phrase-set-item.active { background:#e8f0fe; border-color:#409EFF; }
-.ett-body:not(.dark) .phrase-set-title { color:#333; }
-.ett-body:not(.dark) .phrase-card { background:#fff; border-color:#eee; }
-.ett-body:not(.dark) .phrase-card.revealed { border-color:#409EFF; }
-.ett-body:not(.dark) .phrase-zh-display { background:#f8f9fa; color:#333; }
-.ett-body:not(.dark) .phrase-en-original { color:#2d6a4f; }
-.ett-body:not(.dark) .phrase-answer-reveal { background:#f0fff0; border-color:#d4edda; }
-.ett-body:not(.dark) .phrase-practice-title { color:#333; }
-
-/* ========== 手机端适配 ========== */
-@media (max-width:768px) {
-  .ett-container { height:100dvh; padding:4px; gap:4px; }
-  .ett-header { gap:4px; }
-  .ett-title { font-size:13px; }
-  .ett-header .el-input { width:160px !important; }
-  .ett-header .el-radio-group .el-radio-button__inner { padding:4px 7px; font-size:11px; }
-  .ett-header .el-button { font-size:11px; padding:4px 8px; }
-  .ett-header-actions { overflow-x:auto; flex-wrap:nowrap !important; -webkit-overflow-scrolling:touch; padding-bottom:4px; margin-left:0 !important; }
-  .ett-header .el-button .el-icon { font-size:12px; }
-  .ett-body { flex-direction:column; overflow-y:auto; }
-  .ett-left { width:100%; max-height:35vh; border-right:none; border-bottom:1px solid #1a1a1a; flex-shrink:0; }
-  .ett-main { flex:0 0 auto; min-height:50vh; padding:8px; }
-  .ett-right { width:100%; border-left:none; border-top:1px solid #1a1a1a; padding:8px; }
-  .section { margin-bottom:8px; }
-  .section-header { font-size:12px; }
-  .section-content { font-size:14px; }
-  .orig-seg { flex-direction:column; gap:3px; }
-  .seg-num { width:18px; height:18px; font-size:10px; line-height:18px; }
-  .seg-en { font-size:14px; width:100%; }
-  .seg-hint { font-size:10px; }
-  .seg-zh { font-size:13px; }
-  .feedback-box { font-size:12px; }
-  .score-square { width:60px; height:60px; font-size:24px; }
-  .essay-item { padding:6px; }
-  .essay-item-title { font-size:12px; }
-  .timer { font-size:13px; }
-  .el-textarea__inner { font-size:14px !important; }
-  /* 弹窗全屏 */
-  .el-dialog { width:95% !important; margin:2vh auto !important; max-height:96vh; }
-  .el-dialog__body { max-height:70vh; overflow-y:auto; }
-  /* 生词池弹窗 */
-  .vocab-dialog { width:95% !important; }
-  /* 短语默写弹窗 */
-  .phrase-practice-layout { flex-direction:column; overflow-x:hidden; width:100%; }
-  .phrase-practice-layout * { max-width:100%; }
-  .phrase-set-list { width:100%; min-width:0; border-right:none; border-bottom:1px solid #1e1e1e; max-height:35vh; overflow-y:auto; padding:0 0 6px 0; flex-shrink:0; }
-  .phrase-set-item { padding:6px 8px; }
-  .phrase-set-item .phrase-set-delete { opacity:1; }
-  .phrase-set-title { font-size:12px; overflow:hidden; text-overflow:ellipsis; }
-  .phrase-set-meta { font-size:10px; }
-  .phrase-set-progress { font-size:10px; }
-  .phrase-practice-area { min-width:0; overflow-x:hidden; }
-  .phrase-practice-header { flex-wrap:wrap; }
-  .phrase-zh-display { font-size:16px; word-break:break-word; overflow-wrap:break-word; }
-  .phrase-en-original { font-size:14px; word-break:break-word; overflow-wrap:break-word; }
-  .phrase-card { padding:12px; min-width:0; overflow-x:hidden; }
-  .phrase-progress-bar { font-size:11px; flex-wrap:wrap; }
-  .phrase-nav { flex-wrap:wrap; }
-  .phrase-en-area :deep(.el-textarea__inner) { font-size:14px; }
-}
+/* responsive */
+@media (max-width:1000px) { .ett-body { flex-direction:column; } .ett-left,.ett-right { width:100%; border:none; } }
 
 /* ========== Token 用量 ========== */
 .token-usage {
