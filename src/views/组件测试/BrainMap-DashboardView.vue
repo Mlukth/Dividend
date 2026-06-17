@@ -28,11 +28,12 @@
         <!-- Goal 珠子 + 展开区 -->
         <div class="goal-block">
           <div class="goal-row" @click="toggleGoal(gi)">
-            <div :class="['bead', 'goal', goal.status]">
+            <div :class="['bead', 'goal', goal.planMode ? 'plan-'+goal.status : goal.status]">
               <span class="goal-icon">{{ statusIcon(goal.status) }}</span>
               <span class="goal-name">{{ goal.name }}</span>
             </div>
             <!-- 状态标记 -->
+            <span v-if="goal.planMode" class="status-tag plan-tag">计划</span>
             <span v-if="goal.status === 'active'" class="status-tag active-tag">进行中</span>
             <span v-if="goal.status === 'done'" class="status-tag done-tag">完成</span>
             <span v-if="goal.status === 'failed'" class="status-tag fail-tag">失败</span>
@@ -77,11 +78,14 @@
       <div v-for="(goal, gi) in goals" :key="'a'+gi" :class="['audit-card', goal.status]">
         <!-- 卡片头 -->
         <div class="audit-header">
-          <div :class="['bead', 'goal-sm', goal.status]">
+          <div :class="['bead', 'goal-sm', goal.planMode ? 'plan-'+goal.status : goal.status]">
             {{ statusIcon(goal.status) }}
           </div>
           <div class="audit-header-info">
-            <div class="audit-goal-name">{{ goal.name }}</div>
+            <div class="audit-goal-name">
+              <span v-if="goal.planMode" class="plan-badge">计划</span>
+              {{ goal.name }}
+            </div>
             <div class="audit-goal-full">{{ goal.fullText }}</div>
           </div>
           <div class="audit-header-meta">
@@ -153,55 +157,60 @@ function statusIcon(s) {
   return s === 'done' ? '✓' : s === 'failed' ? '✗' : s === 'active' ? '▶' : '⏳'
 }
 
+// 辅助函数
+const done = (icon,name) => ({icon,name,status:'done'})
+const active = (icon,name) => ({icon,name,status:'active'})
+const fail = (icon,name) => ({icon,name,status:'failed'})
+const plan = (name, full, status, attempts, final) => ({
+  name, fullText:full, status, notes:'', successCriteria:'', expanded:false,
+  hasAttempts: attempts && attempts.length > 0, actions:[], attempts: attempts || [], finalResult: final || null, planMode: true
+})
+const regular = (name, full, status, actions, attempts, final) => ({
+  name, fullText:full, status, notes:'', successCriteria:'', expanded:false,
+  hasAttempts: attempts && attempts.length > 0, actions: actions || [], attempts: attempts || [], finalResult: final || null, planMode: false
+})
+
 const goals = reactive([
-  {
-    name: '接qwen API', fullText: '接入qwen3:8b本地模型到ETT翻译工具',
-    status: 'done', notes: '需要本地ollama部署', successCriteria: 'POST /chat 返回200',
-    expanded: false, hasAttempts: true,
-    actions: [
-      { icon: '🔍', name: '搜索文档', status: 'done' },
-      { icon: '📦', name: '装依赖', status: 'done' },
-      { icon: '🔧', name: '写脚本', status: 'done' },
-      { icon: '🚀', name: '测试', status: 'done' },
-      { icon: '✅', name: '验证', status: 'done' },
-    ],
-    attempts: [
-      { approach: '方案1: Requests直连', verdict: 'failed', time: '14:02',
-        steps: [{icon:'🔧',name:'写Python脚本',status:'done'},{icon:'🚀',name:'跑测试',status:'done'},{icon:'❌',name:'401认证失败',status:'failed'}],
-        result: '❌ 401 Unauthorized — API key 格式不兼容' },
-      { approach: '方案2: OpenAI SDK', verdict: 'failed', time: '14:15',
-        steps: [{icon:'📦',name:'装openai包',status:'done'},{icon:'🔧',name:'配base_url',status:'done'},{icon:'❌',name:'超时30s',status:'failed'}],
-        result: '❌ Timeout — SDK 默认重试策略导致超时' },
-      { approach: '方案3: fetch+代理', verdict: 'success', time: '14:28',
-        steps: [{icon:'🔍',name:'查fetch文档',status:'done'},{icon:'🔧',name:'手写fetch',status:'done'},{icon:'✅',name:'200 OK',status:'done'},{icon:'📝',name:'封装函数',status:'done'}],
-        result: '✅ 成功 — 延迟&lt;200ms，稳定运行' },
-    ],
-    finalResult: '✅ 方案3成功: 手写fetch绕过SDK兼容性问题，封装为 qwenChat() 函数'
-  },
-  {
-    name: '重构关联逻辑', fullText: '重构 BrainMap 四规则关联评分算法',
-    status: 'active', notes: '', successCriteria: '同目录文件正确关联到同taskLine',
-    expanded: true, hasAttempts: true,
-    actions: [
-      { icon: '📖', name: '读旧代码', status: 'done' },
-      { icon: '🔍', name: '搜方案', status: 'done' },
-      { icon: '🔧', name: '改scoreTaskLine', status: 'active' },
-    ],
-    attempts: [
-      { approach: '方案1: 纯文件邻近匹配', verdict: 'pending', time: '15:10',
-        steps: [{icon:'🔧',name:'调权重参数',status:'done'},{icon:'🧪',name:'单元测试',status:'active'}],
-        result: null },
-    ],
-    finalResult: null
-  },
-  {
-    name: '写单元测试', fullText: '为 server.cjs 的 session 路由写测试',
-    status: 'pending', notes: '需覆盖多CLI并发场景', successCriteria: '3个mock CLI各发10个事件，验证不串session',
-    expanded: false, hasAttempts: false,
-    actions: [],
-    attempts: [],
-    finalResult: null
-  }
+  // ===== 普通链 =====
+  regular('讨论脑图需求', '讨论脑图v2.1多CLI架构需求', 'done',
+    [done('💬','讨论'),done('📝','记笔记'),done('🔍','搜索方案')], null, null),
+  regular('写技术方案', '写TECHNICAL_PLAN.md确定架构和分期', 'done',
+    [done('📖','读旧文档'),done('✏️','写方案'),done('✅','用户确认')], null, null),
+
+  // ===== 计划链 P0 =====
+  plan('P0 修缮老图', '修复chain[]为空+父节点定位+SessionEnd清理',
+    'done',
+    [{ approach:'方案A: cwd注册表', verdict:'failed', time:'16:10',
+       steps:[done('🔧','写注册表'),done('🧪','测试'),fail('❌','同目录覆盖')],
+       result:'❌ 所有CLI同cwd导致session合并' },
+     { approach:'方案B: 纯session_id', verdict:'success', time:'16:35',
+       steps:[done('🔧','去掉cwd'),done('🔧','修Stop清理'),done('🧪','3CLI并发测试')],
+       result:'✅ session_id稳定，3窗口独立泳道' }],
+    '✅ 移除cwd注册表+Stop/cleanup，session_id路由验证通过'),
+
+  regular('修hook-forwarder', '修Stop事件误触发/cleanup的bug', 'done',
+    [done('📖','读代码'),done('🔧','删cleanup'),done('🚀','重启验证')], null, null),
+
+  // ===== 当前进行中 =====
+  regular('渲染方案讨论', '确定主链分支渲染+attempts可视化的方案', 'active',
+    [done('💬','讨论需求'),done('✏️','写ABCD方案'),active('👀','用户评审')],
+    [{ approach:'方案A+B组合', verdict:'pending', time:'18:30',
+       steps:[done('✏️','写DashboardView'),active('👀','等用户反馈')],
+       result: null }], null),
+
+  // ===== 计划链 P1 =====
+  plan('P1 多泳道渲染', '实现多session泳道+视图切换+attempts时间线',
+    'pending',
+    [{ approach:'方案: 双视图切换', verdict:'pending', time:'待开始',
+       steps:[], result: null }], null),
+
+  // ===== 后续等待 =====
+  regular('审计报告系统', '每个goal节点挂📋报告按钮，内容存入result.finalReport', 'pending',
+    [], null, null),
+  plan('P2 交互增强', '节点拖拽+试错栏可伸缩+右键菜单增强',
+    'pending', [], null),
+  regular('性能优化', 'state文件增量写入+大图虚拟滚动', 'pending',
+    [], null, null),
 ])
 
 const totalActions = computed(() => {
@@ -233,6 +242,10 @@ function toggleGoal(gi) {
 .bead.goal.done { background: linear-gradient(135deg,#1a222a,#1a1e24); border: 2px solid #2d3a2d; color: #555; opacity: .5 }
 .bead.goal.failed { background: linear-gradient(135deg,#2d1a1a,#241a1a); border: 3px solid #f85149; color: #faa }
 .bead.goal.pending { background: #1c2128; border: 2px dashed #555; color: #8b949e }
+.bead.goal.plan-done { background: linear-gradient(135deg,#1a2a1a,#1a241a); border: 2px dashed #2d4a2d; color: #768390; opacity: .55 }
+.bead.goal.plan-active { background: linear-gradient(135deg,#2d3c5a,#1e2d4a); border: 3px dashed #fac858; color: #f0d060; box-shadow: 0 0 12px rgba(250,200,88,.2) }
+.bead.goal.plan-pending { background: #1c2128; border: 2px dashed #666; color: #8b949e }
+.bead.goal.plan-failed { background: #2d1a1a; border: 2px dashed #f85149; color: #faa }
 .bead.goal-sm { width: 36px; height: 36px; min-width: 36px; min-height: 36px; font-size: 12px }
 .bead.action { width: 40px; height: 40px; min-width: 40px; min-height: 40px; font-size: 8px }
 .bead.action.done { background: #1a222a; border: 1px solid #2d3a2d; color: #888; opacity: .4 }
@@ -262,6 +275,7 @@ function toggleGoal(gi) {
 .active-tag { background: #1a3a2a; color: #3fb950; border: 1px solid #3fb950 }
 .done-tag { background: #1a222a; color: #8b949e; border: 1px solid #2d3a2d }
 .fail-tag { background: #2d1a1a; color: #f85149; border: 1px solid #f85149 }
+.plan-tag { background: #2d3c2a; color: #fac858; border: 1px solid #5a4a1a }
 .attempts-badge { font-size: 9px; color: #fac858; margin-left: auto }
 .expand-icon { font-size: 10px; color: #8b949e }
 
@@ -287,6 +301,7 @@ function toggleGoal(gi) {
 .audit-header { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: #161e2a; border-bottom: 1px solid #1e2a3a }
 .audit-header-info { flex: 1 }
 .audit-goal-name { font-size: 14px; font-weight: 700; color: #fff }
+.plan-badge { font-size: 8px; padding: 1px 6px; background: #2d3c2a; color: #fac858; border: 1px solid #5a4a1a; border-radius: 6px; margin-right: 4px; vertical-align: middle }
 .audit-goal-full { font-size: 10px; color: #8b949e; margin-top: 2px }
 .audit-header-meta { display: flex; flex-direction: column; gap: 3px; align-items: flex-end }
 .meta-note { font-size: 9px; color: #8b949e } .meta-criteria { font-size: 9px; color: #fac858 }
