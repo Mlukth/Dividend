@@ -370,4 +370,3 @@ const schemeD = reactive({
 .compare-table td { color: #c9d1d9 }
 .compare-table tr:hover td { background: #161b22 }
 </style>
-</template>
