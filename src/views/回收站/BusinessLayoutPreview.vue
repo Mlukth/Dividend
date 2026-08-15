@@ -255,7 +255,39 @@
   </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue' import { House, Search, ArrowLeft, ArrowRight, Location } from '@element-plus/icons-vue' // 模拟数据 const mockStations = [ { id: '1', name: '三期-芳宇工程', raw: { state: 1 } }, { id: '2', name: '二期-金富缘', raw: { state: 2 } }, { id: '3', name: '一期-罗斯热熔胶', raw: { state: 1 } }, { id: '4', name: '惠州百财新能源科技有限公司', raw: { state: 1 } }, { id: '5', name: '户用电站', raw: { state: 1 } }, { id: '6', name: '金华市青鸟电子有限公司210KW分布式光伏发电项目', raw: { state: 1 } }, { id: '7', name: '宁能热电二期', raw: { state: 2 } }, { id: '8', name: '金华市亿翔文体有限公司', raw: { state: 1 } }, ] // 方案A状态 const collapsedA = ref(false) const searchA = ref('') const selectedA = ref(mockStations[0]) const activeTabA = ref('detail') const filteredA = computed(() => searchA.value ? mockStations.filter(s => s.name.includes(searchA.value)) : mockStations) // 方案B状态 const collapsedB = ref(false) const searchB = ref('') const selectedB = ref(mockStations[0]) const activeTabB = ref('detail') const filteredB = computed(() => searchB.value ? mockStations.filter(s => s.name.includes(searchB.value)) : mockStations) // 方案C状态 const collapsedC = ref(false) const searchC = ref('') const selectedC = ref(mockStations[0]) const activeTabC = ref('detail') const filteredC = computed(() => searchC.value ? mockStations.filter(s => s.name.includes(searchC.value)) : mockStations) const getStatusColor = (state) => (state === 1 ? '#67c23a' : state === 2 ? '#909399' : '#f56c6c')
+import { ref, computed } from 'vue'
+import { House, Search, ArrowLeft, ArrowRight, Location } from '@element-plus/icons-vue'
+
+// 模拟数据
+const mockStations = [
+  { id: '1', name: '三期-芳宇工程', raw: { state: 1 } },
+  { id: '2', name: '二期-金富缘', raw: { state: 2 } },
+  { id: '3', name: '一期-罗斯热熔胶', raw: { state: 1 } },
+  { id: '4', name: '惠州百财新能源科技有限公司', raw: { state: 1 } },
+  { id: '5', name: '户用电站', raw: { state: 1 } },
+  { id: '6', name: '金华市青鸟电子有限公司210KW分布式光伏发电项目', raw: { state: 1 } },
+  { id: '7', name: '宁能热电二期', raw: { state: 2 } },
+  { id: '8', name: '金华市亿翔文体有限公司', raw: { state: 1 } },
+]
+// 方案A状态
+const collapsedA = ref(false)
+const searchA = ref('')
+const selectedA = ref(mockStations[0])
+const activeTabA = ref('detail')
+const filteredA = computed(() => searchA.value ? mockStations.filter(s => s.name.includes(searchA.value)) : mockStations)
+// 方案B状态
+const collapsedB = ref(false)
+const searchB = ref('')
+const selectedB = ref(mockStations[0])
+const activeTabB = ref('detail')
+const filteredB = computed(() => searchB.value ? mockStations.filter(s => s.name.includes(searchB.value)) : mockStations)
+// 方案C状态
+const collapsedC = ref(false)
+const searchC = ref('')
+const selectedC = ref(mockStations[0])
+const activeTabC = ref('detail')
+const filteredC = computed(() => searchC.value ? mockStations.filter(s => s.name.includes(searchC.value)) : mockStations)
+const getStatusColor = (state) => (state === 1 ? '#67c23a' : state === 2 ? '#909399' : '#f56c6c')
 </script>
 <style scoped>
 .preview-outer {

@@ -13,8 +13,8 @@ const manualRoutes = [
   { path: '/grades', name: 'Grades', component: () => import('../views/grades.vue'), meta: { title: '成绩表' } },
 ]
 
-// 扫描所有 .vue 文件
-const modules = import.meta.glob('../views/**/*.vue')
+// 扫描所有 .vue 文件（排除废弃目录：不编译、不导航，避免坏文件阻断构建）
+const modules = import.meta.glob(['../views/**/*.vue', '!../views/回收站/**', '!../views/_*/**', '!../views/**/_*/**'])
 
 // 生成动态路由（解决中文路径匹配问题）
 function generateAutoRoutes() {
@@ -22,6 +22,10 @@ function generateAutoRoutes() {
   for (const path in modules) {
     const relativePath = path.replace('../views/', '').replace('.vue', '')
     if (relativePath.startsWith('_')) continue
+    // 跳过所有 _开头的目录（如 _废弃/）
+    if (relativePath.includes('/_')) continue
+    // 跳过废弃目录（含引用组件测试目录文件的坏文件，构建会失败）
+    if (relativePath.split('/').some(seg => seg === '回收站')) continue
 
     // 提取文件名作为标题（不含扩展名）
     const fileName = relativePath.split('/').pop()
